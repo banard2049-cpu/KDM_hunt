@@ -3,6 +3,9 @@
   "appName": "KDM狩猎辅助",
   "webDir": "www",
   "bundledWebRuntime": false,
+  "android": {
+    "zoomEnabled": true
+  },
   "server": {
     "androidScheme": "https"
   }
