@@ -10,6 +10,19 @@ __pycache__/
 # Local build output (if a dist folder is produced)
 dist/
 
+# High-resolution (HD) rulebook images are large and intentionally not
+# distributed in the repo; the app defaults to the low-res (standard) cards.
+assets/cards/rulebook-hd/
+
+# --- Android / Capacitor (generated at build time by CI, not committed) ---
+android/
+www/
+node_modules/
+
+# --- Research / scratch ---
+.research-scratch/
+.npm-cache-tmp/
+
 # --- OS files ---
 .DS_Store
 Thumbs.db

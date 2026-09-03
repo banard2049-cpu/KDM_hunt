@@ -1,0 +1,17 @@
+{
+  "name": "kdm-hunt",
+  "version": "1.0.0",
+  "description": "KDM 自动狩猎工具（狩猎纯净版）— Android offline app via Capacitor",
+  "private": true,
+  "main": "index.html",
+  "scripts": {
+    "android:sync": "capacitor sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.1",
+    "@capacitor/core": "^8.5.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.1"
+  }
+}

@@ -196,9 +196,16 @@ const STARVE_POS=TRACK_N+1; // rightmost cell index (Starvation), no card
 
 let HD={sheets:{},backs:{},decks:{},shared:{}};
 async function load(){
-  D=await (await fetch('/api/data')).json();
-  // Hunt decks may come via /api/data (source server) or as a static file
-  // (compiled exe). Try the payload first, then fall back to the static file.
+  // Load the bundled static JSON so the app runs fully OFFLINE (Android APK,
+  // file:// or any static host) without the python /api backend. Fall back to
+  // the /api/data endpoint only when the static files are unavailable.
+  try{
+    const rd=async u=>(await fetch(u)).json();
+    const [monsters,manifest,huntdecks]=await Promise.all([rd('data/monsters.json'),rd('data/manifest.json'),rd('data/huntdecks.json')]);
+    D={monsters,manifest,huntdecks};
+  }catch(_){D=await (await fetch('/api/data')).json()}
+  // Hunt decks may come via the payload above or as a static file (compiled
+  // exe). Prefer the payload, then fall back to the static file.
   if(D.huntdecks&&D.huntdecks.decks)HD=D.huntdecks;
   else{try{HD=await (await fetch('data/huntdecks.json')).json()}catch(_){HD={sheets:{},backs:{},decks:{},shared:{}}}}
   let ex=['全部','基础','赌博','12扩','其他官方扩','粉丝扩'];

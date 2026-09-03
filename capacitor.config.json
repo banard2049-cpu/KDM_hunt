@@ -1,0 +1,9 @@
+{
+  "appId": "com.kdmhunt.hunt",
+  "appName": "KDM狩猎辅助",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
