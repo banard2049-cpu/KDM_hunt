@@ -173,9 +173,25 @@ const RANDOM_EVENT_PAGES_HD=RANDOM_EVENT_PAGES_STANDARD.map((p,i)=>Object.assign
 let rulebookVersion=localStorage.getItem('kdm-rulebook-version')||'standard';
 let RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;
 let randomEventState=null,randomCrops={},cropDraft={x:0,y:0,w:1,h:1},cropDrafts=[cropDraft],cropPart=0,cropDrag=null;
+// Built-in per-version random-event crops shipped under data/ so a fresh
+// environment (e.g. the Android APK, or a browser without local history)
+// shows the same crop positions as the desktop setup instead of an empty view.
+const BUILTIN_CROPS={standard:{},hd:{}};
+async function loadBuiltinCrops(){
+  for(const v of ['standard','hd']){
+    try{const r=await fetch(`data/random-crops-${v}.json`);if(r.ok)BUILTIN_CROPS[v]=await r.json()}catch(_){BUILTIN_CROPS[v]={}}
+  }
+}
 function cropStorageKey(){return `kdm-random-crops-${rulebookVersion}`}
 function saveRandomCrops(){localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops))}
-function loadRandomCrops(){try{let key=cropStorageKey(),raw=localStorage.getItem(key);randomCrops=JSON.parse(raw||'{}')}catch(_){randomCrops={}}}
+function loadRandomCrops(){
+  let v=null;
+  try{const raw=localStorage.getItem(cropStorageKey());if(raw)v=JSON.parse(raw)}catch(_){v=null}
+  const hasData=!!v&&typeof v==='object'&&Object.keys(v).length>0;
+  randomCrops=hasData?v:Object.assign({},BUILTIN_CROPS[rulebookVersion]||{});
+  // Persist the built-in default once so subsequent edits layer on top of it.
+  if(!hasData&&Object.keys(randomCrops).length){try{localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops))}catch(_){}}
+}
 
 function rulebookAsset(file){return `/assets/cards/${file}`}
 // Cell layout follows the cropped board's printed dividers. Start and
@@ -547,8 +563,9 @@ $('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPa
 $('#note').oninput=e=>{if(S){S.note=e.target.value;autosave()}};
 $('#save').onclick=()=>{if(S){S.id=prompt('存档名称',S.id)||S.id;autosave();alert('已保存')}};
 $('#export').onclick=()=>{if(S){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=(S.id||'kdm-hunt')+'.json';a.click()}};
-loadRandomCrops();initCropEditor();$('#cropPart1').onclick=()=>switchCropPart(0);$('#cropPart2').onclick=()=>switchCropPart(1);$('#openCropEditor').onclick=()=>{$('#cropEditorPanel').classList.add('open');renderCropReview()};$('#closeCropEditor').onclick=()=>$('#cropEditorPanel').classList.remove('open');$('#cropNumber').onchange=()=>{loadCropEditor();renderCropReview()};
+$('#cropPart1').onclick=()=>switchCropPart(0);$('#cropPart2').onclick=()=>switchCropPart(1);$('#openCropEditor').onclick=()=>{$('#cropEditorPanel').classList.add('open');renderCropReview()};$('#closeCropEditor').onclick=()=>$('#cropEditorPanel').classList.remove('open');$('#cropNumber').onchange=()=>{loadCropEditor();renderCropReview()};
 $('#cropPrev').onclick=()=>{let n=Math.max(1,(+$('#cropNumber').value||1)-1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};$('#cropNext').onclick=()=>{let n=Math.min(100,(+$('#cropNumber').value||1)+1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};
 load().then(()=>{let x=localStorage.getItem('kdm-current');if(x){try{let saved=JSON.parse(x);if(saved&&saved.schemaVersion>=2&&(saved.mode==='hunt'||saved.mode==null)){S=saved;render();log('已恢复上次狩猎进度')}else{S=null}}catch(_){S=null}}let r=localStorage.getItem('kdm-random-event');if(r){try{randomEventState=JSON.parse(r)}catch(_){randomEventState=null}}renderRandomEvent()});
+(async()=>{await loadBuiltinCrops();loadRandomCrops();initCropEditor();renderCropList();renderRandomEvent()})();
 </script>
 </body></html>
