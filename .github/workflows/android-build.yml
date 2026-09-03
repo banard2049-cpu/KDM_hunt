@@ -15,6 +15,7 @@ on:
       - 'v*'
     branches:
       - main
+      - master
 
 jobs:
   build:
@@ -28,7 +29,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install Capacitor deps
         run: npm install
@@ -50,6 +51,19 @@ jobs:
       - name: Sync web assets into the Android project
         run: npx cap sync android
 
+      # Capacitor's template ships versionCode 1; without a bump, sideloading a
+      # newer build over an old install is rejected ("app not installed").
+      - name: Bump versionCode / versionName for this build
+        run: |
+          VCODE="${GITHUB_RUN_NUMBER:-1}"
+          REF="${GITHUB_REF_NAME}"
+          case "$REF" in
+            v*) VERNAME="${REF#v}" ;;
+            *)  VERNAME="1.0.0" ;;
+          esac
+          sed -i "s/versionCode 1/versionCode $VCODE/; s/versionName \"1.0\"/versionName \"$VERNAME\"/" android/app/build.gradle
+          echo "versionCode=$VCODE versionName=$VERNAME"
+
       - name: Set up Java (JDK 21)
         uses: actions/setup-java@v4
         with:
@@ -61,6 +75,9 @@ jobs:
 
       - name: Accept Android SDK licenses
         run: yes | sdkmanager --licenses >/dev/null 2>&1 || true
+
+      - name: Install required Android SDK packages
+        run: sdkmanager --install "platform-tools" "platforms;android-36" "build-tools;36.0.0" >/dev/null
 
       # Debug-signed release: no custom keystore required, produces an APK that
       # installs directly on a device. For a permanent upgradeable signature,
