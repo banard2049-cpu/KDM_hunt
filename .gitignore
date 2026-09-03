@@ -1,0 +1,23 @@
+# --- Runtime / generated ---
+# User save data is created at runtime and must not be committed.
+saves/
+
+# Python cache (server.py)
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Local build output (if a dist folder is produced)
+dist/
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Editors / tooling ---
+.idea/
+.vscode/
+*.swp
+*.tmp
+*~

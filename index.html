@@ -1,0 +1,547 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KDM 自动狩猎</title><style>
+body{margin:0;background:#17151a;color:#eee;font:14px system-ui,"Microsoft YaHei",sans-serif}
+header{padding:18px 24px;background:#25202a;border-bottom:1px solid #493c4d}
+h1{margin:0;font-size:22px}
+.app{display:grid;grid-template-columns:180px 1fr;min-height:calc(100vh - 70px);transition:grid-template-columns .2s ease}
+aside{padding:18px;background:#211c24;border-right:1px solid #493c4d;position:relative;transition:padding .2s ease;overflow:hidden}
+aside .sidebar-toggle{width:100%;margin-bottom:12px;text-align:left}
+.app.sidebar-collapsed{grid-template-columns:56px 1fr}
+.app.sidebar-collapsed aside{padding:12px 10px}
+.app.sidebar-collapsed aside>*:not(.sidebar-toggle){display:none !important}
+.app.sidebar-collapsed aside .sidebar-toggle{font-size:0;text-align:center;padding:9px 6px;margin:0}
+.app.sidebar-collapsed aside .sidebar-toggle::before{content:'☰';font-size:18px}
+main{padding:22px;max-width:none;width:100%;box-sizing:border-box}
+select,input,button,textarea{background:#302936;color:#eee;border:1px solid #66536b;border-radius:5px;padding:9px}
+button{cursor:pointer}
+button.primary{background:#a25b3d;border-color:#d98760}
+.field{display:block;margin:12px 0}
+.field input,.field select{width:100%;box-sizing:border-box}
+.field span{display:block;color:#c6b7c9;margin-bottom:5px}
+/* Hunt board overlay. The movement track is the BOTTOM parchment band. Its 11
+   cells are non-uniform (a decorative medallion splits the middle), so
+   each cell is placed absolutely from a measured [left%,width%] table rather
+   than an even grid. Interior of the cells spans most of the board height. */
+.track-board{position:relative;width:100%;aspect-ratio:3380/606;background:url('/assets/board/hunt-board.png') center/100% 100% no-repeat;margin:12px 0 18px;min-height:180px}
+.track-slots{position:absolute;left:0;right:0;top:0;bottom:0}
+.step{position:absolute;top:41%;height:42%;display:grid;place-items:center;border:2px solid transparent;border-radius:6px;color:#f9ecd2;font-size:15px;font-weight:600;text-shadow:0 2px 3px #2d1b0d;box-sizing:border-box}
+.step .track-card-back,.step .track-card-face{position:absolute;top:20%;left:0;width:100%;height:auto;aspect-ratio:.645/1;transform:translateY(-50%);border:1px solid rgba(241,220,171,.85);border-radius:4px;background-color:#75664f;background-repeat:no-repeat;background-position:center;background-size:cover;box-sizing:border-box;box-shadow:0 2px 5px rgba(0,0,0,.55),inset 0 0 0 2px rgba(49,35,22,.5);z-index:0}
+.step .track-card-face{z-index:1}
+.step .track-card-face.wide{aspect-ratio:1500/1159}
+.step .track-symbol{position:relative;z-index:1;font-size:0;width:0;height:0;overflow:hidden}
+.step .overlay-card{position:absolute;top:20%;left:0;width:100%;height:auto;aspect-ratio:512/791;transform:translateY(-50%);z-index:1;display:grid;place-items:center;text-align:center;font-size:11px;line-height:1.1;padding:0;box-sizing:border-box;border-radius:4px;color:#1b1310;text-shadow:none;border:1px solid #f5d49a;background:#e7c27d;box-shadow:0 2px 5px #000;overflow:hidden}
+.step .overlay-card.herb{background:#9dcc8b}.step .overlay-card.ore{background:#aeb8c7}.step .overlay-card.sky{background:#8fc4e8}
+.gather-card{background-size:36px 52px;background-repeat:no-repeat;background-position:6px center;padding-left:48px;font-weight:600}.gather-card.herb{background-image:url('/assets/cards/herb-gathering-face.png')}.gather-card.ore{background-image:url('/assets/cards/mineral-gathering-face.png')}.gather-card.sky{background-image:url('/assets/cards/sky-fishing-face.png')}
+.step small{position:absolute;top:2px;left:5px;font-size:10px;font-weight:400;color:#e6d5b8;opacity:.85;z-index:3}
+.step.done{background:rgba(30,22,18,.34)}
+.step.event-m{color:#ffb083}.step.event-h{color:#f7e0a5}.step.event-o{color:#d7d2c3}
+.step.encounter{border-color:#e8564b;box-shadow:0 0 10px #e8564b, inset 0 0 14px rgba(232,86,75,.4);border-radius:9px}
+.step.monster-here{border-color:#e0a34b;box-shadow:0 0 8px rgba(224,163,75,.6);border-radius:9px}
+.step.start-pad{border-color:#8a7a5c;border-style:dashed;background:rgba(30,22,18,.25)}
+.token{position:absolute;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;border:2px solid #14100f;box-shadow:0 2px 5px #000;z-index:2}
+.token.party{background:#5b8ff0;color:#fff;top:-58%;left:50%;transform:translate(-50%,-50%)}
+.token.monster{background:#e8564b;color:#fff;bottom:-11px;left:50%;transform:translateX(-50%)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:#a899ad;font-size:12px;margin:-8px 0 10px}
+.legend b{color:#eee}
+.posrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-left:8px}
+.posrow label{font-size:12px;color:#c6b7c9;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.posrow input{width:58px;margin:0}
+.panel{background:#211c24;border:1px solid #493c4d;border-radius:8px;padding:16px;margin-bottom:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.card{background:#302936;padding:10px;border-radius:6px}
+.card img{width:100%;height:130px;object-fit:cover;background:#19161c}
+.origin{color:#d5c08a;font-size:12px;margin-top:4px}
+.origin.fan{color:#f0a080}
+.muted{color:#a899ad}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.log{max-height:180px;overflow:auto;white-space:pre-wrap}
+.enc-card{border:1px solid #e8564b;background:#2a1e1e}
+/* Hunt-event card faces cropped from TTS spritesheets via background-position. */
+.face{width:100%;aspect-ratio:512/791;background-repeat:no-repeat;background-color:#0d0b10;border-radius:6px;border:1px solid #4a3d50}
+.face.big{max-width:230px}
+/* Overwhelming Darkness is a landscape reference card (not a standard
+   portrait hunt-event card). Keep its native ratio and give it enough width
+   to remain readable in the current-step panel. */
+.face.wide{aspect-ratio:1500/1159}
+.face.big.wide{max-width:min(100%,760px);width:100%}
+.deckgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.ordinary-deck{margin:8px 0 12px;border-top:1px solid #493c4d;padding-top:8px}.ordinary-deck summary{cursor:pointer;color:#d5c08a;font-weight:600}.ordinary-deck .deckgrid{margin-top:10px}
+.deckgrid .face{cursor:pointer}
+.face.spent{opacity:.32;filter:grayscale(.6)}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:10px;margin-left:6px}
+.tag.m{background:#5a2f22;color:#ffb083}.tag.h{background:#4c4326;color:#f7e0a5}.tag.o{background:#33323a;color:#d7d2c3}
+.tag.f{background:#264a2e;color:#a5f7b8}.tag.l{background:#2a2a4c;color:#b8b0f7}
+.drawcard{display:flex;gap:12px;align-items:flex-start}
+.drawcard .meta{flex:1}
+.gather-resolve{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}.gather-resolve .gather-face{width:180px;aspect-ratio:512/791;background:#0d0b10;border-radius:6px;overflow:hidden}.gather-resolve .gather-face img{width:100%;height:100%;object-fit:cover}.gather-resolve .gather-rules{width:min(100%,1100px);border:1px solid #66536b;border-radius:6px;overflow:hidden;background:#19161c}.gather-resolve .gather-rules img{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
+.random-event-view{margin-top:12px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.random-event-view img{width:min(100%,720px);height:auto;border:1px solid #66536b;border-radius:6px;cursor:zoom-in;background:#19161c}
+.random-crop{width:min(100%,560px);aspect-ratio:.72;border:1px solid #66536b;border-radius:6px;cursor:zoom-in;background-repeat:no-repeat;background-size:400% 100%;background-color:#19161c}
+.random-crop.wide{width:min(100%,820px);aspect-ratio:1.3;background-size:200% 100%}
+.random-event-meta{min-width:190px;flex:1}
+.random-inline{margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.random-inline img{display:block;width:min(100%,680px);margin-top:8px;border:1px solid #66536b;border-radius:6px;cursor:zoom-in}
+.crop-editor{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px;align-items:start}
+.crop-stage{position:relative;width:100%;background:#0d0b10;border:1px solid #66536b;border-radius:6px;overflow:hidden;cursor:crosshair;line-height:0;touch-action:none;user-select:none}
+.crop-stage img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.crop-selection{position:absolute;border:2px solid #ffb083;background:rgba(255,176,131,.18);box-sizing:border-box;pointer-events:none}
+.crop-controls label{display:block;color:#c6b7c9;margin:6px 0}.crop-controls input,.crop-controls select{width:100%;box-sizing:border-box}
+.crop-list{max-height:130px;overflow:auto;margin-top:8px;font-size:12px}
+.crop-editor-panel{display:none;position:fixed;inset:4vh 4vw;z-index:20;overflow:auto;background:#211c24;box-shadow:0 8px 40px #000;border:2px solid #66536b}
+.crop-editor-panel.open{display:block}
+.crop-review{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.crop-review-item{position:relative;width:150px}.crop-review-item .random-crop{width:150px}.crop-review-item button{position:absolute;right:3px;top:3px;padding:3px 7px;background:#6d302c}
+.crop-nav{display:flex;gap:12px;margin:8px 0}.crop-nav button{font-size:18px;font-weight:600;padding:12px 28px;min-width:120px}
+.track-wrap{position:relative}.panel-gather-row{margin-left:auto;justify-content:flex-end}.panel-gather-row .gather-card{padding-top:6px;padding-bottom:6px}
+@media(max-width:760px){.crop-editor{grid-template-columns:1fr}.panel-gather-row{width:100%;margin-left:0;justify-content:flex-start}}
+</style></head><body>
+<header><h1>KDM 自动狩猎工具 <small class="muted">独立离线版</small></h1></header>
+<div class="app"><aside><button id="sidebarToggle" class="sidebar-toggle" type="button" aria-expanded="true">收起侧栏</button>
+<label class="field"><span>扩展筛选</span><select id="exp"></select></label>
+<label class="field"><span>怪物</span><input id="search" placeholder="搜索怪物"><select id="monster"></select></label>
+<label class="field"><span>等级</span><select id="level"></select></label>
+<label id="fanToggleWrap" class="muted" style="display:none;margin:8px 0"><input type="checkbox" id="includeFan"> 白狮加入粉丝扩展狩猎牌</label>
+<label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addArcSurvivor"> 增添弧光幸存者狩猎事件</label>
+<label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addScout"> 增添侦察者狩猎事件</label>
+<div class="row"><button class="primary" id="start">开始狩猎</button><button id="clear">清理</button></div>
+<label class="field"><span>清晰度</span><select id="rulebookVersion"><option value="standard">低</option><option value="hd">高</option></select></label>
+</aside><main>
+<div class="panel">
+  <div class="row"><h2 id="title">尚未开始</h2><span id="status" class="muted"></span><div class="row panel-gather-row"><span class="muted">放置采集卡：</span><button class="gather-card herb" data-gather="herb">草药采集</button><button class="gather-card ore" data-gather="ore">矿石采集</button><button class="gather-card sky" data-gather="sky">天空垂钓</button><span id="gatherHint" class="muted"></span></div></div>
+  <div class="track-wrap"><div id="track" class="track"><span class="muted">选择怪物和等级后开始</span></div></div>
+  <div class="legend">
+    <span><b style="color:#5b8ff0">●</b> 幸存者</span>
+    <span><b style="color:#e8564b">●</b> 怪物</span>
+    <span><b style="color:#e8564b">▢</b> 遭遇 / 对峙格</span>
+    <span><b class="event-h" style="color:#f7e0a5">H</b> 狩猎事件</span>
+    <span><b class="event-h" style="color:#f7e0a5">A/S</b> 特殊侦察事件</span>
+    <span><b class="event-m" style="color:#ffb083">M</b> 怪物事件</span>
+    <span><b class="event-o" style="color:#d7d2c3">O</b> 压倒性黑暗</span>
+  </div>
+  <div class="row"><button id="advance" class="primary" disabled>推进一步</button><button id="undo" disabled>撤销</button><button id="save">保存存档</button><button id="export">导出 JSON</button><div class="posrow">
+    <label>幸存者位置<input type="number" id="partyPos" min="0" max="11"></label>
+    <label>怪物位置<input type="number" id="monsterPos" min="1" max="11"></label>
+    <span class="muted" id="posHint"></span>
+  </div></div>
+</div>
+<div class="panel"><h3>当前步骤</h3><div id="current" class="muted">—</div>
+  <textarea id="note" rows="3" style="width:100%;box-sizing:border-box" placeholder="记录掷骰、分支选择和结算备注"></textarea></div>
+<div class="panel" id="randomPanel"><div class="row"><h3 style="margin:0">随机事件</h3><span id="randomResult" class="muted">尚未掷骰</span></div>
+  <p class="muted" style="margin:6px 0">点击按钮掷 1d100。结果会自动定位到规则书中的对应随机事件表页面。</p>
+  <div class="row"><button id="randomEvent" class="primary">掷 d100 / 生成随机事件</button><button id="randomAgain" disabled>再掷一次</button><button id="openCropEditor">打开截图范围编辑器</button></div>
+  <div id="randomEventView" class="random-event-view muted">—</div>
+</div>
+<div class="panel crop-editor-panel" id="cropEditorPanel"><div class="row"><h3>随机事件截图范围编辑器</h3><button id="closeCropEditor">关闭</button></div><div class="crop-nav"><button id="cropPrev">上一张</button><button id="cropNext">下一张</button></div>
+  <p class="muted" style="margin:6px 0">选择编号和规则书页，在图片上拖拽框选该事件的完整文字区域，然后保存。以后抽到此编号会优先使用你的范围。</p>
+  <div id="cropReview" class="crop-review"></div><div class="crop-editor"><div id="cropStage" class="crop-stage"><img id="cropImage" alt="规则书页面"><div id="cropSelection" class="crop-selection"></div></div>
+    <div class="crop-controls"><label>事件编号<input id="cropNumber" type="number" min="1" max="100" value="1"></label><label>规则书页面<select id="cropPage"></select></label><div class="row"><button id="cropPart1">第 1 块</button><button id="cropPart2">第 2 块</button></div><div class="row"><button id="cropLoad">加载页面</button><button id="cropSave" class="primary">保存范围</button></div><button id="cropClear">清除该编号范围</button><button id="cropExport">导出范围 JSON</button><div id="cropStatus" class="muted" style="margin-top:8px"></div><div id="cropList" class="crop-list"></div></div>
+  </div>
+</div>
+<div class="panel"><h3>已抽事件</h3><div id="drawn" class="cards"><span class="muted">—</span></div></div>
+<div class="panel"><div class="row"><h3 style="margin:0">狩猎牌库</h3><span id="deckInfo" class="muted"></span></div>
+  <p class="muted" style="margin:6px 0">按当前狩猎对象自动装载。M 格抽本怪物狩猎事件，H 格抽通用狩猎事件，O 格为压倒性黑暗。</p>
+  <details id="ordinaryDeckPanel" class="ordinary-deck"><summary>普通狩猎牌库（12 张，可被替换）</summary><div id="ordinaryDeckView" class="deckgrid"><span class="muted">开始狩猎后显示</span></div></details>
+  <div id="deckView" class="deckgrid"><span class="muted">开始狩猎后显示</span></div></div>
+<div class="panel"><h3>日志</h3><div id="log" class="log muted"></div></div>
+</main></div>
+<script>
+const $=s=>document.querySelector(s);
+let D={monsters:[],expansions:[]},S=null,history=[],gatherMode=null;
+const GATHER_CARDS={
+  herb:{name:'草药采集 · Herb Gathering',cls:'herb',description:'采集草药资源',image:'assets/cards/herb-gathering-face.png',rulebook:'assets/cards/herb-gathering.jpg',hdRulebook:'assets/cards/rulebook-hd/herb-gathering.jpg'},
+  ore:{name:'矿石采集 · Mineral Gathering',cls:'ore',description:'采集矿石资源',image:'assets/cards/mineral-gathering-face.png',rulebook:'assets/cards/mineral-gathering.jpg',hdRulebook:'assets/cards/rulebook-hd/ore-gathering.jpg'},
+  sky:{name:'天空垂钓 · Sky Fishing',cls:'sky',description:'进行天空垂钓',image:'assets/cards/sky-fishing-face.png',rulebook:'assets/cards/sky-fishing.jpg'}
+};
+const log=m=>{$('#log').textContent+=m+'\n';$('#log').scrollTop=99999};
+const EVENT_NAME={H:'普通狩猎事件',M:'怪物狩猎事件',O:'压倒性黑暗',F:'森林之门',L:'地下迷宫',A:'弧光幸存者狩猎事件',S:'侦察者狩猎事件'};
+const EVENT_CLASS={M:'event-m',H:'event-h',O:'event-o',F:'event-f',L:'event-l',A:'event-h',S:'event-h'};
+const SPECIAL_RULEBOOK={A:'哲学规则书：Arc Hunt Events 1–5、6–10',S:'哲学规则书：Scout Hunt Events 1–4、5–10'};
+const SPECIAL_RULE_TEXT={A:'将此卡视为弧光幸存者狩猎事件。掷 1d10，并根据结果查阅《赌博者宝箱》规则书中的 Arc Hunt Events 1–5 或 Arc Hunt Events 6–10 事件表。',S:'将此卡视为侦察者狩猎事件。掷 1d10，并根据结果查阅《赌博者宝箱》规则书中的 Scout Hunt Events 1–4 或 Scout Hunt Events 5–10 事件表。'};
+const SPECIAL_RULE_PAGES={A:['assets/cards/philosophy-rulebook-arc-108.png','assets/cards/philosophy-rulebook-arc-109.png'],S:['assets/cards/philosophy-rulebook-scout-106.png','assets/cards/philosophy-rulebook-scout-107.png']};
+// Random-event tables are printed across eight rulebook spreads.  Keeping the
+// ranges here makes the d100 result deterministic and lets the UI jump straight
+// to the page that contains the matching event text.
+const RANDOM_EVENT_PAGES_STANDARD=[
+  {min:1,max:13,file:'hunt-events-1-11.jpg',label:'规则书随机事件表 1–13',start:0,end:100},
+  {min:14,max:31,file:'hunt-events-12-25.jpg',label:'规则书随机事件表 14–31',start:0,end:100},
+  {min:32,max:53,file:'hunt-events-26-38.jpg',label:'规则书随机事件表 32–53',start:0,end:100},
+  {min:54,max:63,file:'hunt-events-39-53.jpg',label:'规则书随机事件表 54–63',start:50,end:100},
+  {min:64,max:72,file:'hunt-events-54-69.jpg',label:'规则书随机事件表 64–72',start:50,end:100},
+  {min:73,max:87,file:'hunt-events-70-79.jpg',label:'规则书随机事件表 73–87',start:0,end:50},
+  {min:88,max:96,file:'hunt-events-80-94.jpg',label:'规则书随机事件表 88–96',start:0,end:50},
+  {min:97,max:100,file:'hunt-events-95-100.jpg',label:'规则书随机事件表 97–100',start:0,end:50}
+];
+const RANDOM_EVENT_PAGES_HD=RANDOM_EVENT_PAGES_STANDARD.map((p,i)=>Object.assign({},p,{file:`rulebook-hd/hunt-events-${i+1}.jpg`}));
+let rulebookVersion=localStorage.getItem('kdm-rulebook-version')||'standard';
+let RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;
+let randomEventState=null,randomCrops={},cropDraft={x:0,y:0,w:1,h:1},cropDrafts=[cropDraft],cropPart=0,cropDrag=null;
+function cropStorageKey(){return `kdm-random-crops-${rulebookVersion}`}
+function saveRandomCrops(){localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops))}
+function loadRandomCrops(){try{let key=cropStorageKey(),raw=localStorage.getItem(key);randomCrops=JSON.parse(raw||'{}')}catch(_){randomCrops={}}}
+
+function rulebookAsset(file){return `/assets/cards/${file}`}
+// Cell layout follows the cropped board's printed dividers. Start and
+// Starvation occupy the wider side panels; the 11 hunt spaces between them are
+// evenly spaced. Index 0=Start .. 12=Starvation, with cards dealt only to 1..11.
+const TRACK_N=11;
+// Inner dividers are ~8.6% and ~91.4% of the image width.
+const PARCH_L=0.086, PARCH_R=0.914;
+// CELL_BOX[pos] = [left,width] as board-width fractions.
+const CELL_BOX=(()=>{
+  const n=TRACK_N+2, w=(PARCH_R-PARCH_L)/TRACK_N, c={};
+  c[0]=[0,PARCH_L];
+  for(let i=1;i<=TRACK_N;i++)c[i]=[PARCH_L+(i-1)*w,w];
+  c[n-1]=[PARCH_R,1-PARCH_R];
+  return c;
+})();
+const STARVE_POS=TRACK_N+1; // rightmost cell index (Starvation), no card
+
+let HD={sheets:{},backs:{},decks:{},shared:{}};
+async function load(){
+  D=await (await fetch('/api/data')).json();
+  // Hunt decks may come via /api/data (source server) or as a static file
+  // (compiled exe). Try the payload first, then fall back to the static file.
+  if(D.huntdecks&&D.huntdecks.decks)HD=D.huntdecks;
+  else{try{HD=await (await fetch('data/huntdecks.json')).json()}catch(_){HD={sheets:{},backs:{},decks:{},shared:{}}}}
+  let ex=['全部','基础','赌博','12扩','其他官方扩','粉丝扩'];
+  $('#exp').innerHTML=ex.map(x=>`<option>${x}</option>`).join('');
+  $('#exp').value='基础';
+  renderMonsters();
+}
+// Build a CSS style string that crops one card cell from its spritesheet.
+function faceStyle(ref){
+  if(!ref)return 'background:#221c26';
+  let sh=HD.sheets[ref.sheet];if(!sh)return 'background:#221c26';
+  let w=sh.w||1,h=sh.h||1;
+  let bx=w>1?(ref.col*100/(w-1)):0, by=h>1?(ref.row*100/(h-1)):0;
+  // The Overwhelming Darkness source is a two-panel spread; the playable
+  // large card is the rules panel on the right half only.
+  if(ref.source==='O')return `background-image:url('${sh.file}');background-size:200% 100%;background-position:100% center`;
+  return `background-image:url('${sh.file}');background-size:${w*100}% ${h*100}%;background-position:${bx}% ${by}%`;
+}
+function faceClass(ref,big=false){
+  let cls='face'+(big?' big':'');
+  if(ref&&ref.source==='O')cls+=' wide';
+  return cls;
+}
+// Build a CSS style for a real TTS card back. Older compiled data did not
+// include BackURL, so retain a textured art fallback until it is rebuilt.
+function backStyle(sym){
+  let ref=null;
+  if(sym==='H')ref=HD.shared.huntBack;
+  else if(sym==='M')ref=HD.deckBacks?.[S?.monster?.huntEventsDeck]||HD.shared.huntBack;
+  else if(sym==='F')ref=HD.shared.forestBack||HD.shared.huntBack;
+  else if(sym==='L')ref=HD.shared.labyrinthBack||HD.shared.huntBack;
+  else ref=HD.shared.huntBack;
+  if(ref){let sh=HD.backs?.[ref.sheet];if(sh){let w=sh.w||1,h=sh.h||1;let bx=w>1?(ref.col*100/(w-1)):0,by=h>1?(ref.row*100/(h-1)):0;return `background-image:url('${sh.file}');background-size:${w*100}% ${h*100}%;background-position:${bx}% ${by}%`}}
+  return "background-image:url('/assets/cards/hunt-events.png');filter:brightness(.38) saturate(.7)";
+}
+// Resolve the card reference to draw for a given track symbol.
+const WHITE_LION_FAN_NAMES=new Set(['white lion cub','dying lion','the well','cave painting','watering hole','soda pop surprise']);
+function deckFor(monster,includeFan){
+  let deck=HD.decks[monster.huntEventsDeck]||[];
+  if(!isWhiteLion(monster)||includeFan)return deck;
+  return deck.filter(c=>!WHITE_LION_FAN_NAMES.has(String(c.name||'').toLowerCase()));
+}
+function shuffled(arr){let a=arr.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function randomEventPage(roll){return RANDOM_EVENT_PAGES.find(p=>roll>=p.min&&roll<=p.max)}
+function generateRandomEvent(){let roll=Math.floor(Math.random()*100)+1;return {roll,page:randomEventPage(roll),time:new Date().toISOString()}}
+function randomEventPosition(ev){let p=ev.page||randomEventPage(ev.roll);if(!p)return 0;let t=(ev.roll-p.min)/Math.max(1,p.max-p.min);return Math.round((p.start??0)+t*((p.end??100)-(p.start??0)))}
+function cropAspect(c){return ((c.w*3000)/(c.h*1159)).toFixed(4)}
+function randomCropMarkup(ev){let p=randomEventPage(ev.roll);if(!p)return '';let saved=randomCrops[String(ev.roll)];if(saved&&!(rulebookVersion==='standard'&&(Array.isArray(saved)?saved:[saved]).some(c=>String(c.file||'').includes('rulebook-hd')))){let arr=Array.isArray(saved)?saved:[saved];return arr.map(c=>{let bw=100/c.w,bh=100/c.h,bpx=c.w<1?c.x/(1-c.w)*100:0,bpy=c.h<1?c.y/(1-c.h)*100:0;return `<div class="random-crop configured" style="aspect-ratio:${cropAspect(c)};background-image:url('${rulebookAsset(c.file)}');background-size:${bw}% ${bh}%;background-position:${bpx}% ${bpy}%" title="已使用自定义范围，点击查看完整规则书页面"></div>`}).join('')}let pos=randomEventPosition(ev),wide=pos>=38&&pos<=62;return `<div class="random-crop${wide?' wide':''}" style="background-image:url('${rulebookAsset(p.file)}');background-position:${pos}% center" title="点击查看完整规则书页面"></div>`}
+function renderRandomEvent(){
+  let result=$('#randomResult'),view=$('#randomEventView'),again=$('#randomAgain');
+  if(!result||!view)return;
+  if(!randomEventState){result.textContent='尚未掷骰';result.className='muted';view.className='random-event-view muted';view.innerHTML='—';if(again)again.disabled=true;return}
+  let r=randomEventState.roll,p=randomEventPage(r);
+  result.textContent=`结果：${r}（1d100）`;result.className='';
+  if(!p){view.className='random-event-view';view.innerHTML='<span class="muted">未找到对应规则书条目</span>';return}
+  view.className='random-event-view';
+  view.innerHTML=`${randomCropMarkup(randomEventState)}<div class="random-event-meta"><b>${p.label}</b><div style="margin-top:8px">随机事件结果：<strong>#${r}</strong></div><div class="muted" style="margin-top:8px">已裁切到结果所在区域；点击图片可查看完整规则书页面。</div></div>`;
+  let crop=view.querySelector('.random-crop');if(crop)crop.onclick=()=>window.open(rulebookAsset(p.file),'_blank');
+  if(again)again.disabled=false;
+}
+function randomMarkup(ev,compact=false){
+  if(!ev)return '';
+  let p=ev.page||randomEventPage(ev.roll);if(!p)return `<div class="muted">随机结果 #${ev.roll}（未找到规则书页）</div>`;
+  return `<div class="random-inline"><b>随机结果 #${ev.roll}</b><span class="muted">${p.label}（已裁切）</span>${compact?'':randomCropMarkup(ev)}</div>`;
+}
+function rollRandomEvent(){
+  randomEventState=generateRandomEvent();
+  let roll=randomEventState.roll;
+  localStorage.setItem('kdm-random-event',JSON.stringify(randomEventState));
+  renderRandomEvent();
+  log(`随机事件：掷出 ${roll}（${randomEventPage(roll)?.label||'未匹配'}）`);
+}
+function cropPageFor(n){return randomEventPage(n)||RANDOM_EVENT_PAGES[0]}
+function renderCropSelection(){let el=$('#cropSelection');if(!el)return;el.style.left=(cropDraft.x*100)+'%';el.style.top=(cropDraft.y*100)+'%';el.style.width=(cropDraft.w*100)+'%';el.style.height=(cropDraft.h*100)+'%'}
+function loadCropEditor(){let n=Math.min(100,Math.max(1,+$('#cropNumber').value||1)),p=RANDOM_EVENT_PAGES.find(x=>x.file===$('#cropPage').value)||cropPageFor(n),saved=randomCrops[String(n)];$('#cropPage').value=p.file;$('#cropImage').src='/assets/cards/'+p.file;cropDrafts=Array.isArray(saved)?saved.slice(0,2):(saved?[saved]:[{x:0,y:0,w:1,h:1}]);while(cropDrafts.length<2)cropDrafts.push({x:0,y:0,w:1,h:1});cropDraft=cropDrafts[cropPart]||cropDrafts[0];renderCropSelection();$('#cropStatus').textContent=saved?`已加载；正在编辑第 ${cropPart+1} 块`:'拖拽图片选择范围';}
+function saveCropEditor(){let n=Math.min(100,Math.max(1,+$('#cropNumber').value||1)),p=RANDOM_EVENT_PAGES.find(x=>x.file===$('#cropPage').value)||cropPageFor(n);cropDrafts[cropPart]=cropDraft;let arr=cropDrafts.slice(0,2).filter(c=>c.w>.01&&c.h>.01);randomCrops[String(n)]=arr.map(c=>Object.assign({file:p.file},c));localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));$('#cropStatus').textContent=`已保存编号 ${n} 的 ${arr.length} 块范围`;renderCropList();renderRandomEvent()}
+function switchCropPart(part){cropDrafts[cropPart]=cropDraft;cropPart=part;loadCropEditor()}
+function renderCropList(){let el=$('#cropList');if(!el)return;let keys=Object.keys(randomCrops).sort((a,b)=>a-b);el.innerHTML=keys.length?`已配置 ${keys.length} 个编号：${keys.join('、')}`:'尚未配置范围';renderCropReview()}
+function renderCropReview(){let el=$('#cropReview');if(!el)return;let n=String(+$('#cropNumber').value||1),saved=randomCrops[n],arr=Array.isArray(saved)?saved:(saved?[saved]:[]);el.innerHTML=arr.map((c,i)=>{let bw=100/c.w,bh=100/c.h,bpx=c.w<1?c.x/(1-c.w)*100:0,bpy=c.h<1?c.y/(1-c.h)*100:0;return `<div class="crop-review-item"><div class="random-crop configured" style="aspect-ratio:${cropAspect(c)};background-image:url('/assets/cards/${c.file}');background-size:${bw}% ${bh}%;background-position:${bpx}% ${bpy}%"></div><button data-crop-remove="${i}">删除第 ${i+1} 块</button></div>`}).join('')||'<span class="muted">该编号暂无已保存截图</span>';el.querySelectorAll('[data-crop-remove]').forEach(b=>b.onclick=()=>{let a=Array.isArray(randomCrops[n])?randomCrops[n]:[randomCrops[n]];a.splice(+b.dataset.cropRemove,1);if(a.length)randomCrops[n]=a;else delete randomCrops[n];localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));renderCropReview();renderCropList();renderRandomEvent()})}
+function initCropEditor(){let sel=$('#cropPage');if(!sel)return;sel.innerHTML=RANDOM_EVENT_PAGES.map(p=>`<option value="${p.file}">${p.label}</option>`).join('');$('#cropNumber').onchange=loadCropEditor;$('#cropPage').onchange=loadCropEditor;$('#cropLoad').onclick=loadCropEditor;$('#cropSave').onclick=saveCropEditor;$('#cropClear').onclick=()=>{let n=String(+$('#cropNumber').value||1);delete randomCrops[n];localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));loadCropEditor();renderCropList();renderRandomEvent()};$('#cropExport').onclick=()=>{let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(randomCrops,null,2)],{type:'application/json'}));a.download='kdm-random-crops.json';a.click()};let stage=$('#cropStage');stage.onpointerdown=e=>{let r=stage.getBoundingClientRect();cropDrag={x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))};stage.setPointerCapture(e.pointerId)};stage.onpointermove=e=>{if(!cropDrag)return;let r=stage.getBoundingClientRect(),x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y=Math.max(0,Math.min(1,(e.clientY-r.top)/r.height));cropDraft={x:Math.min(cropDrag.x,x),y:Math.min(cropDrag.y,y),w:Math.max(.01,Math.abs(x-cropDrag.x)),h:Math.max(.01,Math.abs(y-cropDrag.y))};renderCropSelection()};stage.onpointerup=()=>{cropDrag=null};loadCropEditor();renderCropList()}
+function renderMonsters(){
+  let q=$('#search').value.toLowerCase(),e=$('#exp').value;
+  let ms=D.monsters.filter(m=>(e==='全部'||m.expansionGroup===e)&&(!q||(m.name+' '+m.aliases.join(' ')).toLowerCase().includes(q)));
+  $('#monster').innerHTML=ms.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  updateFanToggle();
+  renderLevels();
+}
+function selected(){return D.monsters.find(m=>m.id===$('#monster').value)}
+function isWhiteLion(m){return !!m&&String(m.name).toLowerCase()==='white lion'}
+function updateFanToggle(){
+  let wrap=$('#fanToggleWrap');if(!wrap)return;
+  let show=isWhiteLion(selected());wrap.style.display=show?'block':'none';
+  $('#includeFan').disabled=!!S;
+  if(!show){$('#includeFan').checked=false;$('#includeFan').disabled=false}
+}
+// Only levels with a monsterHuntPosition have a hunt phase in TTS
+// (`if level.monsterHuntPosition then`). Levels like "Prologue" have no hunt and
+// are excluded. Option value is the level's INDEX in m.levels so entries that
+// share the same numeric `level` (e.g. Prologue and Level 1 are both level==1)
+// stay distinct — matching TTS which keys levels by name, not number.
+function renderLevels(){
+  let m=selected();
+  $('#level').innerHTML=(m?.levels||[])
+    .map((l,i)=>({l,i}))
+    .filter(o=>o.l.monsterHuntPosition!=null)
+    .map(o=>`<option value="${o.i}">${o.l.name}</option>`).join('');
+}
+// Resolve a level's starting positions. Survivors default to space 1; the
+// monster defaults to the last space when the source data omits a position.
+function startPositions(m,levelIdx){
+  let lv=m.levels[levelIdx]||m.levels.find(x=>x.monsterHuntPosition!=null)||m.levels[0]||{};
+  let track=m.huntTrack.length;
+  // TTS: party goes on "Hunt Track <partyHuntPosition>" when set, else on the
+  // "Hunt Track Start" pad (position 0, before space 1). Starting at 0 means the
+  // first advance steps onto space 1 and resolves its card — matching the setup
+  // loop which deals a card to every space i=1..N.
+  let party=lv.partyHuntPosition!=null?Math.min(track,Math.max(0,lv.partyHuntPosition)):0;
+  let monster=Math.min(track,Math.max(1,lv.monsterHuntPosition||track));
+  return {party,monster,levelName:lv.name};
+}
+
+function begin(){
+  let m=selected();if(!m)return;
+  if($('#ordinaryDeckPanel'))$('#ordinaryDeckPanel').open=false;
+  let lvIdx=+$('#level').value;          // option value is the index into m.levels
+  let p=startPositions(m,lvIdx);
+  let lvl=(m.levels[lvIdx]||{}).level||1; // the game-level number, for display/save
+  history=[];
+  // Shuffle this monster's hunt-event deck into a draw pile (indices into the
+  // deck array) so M spaces reveal actual card faces without repeats.
+  let includeFan=isWhiteLion(m)&&$('#includeFan').checked;
+  let deck=deckFor(m,includeFan);
+  let track=m.huntTrack.slice();
+  // Optional special scout cards replace ordinary H cards, then are randomly
+  // dealt to the ordinary hunt-event spaces on the track.
+  const replacements=[];
+  if($('#addArcSurvivor')?.checked)replacements.push('A');
+  if($('#addScout')?.checked)replacements.push('S');
+  const huntPile=shuffled(Array.from({length:12},(_,i)=>i<replacements.length?replacements[i]:'H'));
+  S={id:'current',schemaVersion:3,mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
+     track,partyStart:p.party,partyPos:p.party,monsterPos:p.monster,
+     addArcSurvivor:replacements.includes('A'),addScout:replacements.includes('S'),
+     drawn:[],note:'',encountered:false,overlays:{},
+     deckName:m.huntEventsDeck,includeFan,pile:shuffled(deck.map((_,i)=>i)),huntPile,ordinaryDeck:huntPile.slice()};
+  render();
+  log(`开始狩猎：${m.name} ${p.levelName}｜幸存者@${p.party}，怪物@${p.monster}｜牌库 ${deck.length} 张`);
+  autosave();
+}
+
+// Survivors advance one space toward the monster and resolve that space's
+// event. When they reach the monster's space the encounter begins.
+function advance(){
+  if(!S||S.encountered)return;
+  history.push(JSON.stringify(S));
+  // If the current space still has placed cards, resolve only its next card;
+  // do not advance until that space's card stack is empty.
+  let currentExtra=(S.overlays&&S.overlays[S.partyPos])||[];
+  let nextPos=S.partyPos;
+  let c=currentExtra.length?currentExtra.pop():null;
+  // Gather cards cover the original hunt card. Once the gather stack is
+  // exhausted, resolve that underlying card in place before advancing.
+  let basePending=S.partyPos>0&&!S.drawn.some(e=>e.step===S.partyPos&&!e.gather&&!e.encounter);
+  if(!c&&basePending){
+    nextPos=S.partyPos;
+    let sym=S.track[nextPos-1]||'H',card=drawCardFor(sym),random=sym==='H'?generateRandomEvent():null;
+    S.drawn.push({type:EVENT_NAME[sym]||'狩猎事件',sym,step:nextPos,card,random});
+    log(`格 ${nextPos}/${S.track.length}：${EVENT_NAME[sym]||'狩猎事件'}${random?' — 随机结果 '+random.roll:''}${card&&card.name?' — '+card.name:''}`);
+    render();autosave();return;
+  }
+  if(!c){
+    nextPos=Math.min(S.partyPos+1,S.monsterPos);
+    S.partyPos=nextPos;
+    let destination=(S.overlays&&S.overlays[nextPos])||[];
+    c=destination.length?destination.pop():null;
+  }
+  if(c){S.drawn.push({type:c.name,sym:'G',step:nextPos,card:c,gather:true});log(`格 ${nextPos}：结算${c.name}`)}
+  else if(S.partyPos>=S.monsterPos){
+    S.encountered=true;
+    S.drawn.push({type:'遭遇 / 对峙',step:nextPos,encounter:true});
+    log(`格 ${nextPos}/${S.track.length}：遭遇怪物，进入对峙！`);
+  }else{
+    let sym=S.track[nextPos-1]||'H';
+    let card=null,random=null;
+    if(sym==='H'){
+      const huntSym=(S.huntPile&&S.huntPile.length)?S.huntPile.shift():'H';
+      card=drawCardFor(huntSym); random=huntSym==='H'?generateRandomEvent():null;
+      if(huntSym!=='H')sym=huntSym;
+    }else card=drawCardFor(sym);
+    S.drawn.push({type:EVENT_NAME[sym]||'狩猎事件',sym,step:nextPos,card,random});
+    log(`格 ${nextPos}/${S.track.length}：${EVENT_NAME[sym]||'狩猎事件'}${random?' — 随机结果 '+random.roll:''}${card&&card.name?' — '+card.name:''}`);
+  }
+  render();autosave();
+}
+
+// Return the card reference for a track symbol. M draws (without replacement)
+// from the monster's shuffled pile; H is the generic hunt-event face; O is the
+// Overwhelming Darkness tile.
+function drawCardFor(sym){
+  if(sym==='M'){
+    let deck=deckFor(S.monster,S.includeFan);
+    if(deck.length){ if(!S.pile||!S.pile.length)S.pile=shuffled(deck.map((_,i)=>i));
+      let i=S.pile.shift(); return Object.assign({source:'M'},deck[i]); }
+    return HD.shared.hunt?Object.assign({source:'M'},HD.shared.hunt):null;
+  }
+  if(sym==='O')return HD.shared.overwhelming?Object.assign({source:'O'},HD.shared.overwhelming):null;
+  // F/L are fixed special hunt-event cards (Forest Gate / Underground Labyrinth),
+  // matching the TTS setup which places those named cards, not a deck draw.
+  if(sym==='F')return HD.shared.forest?Object.assign({source:'F',name:'The Forest Gate'},HD.shared.forest):null;
+  if(sym==='L')return HD.shared.labyrinth?Object.assign({source:'L',name:'Underground Labyrinth'},HD.shared.labyrinth):null;
+  if(sym==='A')return Object.assign({source:'A',name:'Arc Survivor Hunt Event'},HD.shared.arcSurvivor||HD.shared.hunt||{});
+  if(sym==='S')return Object.assign({source:'S',name:'Scout Hunt Event'},HD.shared.scout||HD.shared.hunt||{});
+  return HD.shared.hunt?Object.assign({source:'H'},HD.shared.hunt):null; // H and others
+}
+function cardMarkup(c,big=false){
+  if(!c)return '';
+  if(c.source==='O' && big && rulebookVersion==='hd')return `<div class="special-rule-resolve"><div class="muted" style="margin-bottom:6px">无尽黑暗（高清）</div><img src="/assets/cards/rulebook-hd/darkness.jpg" alt="无尽黑暗规则" style="display:block;width:100%;height:auto;border:1px solid #66536b;border-radius:6px"></div>`;
+  if(c.source==='G' && big){let rule=(rulebookVersion==='hd'&&((c.cls&&GATHER_CARDS[c.cls]||{}).hdRulebook||c.hdRulebook))||c.rulebook||(c.cls&&GATHER_CARDS[c.cls]||{}).rulebook;return `<div class="gather-resolve"><div class="gather-face"><img src="/${c.image}" alt="${c.name}"></div>${rule?`<div class="gather-rules"><img src="/${rule}" alt="${c.name}规则书说明"></div>`:''}</div>`}
+  if(c.source==='G') return `<div class="overlay-card ${c.cls||''}" style="position:relative;inset:auto;width:100%;height:auto;min-height:0" title="${c.name}"><img src="/${c.image||''}" alt="${c.name}" style="display:block;width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:3px;right:3px;bottom:3px;background:rgba(0,0,0,.72);color:#fff;padding:2px 4px;border-radius:3px">${c.name}</span></div>`;
+  const face=`<div class="${faceClass(c,big)}" style="${faceStyle(c)}"></div>`;
+  // Arc Survivor and Scout hunt cards carry their complete settlement/rulebook
+  // instructions on the card face; expose that explicitly in the resolution
+  // area so the player knows the displayed card is the rules reference.
+  if(big&&(c.source==='A'||c.source==='S'))return `<div class="special-rule-resolve"><div class="muted" style="margin-bottom:6px">${SPECIAL_RULEBOOK[c.source]}</div><div class="rule-text" style="margin-bottom:8px">${SPECIAL_RULE_TEXT[c.source]}</div>${face}<div class="rulebook-pages">${SPECIAL_RULE_PAGES[c.source].map((p,i)=>`<img src="/${p}" alt="${c.name}规则书第${i+1}页" style="display:block;width:100%;height:auto;margin-top:8px;border:1px solid #66536b;border-radius:6px">`).join('')}</div></div>`;
+  return face;
+}
+
+function render(){
+  if(!S){return}
+  if(isWhiteLion(S.monster)){$('#includeFan').checked=!!S.includeFan;$('#includeFan').disabled=true}
+  if($('#addArcSurvivor'))$('#addArcSurvivor').checked=!!S.addArcSurvivor;
+  if($('#addScout'))$('#addScout').checked=!!S.addScout;
+  let n=S.track.length;
+  $('#title').textContent=`${S.monster.name} · ${S.levelName||('Level '+S.level)}`;
+  let partyLabel=S.partyPos===0?'起始台':`${S.partyPos}/${n}`;
+  $('#status').textContent=S.encountered?`已遭遇（对峙格 ${S.monsterPos}）`:`幸存者 ${partyLabel}｜怪物 ${S.monsterPos}`;
+  $('#partyPos').value=S.partyPos;$('#monsterPos').value=S.monsterPos;
+  $('#partyPos').max=$('#monsterPos').max=n;
+  $('#posHint').textContent='';
+  $('#track').className='track track-board';
+  // "Hunt Track Start" (pos 0, leftmost) holds no card — the party begins here
+  // and resolves each space only after moving onto it. Rendered as a real cell
+  // so the token has a home, matching the TTS board.
+  // The cropped board already contains the printed start/starvation artwork;
+  // keep those side panels free of extra boxes and labels.
+  let startToken=S.partyPos===0?`<div class="step" style="left:0;width:${(CELL_BOX[0][1]*100).toFixed(2)}%"><div class="token party" title="幸存者（起始）">⚔</div></div>`:'';
+  $('#track').innerHTML=`<div class="track-slots">`+startToken+
+    S.track.map((x,i)=>{
+      let idx=i+1,cls=EVENT_CLASS[x]||'';
+      if(idx<S.partyPos)cls+=' done';
+      // The monster's space glows red only once the encounter actually begins;
+      // at setup the figurine merely stands there (TTS places it, no combat yet).
+      if(idx===S.monsterPos&&S.encountered)cls+=' encounter';
+      else if(idx===S.monsterPos)cls+=' monster-here';
+      let tokens='';
+      if(idx===S.partyPos)tokens+='<div class="token party" title="幸存者">⚔</div>';
+      if(idx===S.monsterPos)tokens+='<div class="token monster" title="怪物起始位">✦</div>';
+      let box=CELL_BOX[idx]||[0,0];
+      let style=`left:${(box[0]*100).toFixed(2)}%;width:${(box[1]*100).toFixed(2)}%`;
+      let label=EVENT_NAME[x]||'狩猎事件';
+      let overlays=(S.overlays&&S.overlays[idx])||[];
+      let topOverlay=overlays[overlays.length-1];
+      let overlayMarkup=topOverlay?`<span class="overlay-card ${topOverlay.cls}" title="${overlays.map(c=>c.name).join(' → ')}"><img src="/${topOverlay.image}" alt="${topOverlay.name}" style="width:100%;height:100%;object-fit:cover"></span>`:'';
+      // Once a track card has been resolved, show its actual face on the board.
+      // Unresolved cards remain face-down; gather overlays still sit on top.
+      let settled=S.drawn.slice().reverse().find(e=>e.step===idx&&e.card&&!e.gather&&e.sym!=='O');
+      let cardFace=settled?`<span class="track-card-face" style="${faceStyle(settled.card)}" aria-label="${settled.card.name||label}牌面"></span>`:'';
+      let back=!settled&&x!=='O'?`<span class="track-card-back" style="${backStyle(x)}" aria-label="${label}牌背"></span>`:'';
+      return `<div class="step ${cls}" data-step="${idx}" style="${style}" title="${idx}：${label}"><small>${idx}</small>${back}${cardFace}${overlayMarkup}<span class="track-symbol">${x}</span>${tokens}</div>`;
+    }).join('')+`</div>`;
+  let e=S.drawn[S.drawn.length-1];
+  $('#current').innerHTML=e?`<div class="drawcard">${cardMarkup(e.card,true)}<div class="meta"><b>${e.type}</b>${e.sym?`<span class="tag ${e.sym.toLowerCase()}">${e.sym}</span>`:''}<div class="muted">轨道格 ${e.step}/${n}</div>${randomMarkup(e.random)}<div class="muted" style="margin-top:6px">${e.encounter?'布置遭遇卡与幸存者/怪物起始位，开始对峙。':e.gather?'采集卡已结算。':'已按 TTS 牌库自动抽取，请按规则书结算并记录。'}</div></div></div>`:'—';
+  $('#drawn').innerHTML=S.drawn.map(e=>`<div class="card ${e.encounter?'enc-card':''}">${cardMarkup(e.card)}<b>${e.type}</b><br><span class="muted">轨道格 ${e.step}</span>${e.random?`<br><span class="muted">随机结果 #${e.random.roll}</span>`:''}</div>`).join('')||'<span class="muted">—</span>';
+  renderDeckView();
+  $('#advance').disabled=S.encountered;
+  $('#advance').textContent='推进一步';
+  $('#undo').disabled=!history.length;
+  $('#track').querySelectorAll('[data-step]').forEach(el=>el.onclick=()=>placeGather(+el.dataset.step));
+}
+
+function placeGather(pos){
+  if(!gatherMode||!S)return;
+  if(pos<1||pos>S.track.length){$('#gatherHint').textContent='请选择 1 到 '+S.track.length+' 号格';return}
+  history.push(JSON.stringify(S));
+  if(!S.overlays)S.overlays={};
+  (S.overlays[pos]||(S.overlays[pos]=[])).push(Object.assign({source:'G'},GATHER_CARDS[gatherMode]));
+  log(`已将${GATHER_CARDS[gatherMode].name}放置到格 ${pos}（覆盖原卡）`);
+  gatherMode=null;$('#gatherHint').textContent='';document.querySelectorAll('.gather-card').forEach(b=>b.classList.remove('primary'));render();autosave();
+}
+
+// Show the loaded monster's full hunt-event deck as thumbnails; cards already
+// drawn from the pile are dimmed, and the remaining draw count is shown.
+function renderDeckView(){
+  let ordinary=$('#ordinaryDeckView');
+  if(!S){$('#deckView').innerHTML='<span class="muted">开始狩猎后显示</span>';if(ordinary)ordinary.innerHTML='<span class="muted">开始狩猎后显示</span>';$('#deckInfo').textContent='';return}
+  if(ordinary){
+    let source=S.ordinaryDeck||Array.from({length:12},()=> 'H');
+    let remaining=(S.huntPile||[]).length;
+    ordinary.innerHTML=source.map((sym,i)=>{let spent=i<source.length-remaining,c=sym==='H'?HD.shared.hunt:HD.shared[sym==='A'?'arcSurvivor':'scout'];return `<div class="face${spent?' spent':''}" style="${c?faceStyle(Object.assign({source:sym},c)):backStyle('H')}" title="${sym==='H'?'普通狩猎事件':(EVENT_NAME[sym]||sym)}${spent?'（已抽取）':''}"></div>`}).join('');
+  }
+  let deck=deckFor(S.monster,S.includeFan);
+  if(!deck.length){$('#deckView').innerHTML='<span class="muted">该怪物无专属狩猎牌库（使用通用狩猎事件）</span>';$('#deckInfo').textContent=S.deckName||'';return}
+  let remaining=(S.pile||[]).length;
+  let inPile={};(S.pile||[]).forEach(i=>inPile[i]=1);
+  $('#deckInfo').textContent=`${S.deckName||''}｜共 ${deck.length} 张，剩 ${remaining} 张`;
+  $('#deckView').innerHTML=deck.map((c,i)=>`<div class="face${inPile[i]?'':' spent'}" style="${faceStyle(c)}" title="${(c.name||'').replace(/"/g,'')}"></div>`).join('');
+}
+
+// Manually retarget positions (rebuilds the current-step view; does not replay
+// already-drawn events).
+function setPos(which,val){
+  if(!S)return;
+  history.push(JSON.stringify(S));
+  // Party may sit on the start pad (0); monster stays on a numbered space (>=1).
+  let n=S.track.length;
+  if(which==='party'){let v=Math.min(n,Math.max(0,+val||0));S.partyPos=Math.min(v,S.monsterPos)}
+  else{let v=Math.min(n,Math.max(1,+val||1));S.monsterPos=Math.max(v,S.partyPos)}
+  S.encountered=S.partyPos>=S.monsterPos;
+  render();log(`手动调整：幸存者@${S.partyPos}，怪物@${S.monsterPos}`);autosave();
+}
+
+function autosave(){
+  if(S)localStorage.setItem('kdm-current',JSON.stringify(S));
+  fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)}).catch(()=>{});
+}
+
+$('#exp').onchange=renderMonsters;$('#search').oninput=renderMonsters;
+$('#sidebarToggle').onclick=()=>{let app=$('.app'),collapsed=app.classList.toggle('sidebar-collapsed'),btn=$('#sidebarToggle');btn.setAttribute('aria-expanded',String(!collapsed));btn.textContent=collapsed?'展开侧栏':'收起侧栏';};
+$('#rulebookVersion').value=rulebookVersion;
+$('#rulebookVersion').onchange=e=>{localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));rulebookVersion=e.target.value==='hd'?'hd':'standard';localStorage.setItem('kdm-rulebook-version',rulebookVersion);loadRandomCrops();RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;initCropEditor();$('#cropImage').src=rulebookAsset($('#cropPage').value);renderRandomEvent();};
+document.querySelectorAll('.gather-card').forEach(b=>b.onclick=()=>{if(!S){$('#gatherHint').textContent='请先开始狩猎';return}gatherMode=b.dataset.gather;document.querySelectorAll('.gather-card').forEach(x=>x.classList.toggle('primary',x===b));$('#gatherHint').textContent='请选择轨道格';});
+$('#monster').onchange=()=>{updateFanToggle();renderLevels()};
+$('#includeFan').onchange=()=>{if(S)$('#includeFan').checked=!!S.includeFan};
+$('#start').onclick=begin;$('#advance').onclick=advance;
+$('#randomEvent').onclick=rollRandomEvent;$('#randomAgain').onclick=rollRandomEvent;
+$('#partyPos').onchange=e=>setPos('party',e.target.value);
+$('#monsterPos').onchange=e=>setPos('monster',e.target.value);
+$('#undo').onclick=()=>{if(history.length){S=JSON.parse(history.pop());render();log('已撤销上一步');autosave()}};
+$('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPanel'))$('#ordinaryDeckPanel').open=false;$('#gatherHint').textContent='';document.querySelectorAll('.gather-card').forEach(b=>b.classList.remove('primary'));$('#includeFan').checked=false;$('#includeFan').disabled=false;$('#addArcSurvivor').checked=false;$('#addScout').checked=false;randomEventState=null;localStorage.removeItem('kdm-current');localStorage.removeItem('kdm-random-event');$('#title').textContent='尚未开始';$('#status').textContent='';$('#track').className='track';$('#track').innerHTML='<span class="muted">选择怪物和等级后开始</span>';$('#current').innerHTML='—';$('#drawn').innerHTML='<span class="muted">—</span>';$('#advance').disabled=true;$('#undo').disabled=true;renderDeckView();renderRandomEvent()};
+$('#note').oninput=e=>{if(S){S.note=e.target.value;autosave()}};
+$('#save').onclick=()=>{if(S){S.id=prompt('存档名称',S.id)||S.id;autosave();alert('已保存')}};
+$('#export').onclick=()=>{if(S){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=(S.id||'kdm-hunt')+'.json';a.click()}};
+loadRandomCrops();initCropEditor();$('#cropPart1').onclick=()=>switchCropPart(0);$('#cropPart2').onclick=()=>switchCropPart(1);$('#openCropEditor').onclick=()=>{$('#cropEditorPanel').classList.add('open');renderCropReview()};$('#closeCropEditor').onclick=()=>$('#cropEditorPanel').classList.remove('open');$('#cropNumber').onchange=()=>{loadCropEditor();renderCropReview()};
+$('#cropPrev').onclick=()=>{let n=Math.max(1,(+$('#cropNumber').value||1)-1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};$('#cropNext').onclick=()=>{let n=Math.min(100,(+$('#cropNumber').value||1)+1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};
+load().then(()=>{let x=localStorage.getItem('kdm-current');if(x){try{let saved=JSON.parse(x);if(saved&&saved.schemaVersion>=2&&(saved.mode==='hunt'||saved.mode==null)){S=saved;render();log('已恢复上次狩猎进度')}else{S=null}}catch(_){S=null}}let r=localStorage.getItem('kdm-random-event');if(r){try{randomEventState=JSON.parse(r)}catch(_){randomEventState=null}}renderRandomEvent()});
+</script>
+</body></html>

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "compiler": "kdm-hunt/1.2-hunt-only",
+  "monsterCount": 19,
+  "boardImage": "assets/board/hunt-board.png",
+  "huntDeckCount": 25,
+  "huntSheetCount": 80,
+  "huntSheetsCopied": 102,
+  "huntSheetsMissing": 0,
+  "warnings": [],
+  "mode": "hunt-only"
+}

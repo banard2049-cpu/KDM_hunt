@@ -1,0 +1,878 @@
+[
+  {
+    "id": "black-lion",
+    "name": "Black Lion",
+    "aliases": [
+      "Black Lion"
+    ],
+    "expansion": "BlackLion",
+    "huntTrack": [
+      "M",
+      "H",
+      "M",
+      "H",
+      "M",
+      "O",
+      "H",
+      "H",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      },
+      {
+        "name": "Level 4",
+        "level": 4,
+        "monsterHuntPosition": 10
+      }
+    ],
+    "huntEventsDeck": "Black Lion Hunt Events",
+    "resourcesDeck": "Black Lion Resources",
+    "expansionGroup": "粉丝扩"
+  },
+  {
+    "id": "charrogg",
+    "name": "Charrogg",
+    "aliases": [
+      "Charrogg"
+    ],
+    "expansion": "Charrogg",
+    "huntTrack": [
+      "H",
+      "M",
+      "H",
+      "M",
+      "M",
+      "O",
+      "H",
+      "M",
+      "M",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      }
+    ],
+    "huntEventsDeck": "Charrogg Hunt Events",
+    "resourcesDeck": "Charrogg Resources",
+    "expansionGroup": "粉丝扩"
+  },
+  {
+    "id": "crimson-crocodile",
+    "name": "Crimson Crocodile",
+    "aliases": [
+      "Crimson Crocodile"
+    ],
+    "expansion": "CrimsonCrocodile",
+    "huntTrack": [
+      "H",
+      "M",
+      "H",
+      "H",
+      "M",
+      "O",
+      "M",
+      "H",
+      "H",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Prologue Crimson Crocodile",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "An Unexpected Return",
+        "level": 2
+      },
+      {
+        "name": "A Noble Return",
+        "level": 2
+      },
+      {
+        "name": "Altering Fate",
+        "level": 2
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      }
+    ],
+    "huntEventsDeck": "Crimson Crocodile Hunt Events",
+    "resourcesDeck": "Crimson Crocodile Resources",
+    "expansionGroup": "赌博"
+  },
+  {
+    "id": "dragon-king",
+    "name": "Dragon King",
+    "aliases": [
+      "Dragon King"
+    ],
+    "expansion": "DragonKing",
+    "huntTrack": [
+      "M",
+      "H",
+      "M",
+      "M",
+      "H",
+      "O",
+      "M",
+      "H",
+      "H",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 5
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Death of the Dragon King",
+        "level": 3
+      }
+    ],
+    "huntEventsDeck": "Dragon King Hunt Events",
+    "resourcesDeck": "Dragon King Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "drifter-knight",
+    "name": "Drifter Knight",
+    "aliases": [
+      "Drifter Knight"
+    ],
+    "expansion": "DrifterKnight",
+    "huntTrack": [
+      "H",
+      "M",
+      "H",
+      "H",
+      "M",
+      "O",
+      "M",
+      "H",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 5
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      }
+    ],
+    "huntEventsDeck": "Drifter Knight Hunt Events",
+    "resourcesDeck": "Drifter Knight Resources",
+    "expansionGroup": "粉丝扩"
+  },
+  {
+    "id": "dung-beetle-knight",
+    "name": "Dung Beetle Knight",
+    "aliases": [
+      "Dung Beetle Knight"
+    ],
+    "expansion": "DungBeetleKnight",
+    "huntTrack": [
+      "H",
+      "M",
+      "M",
+      "H",
+      "H",
+      "O",
+      "M",
+      "H",
+      "H",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 5
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "The Old Master",
+        "level": 4
+      }
+    ],
+    "huntEventsDeck": "Dung Beetle Knight Hunt Events",
+    "resourcesDeck": "Dung Beetle Knight Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "flower-knight",
+    "name": "Flower Knight",
+    "aliases": [
+      "Flower Knight"
+    ],
+    "expansion": "FlowerKnight",
+    "huntTrack": [
+      "H",
+      "H",
+      "H",
+      "H",
+      "H",
+      "F",
+      "M",
+      "M",
+      "M",
+      "M",
+      "M"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 8,
+        "partyHuntPosition": 2
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 9,
+        "partyHuntPosition": 1
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      },
+      {
+        "name": "Level 4",
+        "level": 4
+      }
+    ],
+    "huntEventsDeck": "Flower Knight Hunt Events",
+    "resourcesDeck": "Flower Knight Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "gnasher",
+    "name": "Gnasher",
+    "aliases": [
+      "Gnasher"
+    ],
+    "expansion": "Gnasher",
+    "huntTrack": [
+      "H",
+      "M",
+      "H",
+      "M",
+      "H",
+      "O",
+      "H",
+      "M",
+      "M",
+      "H",
+      "M"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      },
+      {
+        "name": "Level 4",
+        "level": 4
+      }
+    ],
+    "huntEventsDeck": "Gnasher Hunt Events",
+    "resourcesDeck": "Gnasher Resources",
+    "expansionGroup": "粉丝扩"
+  },
+  {
+    "id": "gorm",
+    "name": "Gorm",
+    "aliases": [
+      "Gorm"
+    ],
+    "expansion": "Gorm",
+    "huntTrack": [
+      "M",
+      "M",
+      "H",
+      "H",
+      "M",
+      "O",
+      "H",
+      "H",
+      "M",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      }
+    ],
+    "huntEventsDeck": "Gorm Hunt Events",
+    "resourcesDeck": "Gorm Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "harvester-worm",
+    "name": "Harvester Worm",
+    "aliases": [
+      "Harvester Worm"
+    ],
+    "expansion": "HarvesterWorm",
+    "huntTrack": [
+      "H",
+      "H",
+      "H",
+      "H",
+      "H",
+      "O",
+      "L",
+      "M",
+      "M",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1
+      },
+      {
+        "name": "Level 2",
+        "level": 2
+      },
+      {
+        "name": "Dung Worm",
+        "level": 2
+      },
+      {
+        "name": "Homecoming",
+        "level": 2
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Blood Worm",
+        "level": 3
+      },
+      {
+        "name": "Regal Worm",
+        "level": 5
+      }
+    ],
+    "huntEventsDeck": "Harvester Worm Hunt Events",
+    "resourcesDeck": "Harvester Worm Resources",
+    "expansionGroup": "粉丝扩"
+  },
+  {
+    "id": "king",
+    "name": "King",
+    "aliases": [
+      "King"
+    ],
+    "expansion": "King",
+    "huntTrack": [
+      "M",
+      "H",
+      "M",
+      "H",
+      "M",
+      "O",
+      "H",
+      "M",
+      "H",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Killenium Butcher 2",
+        "level": 2
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Killenium Butcher 3",
+        "level": 3
+      }
+    ],
+    "huntEventsDeck": "King Hunt Events",
+    "resourcesDeck": "King Resources",
+    "expansionGroup": "赌博"
+  },
+  {
+    "id": "lion-god",
+    "name": "Lion God",
+    "aliases": [
+      "Lion God"
+    ],
+    "expansion": "LionGod",
+    "huntTrack": [
+      "H",
+      "M",
+      "H",
+      "M",
+      "H",
+      "O",
+      "H",
+      "M",
+      "H",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 9
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Level 4",
+        "level": 4
+      }
+    ],
+    "huntEventsDeck": "Lion God Hunt Events",
+    "resourcesDeck": "Lion God Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "phoenix",
+    "name": "Phoenix",
+    "aliases": [
+      "Phoenix"
+    ],
+    "expansion": "Phoenix",
+    "huntTrack": [
+      "H",
+      "M",
+      "H",
+      "M",
+      "H",
+      "O",
+      "M",
+      "H",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 5
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Golden Eyed King of 1000 Years",
+        "level": 5,
+        "monsterHuntPosition": 11
+      }
+    ],
+    "huntEventsDeck": "Phoenix Hunt Events",
+    "resourcesDeck": "Phoenix Resources",
+    "expansionGroup": "基础"
+  },
+  {
+    "id": "screaming-antelope",
+    "name": "Screaming Antelope",
+    "aliases": [
+      "Screaming Antelope"
+    ],
+    "expansion": "ScreamingAntelope",
+    "huntTrack": [
+      "M",
+      "H",
+      "M",
+      "H",
+      "H",
+      "O",
+      "M",
+      "H",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      },
+      {
+        "name": "Mad Steed",
+        "level": 4,
+        "monsterHuntPosition": 10
+      }
+    ],
+    "huntEventsDeck": "Screaming Antelope Hunt Events",
+    "resourcesDeck": "Screaming Antelope Resources",
+    "expansionGroup": "基础"
+  },
+  {
+    "id": "smog-singers",
+    "name": "Smog Singers",
+    "aliases": [
+      "Smog Singers"
+    ],
+    "expansion": "SmogSingers",
+    "huntTrack": [
+      "H",
+      "M",
+      "M",
+      "H",
+      "M",
+      "O",
+      "H",
+      "H",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      }
+    ],
+    "huntEventsDeck": "Smog Singers Hunt Events",
+    "resourcesDeck": "Smog Singers Resources",
+    "expansionGroup": "赌博"
+  },
+  {
+    "id": "spidicules",
+    "name": "Spidicules",
+    "aliases": [
+      "Spidicules"
+    ],
+    "expansion": "Spidicules",
+    "huntTrack": [
+      "M",
+      "M",
+      "H",
+      "H",
+      "M",
+      "F",
+      "H",
+      "M",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 10
+      },
+      {
+        "name": "Level 4",
+        "level": 4
+      }
+    ],
+    "huntEventsDeck": "Spidicules Hunt Events",
+    "resourcesDeck": "Spidicules Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "sunstalker",
+    "name": "Sunstalker",
+    "aliases": [
+      "Sunstalker"
+    ],
+    "expansion": "Sunstalker",
+    "huntTrack": [
+      "H",
+      "M",
+      "M",
+      "H",
+      "H",
+      "O",
+      "M",
+      "H",
+      "H",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Young Lion",
+        "level": 1
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "The Great Devourer",
+        "level": 3
+      }
+    ],
+    "huntEventsDeck": "Sunstalker Hunt Events",
+    "resourcesDeck": "Sunstalker Resources",
+    "expansionGroup": "12扩"
+  },
+  {
+    "id": "white-gigalion",
+    "name": "White Gigalion",
+    "aliases": [
+      "White Gigalion"
+    ],
+    "expansion": "WhiteGigalion",
+    "huntTrack": [
+      "H",
+      "H",
+      "H",
+      "H",
+      "M",
+      "O",
+      "M",
+      "H",
+      "M",
+      "M",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 8
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      }
+    ],
+    "huntEventsDeck": "White Gigalion Hunt Events",
+    "resourcesDeck": "White Gigalion Resources",
+    "expansionGroup": "其他官方扩"
+  },
+  {
+    "id": "white-lion",
+    "name": "White Lion",
+    "aliases": [
+      "White Lion"
+    ],
+    "expansion": "WhiteLion",
+    "huntTrack": [
+      "M",
+      "M",
+      "H",
+      "H",
+      "M",
+      "O",
+      "H",
+      "M",
+      "M",
+      "H",
+      "H"
+    ],
+    "levels": [
+      {
+        "name": "Prologue",
+        "level": 1
+      },
+      {
+        "name": "Level 1",
+        "level": 1,
+        "monsterHuntPosition": 4
+      },
+      {
+        "name": "Level 2",
+        "level": 2,
+        "monsterHuntPosition": 7
+      },
+      {
+        "name": "Level 3",
+        "level": 3,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Beast of Sorrow",
+        "level": 4,
+        "monsterHuntPosition": 11
+      },
+      {
+        "name": "Great Golden Cat",
+        "level": 4,
+        "monsterHuntPosition": 11
+      }
+    ],
+    "huntEventsDeck": "White Lion Hunt Events",
+    "resourcesDeck": "White Lion Resources",
+    "expansionGroup": "基础"
+  }
+]

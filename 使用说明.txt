@@ -1,0 +1,24 @@
+KDM 自动狩猎工具（狩猎纯净版）
+================================
+本包只含狩猎功能，并已剔除未被引用的图片资源。无 exe，需要 Python 3.10+ 运行。
+
+Windows：
+  1. 双击 start.bat；
+  2. 稍候浏览器会自动打开狩猎面板；
+  3. 服务运行期间请保持黑色窗口开启，关闭窗口即停止。
+
+macOS：
+  1. 双击 KDM-Hunt.command；
+  2. 若系统提示“无权限”，请打开“终端”并执行一次：
+       chmod +x KDM-Hunt.command
+     然后再次双击；
+  3. 稍候浏览器会自动打开狩猎面板，按 Ctrl+C 停止。
+
+没有 Python 时：
+  - Windows：到 python.org 安装 Python 3.10+，安装时勾选
+    “Add python.exe to PATH”（start.bat 也支持 py -3 与内置 runtime\python.exe）；
+  - macOS：到 python.org 安装 Python 3，或安装 Xcode 命令行工具；
+  - 也可把对应平台的 python 放入本目录 runtime\ 子文件夹（python.exe / python3）。
+
+说明：
+  - 存档写入本目录 saves\，数据/图片只读，删掉本目录即可整体卸载。
