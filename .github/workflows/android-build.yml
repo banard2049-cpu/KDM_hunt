@@ -51,6 +51,36 @@ jobs:
       - name: Sync web assets into the Android project
         run: npx cap sync android
 
+      # Replace Capacitor's default launcher artwork with the project icon.
+      - name: Install Android launcher icons
+        run: cp -R android-res/* android/app/src/main/res/
+
+      # CI runners normally create a new debug key for every build, which makes
+      # Android reject upgrades. Configure the project-scoped development key so
+      # all future APKs share the same signature.
+      - name: Configure stable development signing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("android/app/build.gradle")
+          text = path.read_text(encoding="utf-8")
+          marker = "android {"
+          signing = '''android {
+              signingConfigs {
+                  debug {
+                      storeFile file("../../android-signing/kdm-hunt-dev.p12")
+                      storePassword "android"
+                      keyAlias "androiddebugkey"
+                      keyPassword "android"
+                      storeType "PKCS12"
+                  }
+              }'''
+          if marker not in text:
+              raise SystemExit("android block not found in app/build.gradle")
+          path.write_text(text.replace(marker, signing, 1), encoding="utf-8")
+          PY
+
       # Capacitor's template ships versionCode 1; without a bump, sideloading a
       # newer build over an old install is rejected ("app not installed").
       - name: Bump versionCode / versionName for this build
@@ -79,9 +109,7 @@ jobs:
       - name: Install required Android SDK packages
         run: sdkmanager --install "platform-tools" "platforms;android-36" "build-tools;36.0.0" >/dev/null
 
-      # Debug-signed release: no custom keystore required, produces an APK that
-      # installs directly on a device. For a permanent upgradeable signature,
-      # later add a stable keystore as repo Secrets and sign assembleRelease.
+      # Debug variant signed with the stable project development key above.
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
