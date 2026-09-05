@@ -43,8 +43,9 @@ button.primary{background:#a25b3d;border-color:#d98760}
 .legend{display:flex;gap:16px;flex-wrap:wrap;color:#a899ad;font-size:12px;margin:-8px 0 10px}
 .legend b{color:#eee}
 .posrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-left:8px}
-.posrow label{font-size:12px;color:#c6b7c9;display:flex;align-items:center;gap:5px;white-space:nowrap}
-.posrow input{width:58px;margin:0}
+.posrow .poscontrol{font-size:12px;color:#c6b7c9;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.posrow input{width:58px;margin:0;text-align:center}
+.posrow .pos-step{min-width:38px;min-height:38px;padding:6px;font-size:18px;line-height:1}
 .panel{background:#211c24;border:1px solid #493c4d;border-radius:8px;padding:16px;margin-bottom:16px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
 .card{background:#302936;padding:10px;border-radius:6px}
@@ -117,8 +118,8 @@ button.primary{background:#a25b3d;border-color:#d98760}
     <span><b class="event-o" style="color:#d7d2c3">O</b> 压倒性黑暗</span>
   </div>
   <div class="row"><button id="advance" class="primary" disabled>推进一步</button><button id="undo" disabled>撤销</button><button id="save">保存存档</button><button id="export">导出 JSON</button><div class="posrow">
-    <label>幸存者位置<input type="number" id="partyPos" min="0" max="11"></label>
-    <label>怪物位置<input type="number" id="monsterPos" min="1" max="11"></label>
+    <div class="poscontrol"><label for="partyPos">幸存者位置</label><button type="button" class="pos-step" data-pos="party" data-delta="-1" aria-label="幸存者位置减一">-</button><input type="number" id="partyPos" min="0" max="11"><button type="button" class="pos-step" data-pos="party" data-delta="1" aria-label="幸存者位置加一">+</button></div>
+    <div class="poscontrol"><label for="monsterPos">怪物位置</label><button type="button" class="pos-step" data-pos="monster" data-delta="-1" aria-label="怪物位置减一">-</button><input type="number" id="monsterPos" min="1" max="11"><button type="button" class="pos-step" data-pos="monster" data-delta="1" aria-label="怪物位置加一">+</button></div>
     <span class="muted" id="posHint"></span>
   </div></div>
 </div>
@@ -558,6 +559,7 @@ $('#start').onclick=begin;$('#advance').onclick=advance;
 $('#randomEvent').onclick=rollRandomEvent;$('#randomAgain').onclick=rollRandomEvent;
 $('#partyPos').onchange=e=>setPos('party',e.target.value);
 $('#monsterPos').onchange=e=>setPos('monster',e.target.value);
+document.querySelectorAll('.pos-step').forEach(b=>b.onclick=()=>{if(S)setPos(b.dataset.pos,S[b.dataset.pos+'Pos']+Number(b.dataset.delta))});
 $('#undo').onclick=()=>{if(history.length){S=JSON.parse(history.pop());render();log('已撤销上一步');autosave()}};
 $('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPanel'))$('#ordinaryDeckPanel').open=false;$('#gatherHint').textContent='';document.querySelectorAll('.gather-card').forEach(b=>b.classList.remove('primary'));$('#includeFan').checked=false;$('#includeFan').disabled=false;$('#addArcSurvivor').checked=false;$('#addScout').checked=false;randomEventState=null;localStorage.removeItem('kdm-current');localStorage.removeItem('kdm-random-event');$('#title').textContent='尚未开始';$('#status').textContent='';$('#track').className='track';$('#track').innerHTML='<span class="muted">选择怪物和等级后开始</span>';$('#current').innerHTML='—';$('#drawn').innerHTML='<span class="muted">—</span>';$('#advance').disabled=true;$('#undo').disabled=true;renderDeckView();renderRandomEvent()};
 $('#note').oninput=e=>{if(S){S.note=e.target.value;autosave()}};
