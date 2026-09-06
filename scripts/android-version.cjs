@@ -1,0 +1,14 @@
+const fs=require('node:fs');
+const path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const {version}=require(path.join(root,'package.json'));
+if(!/^\d+\.\d+\.\d+$/.test(version))throw new Error('Expected a major.minor.patch version');
+if(process.env.GITHUB_REF_TYPE==='tag'&&process.env.GITHUB_REF_NAME!=='v'+version)throw new Error('Release tag and package version differ');
+const [major,minor,patch]=version.split('.').map(Number);
+if(minor>99||patch>99)throw new Error('Minor and patch versions must be below 100');
+const code=major*10000+minor*100+patch;
+const file=path.join(root,'android/app/build.gradle');
+const source=fs.readFileSync(file,'utf8');
+if(!/versionCode\s+\d+/.test(source)||!/versionName\s+"[^"]+"/.test(source))throw new Error('Android version fields missing');
+fs.writeFileSync(file,source.replace(/versionCode\s+\d+/,'versionCode '+code).replace(/versionName\s+"[^"]+"/,'versionName "'+version+'"'));
+console.log('Android version '+version+' ('+code+')');

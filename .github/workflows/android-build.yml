@@ -34,16 +34,16 @@ jobs:
       - name: Install Capacitor deps
         run: npm install
 
+      - name: Check hunt features
+        run: npm test
+
       # --- Stage a clean web root -------------------------------------------------
       # The web app's assets and data live at the repository root. Capacitor
       # copies "www" into the APK, so stage only what the running UI needs:
       # index.html + assets/ + data/. Never bundle .git or the python launcher.
       - name: Stage web bundle (www)
         run: |
-          mkdir -p www
-          cp index.html www/
-          cp -R assets www/
-          cp -R data www/
+          npm run web:stage
 
       - name: Add Android platform
         run: npx cap add android
@@ -84,15 +84,7 @@ jobs:
       # Capacitor's template ships versionCode 1; without a bump, sideloading a
       # newer build over an old install is rejected ("app not installed").
       - name: Bump versionCode / versionName for this build
-        run: |
-          VCODE="${GITHUB_RUN_NUMBER:-1}"
-          REF="${GITHUB_REF_NAME}"
-          case "$REF" in
-            v*) VERNAME="${REF#v}" ;;
-            *)  VERNAME="1.0.0" ;;
-          esac
-          sed -i "s/versionCode 1/versionCode $VCODE/; s/versionName \"1.0\"/versionName \"$VERNAME\"/" android/app/build.gradle
-          echo "versionCode=$VCODE versionName=$VERNAME"
+        run: npm run android:version
 
       - name: Set up Java (JDK 21)
         uses: actions/setup-java@v4
@@ -112,7 +104,7 @@ jobs:
       # Debug variant signed with the stable project development key above.
       - name: Build debug APK
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew :app:assembleDebug --no-daemon
 
       - name: Locate APK
         id: apk
@@ -138,7 +130,7 @@ jobs:
           # Create the release if missing (reuse if it already exists).
           gh release create "$TAG" \
             --title "KDM狩猎辅助 $TAG" \
-            --notes "离线单机 Android 版本（debug 签名）。下载后允许安装未知来源即可安装。" \
+            --notes-file "release-notes/$TAG.md" \
             || true
           # Attach the APK under a stable, versioned file name (idempotent).
           gh release upload "$TAG" "$APK#$BASE" --clobber

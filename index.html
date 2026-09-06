@@ -73,6 +73,7 @@ button.primary{background:#a25b3d;border-color:#d98760}
 .tag.f{background:#264a2e;color:#a5f7b8}.tag.l{background:#2a2a4c;color:#b8b0f7}
 .drawcard{display:flex;gap:12px;align-items:flex-start}
 .drawcard .meta{flex:1}
+.drawcard:has(.forest-gate-resolve){flex-direction:column}
 .gather-resolve{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}.gather-resolve .gather-face{width:180px;aspect-ratio:512/791;background:#0d0b10;border-radius:6px;overflow:hidden}.gather-resolve .gather-face img{width:100%;height:100%;object-fit:cover}.gather-resolve .gather-rules{width:min(100%,1100px);border:1px solid #66536b;border-radius:6px;overflow:hidden;background:#19161c}.gather-resolve .gather-rules img{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
 .random-event-view{margin-top:12px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
 .random-event-view img{width:min(100%,720px);height:auto;border:1px solid #66536b;border-radius:6px;cursor:zoom-in;background:#19161c}
@@ -99,7 +100,8 @@ button.primary{background:#a25b3d;border-color:#d98760}
 <label class="field"><span>扩展筛选</span><select id="exp"></select></label>
 <label class="field"><span>怪物</span><input id="search" placeholder="搜索怪物"><select id="monster"></select></label>
 <label class="field"><span>等级</span><select id="level"></select></label>
-<label id="fanToggleWrap" class="muted" style="display:none;margin:8px 0"><input type="checkbox" id="includeFan"> 白狮加入粉丝扩展狩猎牌</label>
+<div id="startPositionHint" class="muted" style="display:none;margin:8px 0" aria-live="polite"></div>
+<label id="fanToggleWrap" class="muted" style="display:none;margin:8px 0"><input type="checkbox" id="includeFan"> <span id="fanToggleLabel">加入粉丝扩展狩猎牌</span><small id="fanToggleHint" style="display:block"></small></label>
 <label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addArcSurvivor"> 增添弧光幸存者狩猎事件</label>
 <label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addScout"> 增添侦察者狩猎事件</label>
 <div class="row"><button class="primary" id="start">开始狩猎</button><button id="clear">清理</button></div>
@@ -259,11 +261,26 @@ function backStyle(sym){
   return "background-image:url('/assets/cards/hunt-events.png');filter:brightness(.38) saturate(.7)";
 }
 // Resolve the card reference to draw for a given track symbol.
-const WHITE_LION_FAN_NAMES=new Set(['white lion cub','dying lion','the well','cave painting','watering hole','soda pop surprise']);
-function deckFor(monster,includeFan){
+// Explicit card lists: do not infer fan content from image URLs or monster origin.
+const FAN_HUNT_NAMES=Object.fromEntries(Object.entries({
+  'White Lion':['White Lion Cub','Dying Lion','the Well','Cave Painting','Watering Hole','Soda Pop surprise'],
+  'Phoenix':['Private Meeting','Lowly Beetle','Paradox'],
+  'Screaming Antelope':['Greedy Cache','Teething','Banshees','Luminescent Trail'],
+  'Gorm':['Gorm Storm','Mud Wallow','Lost Light','Eat or Be Eaten','Finger Painting'],
+  'Sunstalker':['Ink Pot','Color out of Darkness','Shaoling','Sun Fall'],
+  'Dragon King':['Squire-errant','Weeping Man','Meteor Shower','Radiating Wind'],
+  'Flower Knight':['Crawling Forest','Fey World','Warblind Field'],
+  'Dung Beetle Knight':['Never Forget','Stink Trail','Bamboo Training','Wild Artichokes','Vermin Swarm'],
+  'Spidicules':['Story by the Lantern Light','Base Jumping','Vengeful Threads','Hidden Egg Clutch'],
+  'Lion God':['Quicksand','Silver Shaft','Lost Boy','Ruined Temple']
+}).map(([name,cards])=>[name+' Hunt Events',new Set(cards.map(n=>n.toLowerCase()))]));
+function isFanHuntCard(monster,card){return !!FAN_HUNT_NAMES[monster?.huntEventsDeck]?.has(String(card.name||'').toLowerCase())}
+function fanCardCount(monster){return (HD.decks[monster?.huntEventsDeck]||[]).filter(c=>isFanHuntCard(monster,c)).length}
+function deckFor(monster,includeFan,legacy=false){
   let deck=HD.decks[monster.huntEventsDeck]||[];
-  if(!isWhiteLion(monster)||includeFan)return deck;
-  return deck.filter(c=>!WHITE_LION_FAN_NAMES.has(String(c.name||'').toLowerCase()));
+  // Before schema 4 only White Lion was filtered. Keep old saved pile indices valid.
+  if(includeFan||(legacy&&!isWhiteLion(monster)))return deck;
+  return deck.filter(c=>!isFanHuntCard(monster,c));
 }
 function shuffled(arr){let a=arr.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function randomEventPage(roll){return RANDOM_EVENT_PAGES.find(p=>roll>=p.min&&roll<=p.max)}
@@ -314,7 +331,9 @@ function selected(){return D.monsters.find(m=>m.id===$('#monster').value)}
 function isWhiteLion(m){return !!m&&String(m.name).toLowerCase()==='white lion'}
 function updateFanToggle(){
   let wrap=$('#fanToggleWrap');if(!wrap)return;
-  let show=isWhiteLion(selected());wrap.style.display=show?'block':'none';
+  let count=fanCardCount(selected()),show=count>0;wrap.style.display=show?'block':'none';
+  $('#fanToggleLabel').textContent=`加入粉丝扩展狩猎牌（${count} 张）`;
+  $('#fanToggleHint').textContent=S?'本次狩猎已锁定牌组；修改前请先清理当前进度。':'开始狩猎前可选择，默认不加入。';
   $('#includeFan').disabled=!!S;
   if(!show){$('#includeFan').checked=false;$('#includeFan').disabled=false}
 }
@@ -329,8 +348,17 @@ function renderLevels(){
     .map((l,i)=>({l,i}))
     .filter(o=>o.l.monsterHuntPosition!=null)
     .map(o=>`<option value="${o.i}">${o.l.name}</option>`).join('');
+  renderStartPositionHint();
 }
-// Resolve a level's starting positions. Survivors default to space 1; the
+function renderStartPositionHint(){
+  const m=selected(),hint=$('#startPositionHint');
+  const show=m?.id==='flower-knight'&&$('#level').value!=='';
+  hint.style.display=show?'block':'none';
+  if(!show){hint.textContent='';return}
+  const p=startPositions(m,+$('#level').value);
+  hint.textContent=`${p.levelName}：幸存者从${p.party===0?'起始台（第 1 格之前）':`第 ${p.party} 格`}出发，花骑士位于第 ${p.monster} 格。点击“开始狩猎”后按此位置设置。`;
+}
+// Resolve a level's starting positions. Survivors default to the start pad; the
 // monster defaults to the last space when the source data omits a position.
 function startPositions(m,levelIdx){
   let lv=m.levels[levelIdx]||m.levels.find(x=>x.monsterHuntPosition!=null)||m.levels[0]||{};
@@ -353,7 +381,7 @@ function begin(){
   history=[];
   // Shuffle this monster's hunt-event deck into a draw pile (indices into the
   // deck array) so M spaces reveal actual card faces without repeats.
-  let includeFan=isWhiteLion(m)&&$('#includeFan').checked;
+  let includeFan=fanCardCount(m)>0&&$('#includeFan').checked;
   let deck=deckFor(m,includeFan);
   let track=m.huntTrack.slice();
   // Optional special scout cards replace ordinary H cards, then are randomly
@@ -362,7 +390,7 @@ function begin(){
   if($('#addArcSurvivor')?.checked)replacements.push('A');
   if($('#addScout')?.checked)replacements.push('S');
   const huntPile=shuffled(Array.from({length:12},(_,i)=>i<replacements.length?replacements[i]:'H'));
-  S={id:'current',schemaVersion:3,mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
+  S={id:'current',schemaVersion:4,mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
      track,partyStart:p.party,partyPos:p.party,monsterPos:p.monster,
      addArcSurvivor:replacements.includes('A'),addScout:replacements.includes('S'),
      drawn:[],note:'',encountered:false,overlays:{},
@@ -422,7 +450,7 @@ function advance(){
 // Overwhelming Darkness tile.
 function drawCardFor(sym){
   if(sym==='M'){
-    let deck=deckFor(S.monster,S.includeFan);
+    let deck=deckFor(S.monster,S.includeFan,S.schemaVersion<4);
     if(deck.length){ if(!S.pile||!S.pile.length)S.pile=shuffled(deck.map((_,i)=>i));
       let i=S.pile.shift(); return Object.assign({source:'M'},deck[i]); }
     return HD.shared.hunt?Object.assign({source:'M'},HD.shared.hunt):null;
@@ -436,8 +464,19 @@ function drawCardFor(sym){
   if(sym==='S')return Object.assign({source:'S',name:'Scout Hunt Event'},HD.shared.scout||HD.shared.hunt||{});
   return HD.shared.hunt?Object.assign({source:'H'},HD.shared.hunt):null; // H and others
 }
+function forestGateMarkup(){
+  const page='/assets/cards/flower-knight-forest-gate-rulebook.jpg';
+  return `<div class="special-rule-resolve forest-gate-resolve" style="width:100%;min-width:0">
+    <div style="margin-bottom:8px"><b>森林之门 · 森林想要它想要的</b></div>
+    <p class="muted">在此停下并结算本事件，替代黑暗来袭。按下方规则书“测试大门”掷骰并处理结果。</p>
+    <div style="width:100%;overflow:hidden;border:1px solid #66536b;border-radius:6px;background:#fff">
+      <img src="${page}" alt="花骑士规则书第13页：森林想要它想要的，测试大门及结果表" style="display:block;width:200%;max-width:none;height:auto;margin-left:-100%">
+    </div>
+  </div>`;
+}
 function cardMarkup(c,big=false){
   if(!c)return '';
+  if(c.source==='F' && big)return forestGateMarkup();
   if(c.source==='O' && big && rulebookVersion==='hd')return `<div class="special-rule-resolve"><div class="muted" style="margin-bottom:6px">无尽黑暗（高清）</div><img src="/assets/cards/rulebook-hd/darkness.jpg" alt="无尽黑暗规则" style="display:block;width:100%;height:auto;border:1px solid #66536b;border-radius:6px"></div>`;
   if(c.source==='G' && big){let rule=(rulebookVersion==='hd'&&((c.cls&&GATHER_CARDS[c.cls]||{}).hdRulebook||c.hdRulebook))||c.rulebook||(c.cls&&GATHER_CARDS[c.cls]||{}).rulebook;return `<div class="gather-resolve"><div class="gather-face"><img src="/${c.image}" alt="${c.name}"></div>${rule?`<div class="gather-rules"><img src="/${rule}" alt="${c.name}规则书说明"></div>`:''}</div>`}
   if(c.source==='G') return `<div class="overlay-card ${c.cls||''}" style="position:relative;inset:auto;width:100%;height:auto;min-height:0" title="${c.name}"><img src="/${c.image||''}" alt="${c.name}" style="display:block;width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:3px;right:3px;bottom:3px;background:rgba(0,0,0,.72);color:#fff;padding:2px 4px;border-radius:3px">${c.name}</span></div>`;
@@ -451,7 +490,8 @@ function cardMarkup(c,big=false){
 
 function render(){
   if(!S){return}
-  if(isWhiteLion(S.monster)){$('#includeFan').checked=!!S.includeFan;$('#includeFan').disabled=true}
+  updateFanToggle();
+  if(fanCardCount(S.monster)){$('#includeFan').checked=!!S.includeFan||(S.schemaVersion<4&&!isWhiteLion(S.monster));$('#includeFan').disabled=true}
   if($('#addArcSurvivor'))$('#addArcSurvivor').checked=!!S.addArcSurvivor;
   if($('#addScout'))$('#addScout').checked=!!S.addScout;
   let n=S.track.length;
@@ -522,7 +562,7 @@ function renderDeckView(){
     let remaining=(S.huntPile||[]).length;
     ordinary.innerHTML=source.map((sym,i)=>{let spent=i<source.length-remaining,c=sym==='H'?HD.shared.hunt:HD.shared[sym==='A'?'arcSurvivor':'scout'];return `<div class="face${spent?' spent':''}" style="${c?faceStyle(Object.assign({source:sym},c)):backStyle('H')}" title="${sym==='H'?'普通狩猎事件':(EVENT_NAME[sym]||sym)}${spent?'（已抽取）':''}"></div>`}).join('');
   }
-  let deck=deckFor(S.monster,S.includeFan);
+  let deck=deckFor(S.monster,S.includeFan,S.schemaVersion<4);
   if(!deck.length){$('#deckView').innerHTML='<span class="muted">该怪物无专属狩猎牌库（使用通用狩猎事件）</span>';$('#deckInfo').textContent=S.deckName||'';return}
   let remaining=(S.pile||[]).length;
   let inPile={};(S.pile||[]).forEach(i=>inPile[i]=1);
@@ -554,6 +594,7 @@ $('#rulebookVersion').value=rulebookVersion;
 $('#rulebookVersion').onchange=e=>{localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));rulebookVersion=e.target.value==='hd'?'hd':'standard';localStorage.setItem('kdm-rulebook-version',rulebookVersion);loadRandomCrops();RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;initCropEditor();$('#cropImage').src=rulebookAsset($('#cropPage').value);renderRandomEvent();};
 document.querySelectorAll('.gather-card').forEach(b=>b.onclick=()=>{if(!S){$('#gatherHint').textContent='请先开始狩猎';return}gatherMode=b.dataset.gather;document.querySelectorAll('.gather-card').forEach(x=>x.classList.toggle('primary',x===b));$('#gatherHint').textContent='请选择轨道格';});
 $('#monster').onchange=()=>{updateFanToggle();renderLevels()};
+$('#level').onchange=renderStartPositionHint;
 $('#includeFan').onchange=()=>{if(S)$('#includeFan').checked=!!S.includeFan};
 $('#start').onclick=begin;$('#advance').onclick=advance;
 $('#randomEvent').onclick=rollRandomEvent;$('#randomAgain').onclick=rollRandomEvent;
@@ -562,6 +603,7 @@ $('#monsterPos').onchange=e=>setPos('monster',e.target.value);
 document.querySelectorAll('.pos-step').forEach(b=>b.onclick=()=>{if(S)setPos(b.dataset.pos,S[b.dataset.pos+'Pos']+Number(b.dataset.delta))});
 $('#undo').onclick=()=>{if(history.length){S=JSON.parse(history.pop());render();log('已撤销上一步');autosave()}};
 $('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPanel'))$('#ordinaryDeckPanel').open=false;$('#gatherHint').textContent='';document.querySelectorAll('.gather-card').forEach(b=>b.classList.remove('primary'));$('#includeFan').checked=false;$('#includeFan').disabled=false;$('#addArcSurvivor').checked=false;$('#addScout').checked=false;randomEventState=null;localStorage.removeItem('kdm-current');localStorage.removeItem('kdm-random-event');$('#title').textContent='尚未开始';$('#status').textContent='';$('#track').className='track';$('#track').innerHTML='<span class="muted">选择怪物和等级后开始</span>';$('#current').innerHTML='—';$('#drawn').innerHTML='<span class="muted">—</span>';$('#advance').disabled=true;$('#undo').disabled=true;renderDeckView();renderRandomEvent()};
+$('#clear').addEventListener('click',updateFanToggle);
 $('#note').oninput=e=>{if(S){S.note=e.target.value;autosave()}};
 $('#save').onclick=()=>{if(S){S.id=prompt('存档名称',S.id)||S.id;autosave();alert('已保存')}};
 $('#export').onclick=()=>{if(S){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=(S.id||'kdm-hunt')+'.json';a.click()}};

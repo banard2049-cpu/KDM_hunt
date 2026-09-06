@@ -1,11 +1,14 @@
 {
   "name": "kdm-hunt",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "KDM 自动狩猎工具（狩猎纯净版）— Android offline app via Capacitor",
   "private": true,
   "main": "index.html",
   "scripts": {
-    "android:sync": "capacitor sync android"
+    "test": "node scripts/check-fan-decks.cjs && node scripts/check-forest-gate.cjs && node scripts/check-flower-start.cjs",
+    "android:version": "node scripts/android-version.cjs",
+    "web:stage": "node scripts/stage-web.cjs",
+    "android:sync": "npm run web:stage && capacitor sync android"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",

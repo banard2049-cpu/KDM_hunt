@@ -53,14 +53,12 @@ git push origin v1.0.0
 
 ```bash
 npm install
-mkdir -p www
-cp index.html www/
-cp -R assets www/
-cp -R data www/
+npm run web:stage
 npx cap add android
-npx cap sync android
+npm run android:sync
+npm run android:version
 cd android
-./gradlew assembleDebug
+./gradlew :app:assembleDebug
 ```
 
 APK 输出在 `android/app/build/outputs/apk/debug/`。

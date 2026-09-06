@@ -311,7 +311,8 @@
       {
         "name": "Level 3",
         "level": 3,
-        "monsterHuntPosition": 10
+        "monsterHuntPosition": 10,
+        "partyHuntPosition": 0
       },
       {
         "name": "Level 4",
