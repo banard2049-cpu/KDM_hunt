@@ -7,12 +7,14 @@ name: Android Release APK
 #   - workflow_dispatch (manual, "Run workflow" button)
 #   - pushing a tag like v1.0.0 (auto-creates/updates a Release)
 #   - pushing to main (builds but does NOT publish a Release)
+#   - NOTE: assets-v* tags do NOT trigger builds (they're for asset storage only)
 
 on:
   workflow_dispatch:
   push:
     tags:
       - 'v*'
+      - '!assets-v*'  # Exclude assets-v* tags
     branches:
       - main
       - master
