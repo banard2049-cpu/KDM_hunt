@@ -87,43 +87,47 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path("android/app/build.gradle")
           text = path.read_text(encoding="utf-8")
 
-          # Add noCompress directive after ignoreAssetsPattern
-          if "noCompress 'json'" not in text:
-              marker = "ignoreAssetsPattern ="
-              if marker not in text:
-                  raise SystemExit("ignoreAssetsPattern not found in build.gradle")
+          # Check if already applied
+          if "noCompress 'json'" in text:
+              print("noCompress directive already present, skipping")
+              exit(0)
 
-              # Find the end of aaptOptions block and insert before the closing brace
-              lines = text.split('\n')
-              new_lines = []
-              in_aapt_options = False
-              added = False
+          # Find the aaptOptions block and add noCompress
+          # Match: ignoreAssetsPattern = '...'
+          pattern = r"(ignoreAssetsPattern\s*=\s*'[^']*')"
+          match = re.search(pattern, text)
 
-              for i, line in enumerate(lines):
-                  new_lines.append(line)
-                  if 'aaptOptions' in line:
-                      in_aapt_options = True
-                  elif in_aapt_options and not added:
-                      # Add after ignoreAssetsPattern line
-                      if marker in line:
-                          # Add the noCompress line with proper indentation
-                          indent = ' ' * (len(line) - len(line.lstrip()))
-                          new_lines.append(f"{indent}// Prevent compression of JSON files to allow WebView fetch API to read large data files")
-                          new_lines.append(f"{indent}noCompress 'json'")
-                          added = True
-                      elif '}' in line and not '{' in line:
-                          # Reached end of aaptOptions without finding marker
-                          in_aapt_options = False
+          if not match:
+              raise SystemExit("ERROR: ignoreAssetsPattern not found in build.gradle")
 
-              if not added:
-                  raise SystemExit("Could not add noCompress directive")
+          # Get the indentation from the ignoreAssetsPattern line
+          line_start = text.rfind('\n', 0, match.start()) + 1
+          indent = text[line_start:match.start()]
 
-              path.write_text('\n'.join(new_lines), encoding="utf-8")
+          # Insert noCompress directive after ignoreAssetsPattern
+          insert_pos = match.end()
+          nocompress_lines = f"\n{indent}// Prevent compression of JSON files to allow WebView fetch API to read large data files\n{indent}noCompress 'json'"
+
+          new_text = text[:insert_pos] + nocompress_lines + text[insert_pos:]
+          path.write_text(new_text, encoding="utf-8")
+          print("Successfully added noCompress 'json' directive")
           PY
+
+      - name: Verify noCompress directive was applied
+        run: |
+          if grep -q "noCompress 'json'" android/app/build.gradle; then
+            echo "✓ noCompress directive confirmed in build.gradle"
+            echo "Relevant section:"
+            grep -A2 -B2 "noCompress" android/app/build.gradle
+          else
+            echo "ERROR: noCompress directive not found in build.gradle!"
+            exit 1
+          fi
 
       # Capacitor's template ships versionCode 1; without a bump, sideloading a
       # newer build over an old install is rejected ("app not installed").

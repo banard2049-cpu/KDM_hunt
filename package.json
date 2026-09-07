@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Development checks moved to .maintenance/scripts/\"",
+    "test": "node .maintenance/scripts/check-forest-gate.cjs && node .maintenance/scripts/check-flower-start.cjs && node .maintenance/scripts/check-fan-decks.cjs && echo 'All hunt feature checks passed'",
     "android:version": "node scripts/android-version.cjs",
     "web:stage": "node scripts/stage-web.cjs",
     "android:sync": "npm run web:stage && capacitor sync android"
