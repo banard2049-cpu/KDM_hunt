@@ -123,18 +123,6 @@
         "monsterHuntPosition": 8
       },
       {
-        "name": "An Unexpected Return",
-        "level": 2
-      },
-      {
-        "name": "A Noble Return",
-        "level": 2
-      },
-      {
-        "name": "Altering Fate",
-        "level": 2
-      },
-      {
         "name": "Level 3",
         "level": 3,
         "monsterHuntPosition": 11
@@ -313,10 +301,6 @@
         "level": 3,
         "monsterHuntPosition": 10,
         "partyHuntPosition": 0
-      },
-      {
-        "name": "Level 4",
-        "level": 4
       }
     ],
     "huntEventsDeck": "Flower Knight Hunt Events",
@@ -358,10 +342,6 @@
         "name": "Level 3",
         "level": 3,
         "monsterHuntPosition": 10
-      },
-      {
-        "name": "Level 4",
-        "level": 4
       }
     ],
     "huntEventsDeck": "Gnasher Hunt Events",
@@ -496,17 +476,9 @@
         "monsterHuntPosition": 8
       },
       {
-        "name": "Killenium Butcher 2",
-        "level": 2
-      },
-      {
         "name": "Level 3",
         "level": 3,
         "monsterHuntPosition": 11
-      },
-      {
-        "name": "Killenium Butcher 3",
-        "level": 3
       }
     ],
     "huntEventsDeck": "King Hunt Events",
@@ -548,10 +520,6 @@
         "name": "Level 3",
         "level": 3,
         "monsterHuntPosition": 11
-      },
-      {
-        "name": "Level 4",
-        "level": 4
       }
     ],
     "huntEventsDeck": "Lion God Hunt Events",
@@ -726,10 +694,6 @@
         "name": "Level 3",
         "level": 3,
         "monsterHuntPosition": 10
-      },
-      {
-        "name": "Level 4",
-        "level": 4
       }
     ],
     "huntEventsDeck": "Spidicules Hunt Events",
@@ -761,10 +725,6 @@
         "name": "Level 1",
         "level": 1,
         "monsterHuntPosition": 4
-      },
-      {
-        "name": "Young Lion",
-        "level": 1
       },
       {
         "name": "Level 2",

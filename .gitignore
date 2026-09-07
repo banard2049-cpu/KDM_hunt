@@ -10,12 +10,31 @@ __pycache__/
 # Local build output (if a dist folder is produced)
 dist/
 
-# High-resolution (HD) rulebook images are large and intentionally not
-# distributed in the repo; the app defaults to the low-res (standard) cards.
-assets/cards/rulebook-hd/
+# --- Image assets (managed via GitHub Release) ---
+# Core game assets are excluded from the repository to keep it lightweight.
+# They are automatically downloaded during CI builds from GitHub Release.
+# See docs/ASSETS_MANAGEMENT.md for details.
 
-# High-resolution loot images are kept locally and are not committed.
+# Core game assets (downloaded from Release)
+assets/board/
+assets/cards/
+assets/hunt-backs/
+assets/hunt-sheets/
+assets/loot/
+
+# --- Private HD assets (not uploaded anywhere) ---
+# High-resolution (HD) images are private and kept locally only.
+# These are never committed to Git or uploaded to Release.
+assets/cards/rulebook-hd/
 assets/loot/hd/
+assets/**/hd/
+*-hd.*
+*_hd.*
+
+# --- Local builds ---
+# APK files built locally should not be committed
+*.apk
+kdm-hunt-assets.tar.gz
 
 # --- Android / Capacitor (generated at build time by CI, not committed) ---
 android/
