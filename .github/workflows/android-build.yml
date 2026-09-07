@@ -45,11 +45,33 @@ jobs:
         run: |
           npm run web:stage
 
+      - name: Verify loot.json was staged
+        run: |
+          if [ -f www/data/loot.json ]; then
+            SIZE=$(stat -c%s www/data/loot.json 2>/dev/null || stat -f%z www/data/loot.json 2>/dev/null)
+            echo "✓ loot.json found in www/data/ (${SIZE} bytes)"
+          else
+            echo "ERROR: loot.json not found in www/data/"
+            ls -la www/data/ || echo "www/data/ directory not found"
+            exit 1
+          fi
+
       - name: Add Android platform
         run: npx cap add android
 
       - name: Sync web assets into the Android project
         run: npx cap sync android
+
+      - name: Verify loot.json in Android assets
+        run: |
+          if [ -f android/app/src/main/assets/public/data/loot.json ]; then
+            SIZE=$(stat -c%s android/app/src/main/assets/public/data/loot.json)
+            echo "✓ loot.json found in Android assets (${SIZE} bytes)"
+          else
+            echo "ERROR: loot.json not found in Android assets"
+            find android/app/src/main/assets -name "*.json" | head -10
+            exit 1
+          fi
 
       # Replace Capacitor's default launcher artwork with the project icon.
       - name: Install Android launcher icons
