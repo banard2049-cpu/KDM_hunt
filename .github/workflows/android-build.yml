@@ -81,6 +81,50 @@ jobs:
           path.write_text(text.replace(marker, signing, 1), encoding="utf-8")
           PY
 
+      # Large JSON files (loot.json is 734KB) cannot be read by WebView fetch API
+      # when compressed by aapt. Prevent compression for all JSON assets.
+      - name: Fix Android asset compression for large JSON files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("android/app/build.gradle")
+          text = path.read_text(encoding="utf-8")
+
+          # Add noCompress directive after ignoreAssetsPattern
+          if "noCompress 'json'" not in text:
+              marker = "ignoreAssetsPattern ="
+              if marker not in text:
+                  raise SystemExit("ignoreAssetsPattern not found in build.gradle")
+
+              # Find the end of aaptOptions block and insert before the closing brace
+              lines = text.split('\n')
+              new_lines = []
+              in_aapt_options = False
+              added = False
+
+              for i, line in enumerate(lines):
+                  new_lines.append(line)
+                  if 'aaptOptions' in line:
+                      in_aapt_options = True
+                  elif in_aapt_options and not added:
+                      # Add after ignoreAssetsPattern line
+                      if marker in line:
+                          # Add the noCompress line with proper indentation
+                          indent = ' ' * (len(line) - len(line.lstrip()))
+                          new_lines.append(f"{indent}// Prevent compression of JSON files to allow WebView fetch API to read large data files")
+                          new_lines.append(f"{indent}noCompress 'json'")
+                          added = True
+                      elif '}' in line and not '{' in line:
+                          # Reached end of aaptOptions without finding marker
+                          in_aapt_options = False
+
+              if not added:
+                  raise SystemExit("Could not add noCompress directive")
+
+              path.write_text('\n'.join(new_lines), encoding="utf-8")
+          PY
+
       # Capacitor's template ships versionCode 1; without a bump, sideloading a
       # newer build over an old install is rejected ("app not installed").
       - name: Bump versionCode / versionName for this build
