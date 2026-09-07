@@ -7,7 +7,7 @@ aside{padding:18px;background:#211c24;border-right:1px solid #493c4d;position:re
 aside .sidebar-toggle{width:100%;margin-bottom:12px;text-align:left}
 .app.sidebar-collapsed{grid-template-columns:56px 1fr}
 .app.sidebar-collapsed aside{padding:12px 10px}
-.app.sidebar-collapsed aside>*:not(.sidebar-toggle){display:none !important}
+.app.sidebar-collapsed aside:not(#lootSidebar)>*:not(.sidebar-toggle){display:none !important}
 .app.sidebar-collapsed aside .sidebar-toggle{font-size:0;text-align:center;padding:9px 6px;margin:0}
 .app.sidebar-collapsed aside .sidebar-toggle::before{content:'☰';font-size:18px}
 main{padding:22px;max-width:none;width:100%;box-sizing:border-box}
@@ -28,7 +28,7 @@ button.primary{background:#a25b3d;border-color:#d98760}
 .step .track-card-face{z-index:1}
 .step .track-card-face.wide{aspect-ratio:1500/1159}
 .step .track-symbol{position:relative;z-index:1;font-size:0;width:0;height:0;overflow:hidden}
-.step .overlay-card{position:absolute;top:20%;left:0;width:100%;height:auto;aspect-ratio:512/791;transform:translateY(-50%);z-index:1;display:grid;place-items:center;text-align:center;font-size:11px;line-height:1.1;padding:0;box-sizing:border-box;border-radius:4px;color:#1b1310;text-shadow:none;border:1px solid #f5d49a;background:#e7c27d;box-shadow:0 2px 5px #000;overflow:hidden}
+.step .overlay-card{position:absolute;top:20%;left:0;width:100%;height:auto;aspect-ratio:512/791;transform:translateY(-50%);z-index:1;pointer-events:none;display:grid;place-items:center;text-align:center;font-size:11px;line-height:1.1;padding:0;box-sizing:border-box;border-radius:4px;color:#1b1310;text-shadow:none;border:1px solid #f5d49a;background:#e7c27d;box-shadow:0 2px 5px #000;overflow:hidden}
 .step .overlay-card.herb{background:#9dcc8b}.step .overlay-card.ore{background:#aeb8c7}.step .overlay-card.sky{background:#8fc4e8}
 .gather-card{background-size:36px 52px;background-repeat:no-repeat;background-position:6px center;padding-left:48px;font-weight:600}.gather-card.herb{background-image:url('/assets/cards/herb-gathering-face.png')}.gather-card.ore{background-image:url('/assets/cards/mineral-gathering-face.png')}.gather-card.sky{background-image:url('/assets/cards/sky-fishing-face.png')}
 .step small{position:absolute;top:2px;left:5px;font-size:10px;font-weight:400;color:#e6d5b8;opacity:.85;z-index:3}
@@ -94,8 +94,8 @@ button.primary{background:#a25b3d;border-color:#d98760}
 .crop-nav{display:flex;gap:12px;margin:8px 0}.crop-nav button{font-size:18px;font-weight:600;padding:12px 28px;min-width:120px}
 .track-wrap{position:relative}.panel-gather-row{margin-left:auto;justify-content:flex-end}.panel-gather-row .gather-card{padding-top:6px;padding-bottom:6px}
 @media(max-width:760px){.crop-editor{grid-template-columns:1fr}.panel-gather-row{width:100%;margin-left:0;justify-content:flex-start}}
-</style></head><body>
-<header><h1>KDM 自动狩猎工具 <small class="muted">独立离线版</small></h1></header>
+</style><link rel="stylesheet" href="assets/loot.css"></head><body>
+<header><h1>KDM 自动狩猎工具 <small class="muted">独立离线版</small></h1><nav class="mode-nav" aria-label="功能切换"><button id="goHunt" class="primary">狩猎</button><button id="goLoot">战利品</button></nav></header>
 <div class="app"><aside><button id="sidebarToggle" class="sidebar-toggle" type="button" aria-expanded="true">收起侧栏</button>
 <label class="field"><span>扩展筛选</span><select id="exp"></select></label>
 <label class="field"><span>怪物</span><input id="search" placeholder="搜索怪物"><select id="monster"></select></label>
@@ -106,7 +106,9 @@ button.primary{background:#a25b3d;border-color:#d98760}
 <label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addScout"> 增添侦察者狩猎事件</label>
 <div class="row"><button class="primary" id="start">开始狩猎</button><button id="clear">清理</button></div>
 <label class="field"><span>清晰度</span><select id="rulebookVersion"><option value="standard">低</option><option value="hd">高</option></select></label>
-</aside><main>
+</aside><aside id="lootSidebar" aria-label="战利品设置"><button class="sidebar-toggle" id="lootSidebarToggle" aria-label="收起侧栏">收起侧栏</button><div class="panel"><div class="loot-heading"><h2>战利品</h2></div>
+<div class="loot-selectors"><label class="loot-input">扩展<select id="lootGroup"></select></label><label class="loot-input">搜索 Boss<input id="lootSearch" placeholder="中文或英文名称"></label><label class="loot-input boss">Boss<select id="lootBoss"></select></label><label class="loot-input">等级<select id="lootLevel"></select></label><button class="primary" id="lootNew" disabled>开始新战斗</button></div>
+<label class="field loot-quality-side"><span>规则清晰度</span><select id="lootQuality"><option value="standard">低</option><option value="hd">高</option></select></label><p class="muted" id="lootSelectionHint"></p><p class="loot-intro">狩猎遭遇会自动选好 Boss 和等级。也可以在这里开始一场非狩猎战斗。</p><div class="loot-session-row"><select id="lootSessions" aria-label="已有战斗记录"></select><button id="lootExport" disabled>导出战利品记录</button></div></div></aside><main><section id="huntPage">
 <div class="panel">
   <div class="row"><h2 id="title">尚未开始</h2><span id="status" class="muted"></span><div class="row panel-gather-row"><span class="muted">放置采集卡：</span><button class="gather-card herb" data-gather="herb">草药采集</button><button class="gather-card ore" data-gather="ore">矿石采集</button><button class="gather-card sky" data-gather="sky">天空垂钓</button><span id="gatherHint" class="muted"></span></div></div>
   <div class="track-wrap"><div id="track" class="track"><span class="muted">选择怪物和等级后开始</span></div></div>
@@ -144,7 +146,14 @@ button.primary{background:#a25b3d;border-color:#d98760}
   <details id="ordinaryDeckPanel" class="ordinary-deck"><summary>普通狩猎牌库（12 张，可被替换）</summary><div id="ordinaryDeckView" class="deckgrid"><span class="muted">开始狩猎后显示</span></div></details>
   <div id="deckView" class="deckgrid"><span class="muted">开始狩猎后显示</span></div></div>
 <div class="panel"><h3>日志</h3><div id="log" class="log muted"></div></div>
-</main></div>
+</section>
+<section id="lootPage" hidden>
+<div id="lootNotice" class="loot-notice" role="status" aria-live="polite">正在载入战利品牌库…</div><div id="lootEmpty" class="loot-empty"><div class="loot-empty-message">选择 Boss 和等级，开始新战斗。</div><div id="lootPreStartRules" class="loot-prestart-rules" hidden><h3>当前等级规则书</h3><div class="loot-rule-grid"></div></div></div>
+<div id="lootBattle" hidden><div class="panel loot-reward"><div class="loot-heading"><h2 id="lootTitle"></h2><span id="lootSource" class="muted"></span></div><div id="lootRewardDescription" class="loot-reward-description"></div><p id="lootRuleSource" class="loot-notes muted"></p><div id="lootConditions" class="loot-conditions"></div><div class="row"><button id="lootClaim" class="primary">抽取战后奖励</button><button id="lootUndo">撤销上次操作</button></div><div id="lootRolls" class="loot-rolls"></div><p id="lootNotes" class="loot-notes"></p><details><summary>查看奖励规则原图</summary><div id="lootRules" class="loot-rule-grid"></div></details></div>
+<div class="panel"><h3>已获得卡牌 <span id="lootHeldCount" class="loot-count">0</span></h3><div class="loot-held-section"><h4 class="loot-section-title">怪物资源 <span id="lootHeldMonsterCount" class="loot-count">0</span></h4><div id="lootHeldMonster" class="loot-cards"></div></div><div class="loot-held-section"><h4 class="loot-section-title">通用资源 <span id="lootHeldBasicCount" class="loot-count">0</span></h4><div id="lootHeldBasic" class="loot-cards"></div></div><details class="loot-discard-area"><summary>本场弃牌 <span id="lootDiscardedCount" class="loot-count">0</span></summary><p class="muted">弃牌不会放回牌库，本场不能再次抽到或指定拿取。撤销可恢复最近一次弃置。</p><div id="lootDiscarded" class="loot-cards"></div></details></div>
+<div class="panel"><h3>补抽与指定拿牌</h3><p class="muted">★ 为当前 Boss 的常用牌库；其他扩展牌库分别保留来源，按实际规则选择。</p><label class="loot-input">牌库<select id="lootDeck"></select></label><p id="lootRemaining" class="muted"></p><div class="loot-controls"><label class="loot-input">补抽数量<input id="lootCount" type="number" min="1" max="999" step="1" value="1"></label><button id="lootDraw">随机补抽</button><label class="loot-input">搜索卡牌<input id="lootCardSearch" placeholder="卡牌名称"></label><label class="loot-input">指定卡牌<select id="lootCard"></select></label><button id="lootTake">拿取这张卡</button></div></div></div>
+</section></main></div><dialog id="lootModal" class="loot-modal"><div class="loot-modal-bar"><h3 id="lootModalTitle"></h3><button id="lootModalClose">关闭</button></div><div id="lootModalContent"></div></dialog>
+<script src="assets/loot-engine.js"></script><script src="assets/loot-ui.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 let D={monsters:[],expansions:[]},S=null,history=[],gatherMode=null;
@@ -390,7 +399,7 @@ function begin(){
   if($('#addArcSurvivor')?.checked)replacements.push('A');
   if($('#addScout')?.checked)replacements.push('S');
   const huntPile=shuffled(Array.from({length:12},(_,i)=>i<replacements.length?replacements[i]:'H'));
-  S={id:'current',schemaVersion:4,mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
+  S={id:'current',schemaVersion:5,battleId:'hunt-'+Date.now()+'-'+Math.random().toString(36).slice(2),mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
      track,partyStart:p.party,partyPos:p.party,monsterPos:p.monster,
      addArcSurvivor:replacements.includes('A'),addScout:replacements.includes('S'),
      drawn:[],note:'',encountered:false,overlays:{},
@@ -443,6 +452,7 @@ function advance(){
     log(`格 ${nextPos}/${S.track.length}：${EVENT_NAME[sym]||'狩猎事件'}${random?' — 随机结果 '+random.roll:''}${card&&card.name?' — '+card.name:''}`);
   }
   render();autosave();
+  if(S.encountered&&typeof window!=='undefined')window.KDMLoot?.encounter(S);
 }
 
 // Return the card reference for a track symbol. M draws (without replacement)
@@ -477,8 +487,8 @@ function forestGateMarkup(){
 function cardMarkup(c,big=false){
   if(!c)return '';
   if(c.source==='F' && big)return forestGateMarkup();
-  if(c.source==='O' && big && rulebookVersion==='hd')return `<div class="special-rule-resolve"><div class="muted" style="margin-bottom:6px">无尽黑暗（高清）</div><img src="/assets/cards/rulebook-hd/darkness.jpg" alt="无尽黑暗规则" style="display:block;width:100%;height:auto;border:1px solid #66536b;border-radius:6px"></div>`;
-  if(c.source==='G' && big){let rule=(rulebookVersion==='hd'&&((c.cls&&GATHER_CARDS[c.cls]||{}).hdRulebook||c.hdRulebook))||c.rulebook||(c.cls&&GATHER_CARDS[c.cls]||{}).rulebook;return `<div class="gather-resolve"><div class="gather-face"><img src="/${c.image}" alt="${c.name}"></div>${rule?`<div class="gather-rules"><img src="/${rule}" alt="${c.name}规则书说明"></div>`:''}</div>`}
+  if(c.source==='O' && big && rulebookVersion==='hd')return `<div class="special-rule-resolve"><div class="muted" style="margin-bottom:6px">无尽黑暗（高清）</div><img src="assets/cards/rulebook-hd/darkness.jpg" alt="无尽黑暗规则" style="display:block;width:100%;height:auto;border:1px solid #66536b;border-radius:6px"></div>`;
+  if(c.source==='G' && big){let rule=(rulebookVersion==='hd'&&((c.cls&&GATHER_CARDS[c.cls]||{}).hdRulebook||c.hdRulebook))||c.rulebook||(c.cls&&GATHER_CARDS[c.cls]||{}).rulebook;return `<div class="gather-resolve"><div class="gather-face"><img src="${c.image}" alt="${c.name}"></div>${rule?`<div class="gather-rules"><img src="${rule}" alt="${c.name}规则书说明"></div>`:''}</div>`}
   if(c.source==='G') return `<div class="overlay-card ${c.cls||''}" style="position:relative;inset:auto;width:100%;height:auto;min-height:0" title="${c.name}"><img src="/${c.image||''}" alt="${c.name}" style="display:block;width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:3px;right:3px;bottom:3px;background:rgba(0,0,0,.72);color:#fff;padding:2px 4px;border-radius:3px">${c.name}</span></div>`;
   const face=`<div class="${faceClass(c,big)}" style="${faceStyle(c)}"></div>`;
   // Arc Survivor and Scout hunt cards carry their complete settlement/rulebook
@@ -579,11 +589,14 @@ function setPos(which,val){
   let n=S.track.length;
   if(which==='party'){let v=Math.min(n,Math.max(0,+val||0));S.partyPos=Math.min(v,S.monsterPos)}
   else{let v=Math.min(n,Math.max(1,+val||1));S.monsterPos=Math.max(v,S.partyPos)}
+  const wasEncountered=S.encountered;
   S.encountered=S.partyPos>=S.monsterPos;
   render();log(`手动调整：幸存者@${S.partyPos}，怪物@${S.monsterPos}`);autosave();
+  if(!wasEncountered&&S.encountered&&typeof window!=='undefined')window.KDMLoot?.encounter(S);
 }
 
 function autosave(){
+  if(S&&typeof window!=='undefined'){const loot=window.KDMLoot?.snapshot(S);if(loot)S.lootBattle=loot;}
   if(S)localStorage.setItem('kdm-current',JSON.stringify(S));
   fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)}).catch(()=>{});
 }
@@ -591,7 +604,7 @@ function autosave(){
 $('#exp').onchange=renderMonsters;$('#search').oninput=renderMonsters;
 $('#sidebarToggle').onclick=()=>{let app=$('.app'),collapsed=app.classList.toggle('sidebar-collapsed'),btn=$('#sidebarToggle');btn.setAttribute('aria-expanded',String(!collapsed));btn.textContent=collapsed?'展开侧栏':'收起侧栏';};
 $('#rulebookVersion').value=rulebookVersion;
-$('#rulebookVersion').onchange=e=>{localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));rulebookVersion=e.target.value==='hd'?'hd':'standard';localStorage.setItem('kdm-rulebook-version',rulebookVersion);loadRandomCrops();RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;initCropEditor();$('#cropImage').src=rulebookAsset($('#cropPage').value);renderRandomEvent();};
+$('#rulebookVersion').onchange=e=>{localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));rulebookVersion=e.target.value==='hd'?'hd':'standard';localStorage.setItem('kdm-rulebook-version',rulebookVersion);loadRandomCrops();RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;initCropEditor();$('#cropImage').src=rulebookAsset($('#cropPage').value);renderRandomEvent();window.KDMLoot?.refresh();};
 document.querySelectorAll('.gather-card').forEach(b=>b.onclick=()=>{if(!S){$('#gatherHint').textContent='请先开始狩猎';return}gatherMode=b.dataset.gather;document.querySelectorAll('.gather-card').forEach(x=>x.classList.toggle('primary',x===b));$('#gatherHint').textContent='请选择轨道格';});
 $('#monster').onchange=()=>{updateFanToggle();renderLevels()};
 $('#level').onchange=renderStartPositionHint;
@@ -606,10 +619,12 @@ $('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPa
 $('#clear').addEventListener('click',updateFanToggle);
 $('#note').oninput=e=>{if(S){S.note=e.target.value;autosave()}};
 $('#save').onclick=()=>{if(S){S.id=prompt('存档名称',S.id)||S.id;autosave();alert('已保存')}};
-$('#export').onclick=()=>{if(S){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=(S.id||'kdm-hunt')+'.json';a.click()}};
+$('#export').onclick=()=>{if(S){autosave();let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=(S.id||'kdm-hunt')+'.json';a.click()}};
 $('#cropPart1').onclick=()=>switchCropPart(0);$('#cropPart2').onclick=()=>switchCropPart(1);$('#openCropEditor').onclick=()=>{$('#cropEditorPanel').classList.add('open');renderCropReview()};$('#closeCropEditor').onclick=()=>$('#cropEditorPanel').classList.remove('open');$('#cropNumber').onchange=()=>{loadCropEditor();renderCropReview()};
 $('#cropPrev').onclick=()=>{let n=Math.max(1,(+$('#cropNumber').value||1)-1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};$('#cropNext').onclick=()=>{let n=Math.min(100,(+$('#cropNumber').value||1)+1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};
-load().then(()=>{let x=localStorage.getItem('kdm-current');if(x){try{let saved=JSON.parse(x);if(saved&&saved.schemaVersion>=2&&(saved.mode==='hunt'||saved.mode==null)){S=saved;render();log('已恢复上次狩猎进度')}else{S=null}}catch(_){S=null}}let r=localStorage.getItem('kdm-random-event');if(r){try{randomEventState=JSON.parse(r)}catch(_){randomEventState=null}}renderRandomEvent()});
+load().then(()=>{let x=localStorage.getItem('kdm-current');if(x){try{let saved=JSON.parse(x);if(saved&&saved.schemaVersion>=2&&(saved.mode==='hunt'||saved.mode==null)){S=saved;render();log('已恢复上次狩猎进度');window.KDMLoot?.restore(S)}else{S=null}}catch(_){S=null}}let r=localStorage.getItem('kdm-random-event');if(r){try{randomEventState=JSON.parse(r)}catch(_){randomEventState=null}}renderRandomEvent()});
 (async()=>{await loadBuiltinCrops();loadRandomCrops();initCropEditor();renderCropList();renderRandomEvent()})();
 </script>
 </body></html>
+
+
