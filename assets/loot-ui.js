@@ -164,18 +164,31 @@
         '/data/loot.json',
         origin+'/data/loot.json'
       ];
-      let lastError='',triedPaths=[];
+      let lastError='',triedPaths=[],lastResponse=null;
       for(const path of paths){
         triedPaths.push(path);
         try{
           response=await fetch(path);
-          if(response.ok){data=await response.json();console.log('[Loot] Loaded from:',path);break;}
+          lastResponse=response;
+          console.log(`[Loot] Tried ${path}: status=${response.status}, type=${response.headers.get('content-type')}`);
+          if(response.ok){
+            const text=await response.text();
+            console.log(`[Loot] Response size: ${text.length} bytes`);
+            data=JSON.parse(text);
+            console.log('[Loot] Successfully loaded from:',path);
+            break;
+          }
           lastError=`HTTP ${response.status}`;
-        }catch(e){lastError=e.message;continue;}
+        }catch(e){
+          console.error(`[Loot] Error loading ${path}:`,e.message);
+          lastError=e.message;
+          continue;
+        }
       }
       if(!data){
         console.error('[Loot] Failed to load. Tried:',triedPaths);
         console.error('[Loot] origin:',origin,'pathname:',pathname,'base:',base);
+        console.error('[Loot] Last response:',lastResponse);
         throw new Error(`牌库文件载入失败 (${lastError})`);
       }
       const raw=localStorage.getItem(key);

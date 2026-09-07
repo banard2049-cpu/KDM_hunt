@@ -48,7 +48,7 @@ jobs:
       - name: Verify loot.json was staged
         run: |
           if [ -f www/data/loot.json ]; then
-            SIZE=$(stat -c%s www/data/loot.json 2>/dev/null || stat -f%z www/data/loot.json 2>/dev/null)
+            SIZE=$(wc -c < www/data/loot.json)
             echo "✓ loot.json found in www/data/ (${SIZE} bytes)"
           else
             echo "ERROR: loot.json not found in www/data/"
@@ -65,7 +65,7 @@ jobs:
       - name: Verify loot.json in Android assets
         run: |
           if [ -f android/app/src/main/assets/public/data/loot.json ]; then
-            SIZE=$(stat -c%s android/app/src/main/assets/public/data/loot.json)
+            SIZE=$(wc -c < android/app/src/main/assets/public/data/loot.json)
             echo "✓ loot.json found in Android assets (${SIZE} bytes)"
           else
             echo "ERROR: loot.json not found in Android assets"
