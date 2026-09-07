@@ -98,12 +98,18 @@ async function getAssetUrl() {
 
   return new Promise((resolve, reject) => {
     console.log(`Fetching release info for tag: ${releaseTag}`);
-    https.get(apiUrl, {
-      headers: {
-        'User-Agent': 'KDM-Hunt-CI',
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    }, (response) => {
+
+    const headers = {
+      'User-Agent': 'KDM-Hunt-CI',
+      'Accept': 'application/vnd.github.v3+json'
+    };
+
+    // Use GitHub token if available (for CI or higher rate limits)
+    if (process.env.GITHUB_TOKEN) {
+      headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+    }
+
+    https.get(apiUrl, { headers }, (response) => {
       let data = '';
       response.on('data', chunk => data += chunk);
       response.on('end', () => {

@@ -41,6 +41,8 @@ jobs:
         env:
           # Use the assets-v1 release by default
           ASSETS_RELEASE_TAG: assets-v1
+          # Pass GitHub token for API authentication (higher rate limits)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Optional: use custom URL if needed
           # ASSETS_URL: https://example.com/kdm-hunt-assets.tar.gz
 
