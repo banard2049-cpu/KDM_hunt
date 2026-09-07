@@ -119,14 +119,14 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ## 版本标记
 
-修复版本：**v1.0.6**
+修复版本：**v1.1.0**
 
 建议在 `package.json` 中更新版本号后，打 tag 发布：
 
 ```bash
 npm run android:version  # 更新 Android versionCode
-git tag v1.0.6
-git push origin v1.0.6
+git tag v1.1.0
+git push origin v1.1.0
 ```
 
 GitHub Actions 会自动构建并发布到 Release 页面。
