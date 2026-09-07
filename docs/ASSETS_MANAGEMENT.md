@@ -54,12 +54,14 @@ node scripts/pack-assets.cjs
 
 ### 2. 上传到 GitHub Release
 
+**重要：** `assets-v1` 标签已被配置为不触发 CI 构建，专门用于存储资源。
+
 **方式 A：使用 gh CLI（推荐）**
 
 ```bash
 gh release create assets-v1 \
   --title "Game Assets" \
-  --notes "游戏资源包（不含HD资源）" \
+  --notes "游戏资源包（不含HD资源）- 用于CI自动构建" \
   kdm-hunt-assets.tar.gz
 ```
 
@@ -71,10 +73,12 @@ gh release upload assets-v1 kdm-hunt-assets.tar.gz --clobber
 
 **方式 B：通过网页上传**
 
-1. 访问 https://github.com/banard2049-cpu/KDM_hunt/releases
-2. 创建新 Release（标签：`assets-v1`）或编辑已有的
-3. 上传 `kdm-hunt-assets.tar.gz`
-4. 确保文件名完全匹配
+1. 访问 https://github.com/banard2049-cpu/KDM_hunt/releases/new
+2. 在 "Choose a tag" 下拉框中输入：`assets-v1`（选择 "Create new tag: assets-v1 on publish"）
+3. 在 "Release title" 填写：`Game Assets`
+4. 在描述填写：`游戏资源包（不含HD资源）- 用于CI自动构建`
+5. 拖拽 `kdm-hunt-assets.tar.gz` 文件到上传区域
+6. 点击 "Publish release"
 
 ### 3. 测试下载
 
