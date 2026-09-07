@@ -40,6 +40,9 @@
     const ratio=sh.aspect || .714;
     return `<div class="loot-face${large?' loot-face-large':''}" role="img" aria-label="${esc(c.name)}" style="aspect-ratio:${ratio};background-image:url('${esc(sh.file)}');background-size:${sh.w*100}% ${sh.h*100}%;background-position:${x}% ${y}%"></div>`;
   }
+  function ruleImageMarkup(file,alt,lazy=false){
+    return `<span class="loot-rule-frame"><img ${lazy?'loading="lazy" ':''}src="${esc(file)}" alt="${esc(alt)}" onload="const wide=this.naturalWidth/this.naturalHeight>1.8;this.classList.toggle('wide-img',wide);this.parentElement.style.setProperty('--rule-aspect',this.naturalWidth/this.naturalHeight/(wide?2:1))"></span>`;
+  }
   function cardsMarkup(ids,discarded=false){return ids.map(cid=>{
     const c=data.cards[cid];return `<article class="loot-card"><button class="loot-card-image" data-loot-zoom="${esc(cid)}" aria-label="放大 ${esc(c.name)}">${imageMarkup(cid)}</button><div class="loot-card-caption"><b>${esc(c.name)}</b><small>${esc(data.decks[c.deck].name)}</small>${discarded?'<span class="loot-discard-label">已弃置 · 本场不可再抽</span>':`<button data-loot-discard="${esc(cid)}">弃置</button>`}</div></article>`;
   }).join('');}
@@ -79,12 +82,12 @@
       const sideFile=isCrocPrologue&&allRules.length>1?allRules[1]:allRules[0];
       const files=[sideFile].filter(Boolean);
       const d=$('lootRules')?.closest('details'); if(d)d.open=true;
-      if($('lootRules'))$('lootRules').innerHTML=files.map(f=>`<button class="loot-rule-preview" data-loot-rule="${esc(f)}"><img src="${esc(f)}" alt="奖励规则" onload="this.classList.toggle('wide-img',this.naturalWidth/this.naturalHeight>1.8)"></button>`).join('');
+      if($('lootRules'))$('lootRules').innerHTML=files.map(f=>`<button class="loot-rule-preview" data-loot-rule="${esc(f)}">${ruleImageMarkup(f,'奖励规则')}</button>`).join('');
       const preview=$('lootPreStartRules');
       if(preview){
         preview.hidden=!files.length;
         const grid=preview.querySelector('.loot-rule-grid');
-        if(grid)grid.innerHTML=files.map((f,i)=>`<button class="loot-rule-preview" data-loot-rule="${esc(f)}"><img loading="lazy" src="${esc(f)}" alt="${esc(l?.rule?.title||'奖励规则')} · 规则页 ${i+1}" onload="this.classList.toggle('wide-img',this.naturalWidth/this.naturalHeight>1.8)"><span>点击放大规则原图</span></button>`).join('');
+        if(grid)grid.innerHTML=files.map((f,i)=>`<button class="loot-rule-preview" data-loot-rule="${esc(f)}">${ruleImageMarkup(f,(l?.rule?.title||'奖励规则')+' · 规则页 '+(i+1),true)}<span>点击放大规则原图</span></button>`).join('');
       }
       return;
     }
@@ -105,7 +108,7 @@
     const sideRule=isCrocPrologue&&rules.length>1?[rules[1]]:rules.length?[rules[0]]:[level.rule?.file].filter(Boolean);
     $('lootRuleSource').textContent='自动奖励：TTS 模组规则。清晰度只影响规则图片。'+(hd&&level.rule?.hdDifference?'\n版本差异：'+level.rule.hdDifference:'');
     const rulesDetails=$('lootRules')?.closest('details');if(rulesDetails)rulesDetails.open=true;
-    $('lootRules').innerHTML=sideRule.map((file,i)=>`<button class="loot-rule-preview" data-loot-rule="${esc(file)}"><img loading="lazy" src="${esc(file)}" alt="${esc(level.rule?.title||'奖励规则')}" onload="this.classList.toggle('wide-img',this.naturalWidth/this.naturalHeight>1.8)"><span>点击放大查看完整规则</span></button>`).join('')||'<p class="muted">模组未提供此条目的可用规则页，请按实体规则结算。</p>';
+    $('lootRules').innerHTML=sideRule.map((file,i)=>`<button class="loot-rule-preview" data-loot-rule="${esc(file)}">${ruleImageMarkup(file,level.rule?.title||'奖励规则',true)}<span>点击放大查看完整规则</span></button>`).join('')||'<p class="muted">模组未提供此条目的可用规则页，请按实体规则结算。</p>';
     $('lootHeldCount').textContent=s.held.length;$('lootDiscardedCount').textContent=s.discarded.length;
     const monsterCards=s.held.filter(cid=>{const deck=data.decks[data.cards[cid].deck];return deck.kind==='monster'||deck.kind==='strange';});
     const basicCards=s.held.filter(cid=>{const deck=data.decks[data.cards[cid].deck];return deck.kind!=='monster'&&deck.kind!=='strange';});

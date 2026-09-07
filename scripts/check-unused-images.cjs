@@ -11,6 +11,8 @@ const filesToCheck = [
   'data/loot.json',
   'data/huntdecks.json',
   'data/monsters.json',
+  'data/random-crops-standard.json',
+  'data/random-crops-hd.json',
   'index.html',
   'test-loot-images.html',
   'debug-loot.html'
@@ -35,6 +37,12 @@ filesToCheck.forEach(file => {
 
   for (const match of matches) {
     referencedImages.add(match[0]);
+  }
+
+  // Rulebook filenames are relative to assets/cards and assembled at runtime.
+  // Include the crop data and literal page filenames, not just full asset URLs.
+  for (const match of content.matchAll(/["'](?:file["']\s*:\s*["'])?((?:rulebook-hd\/)?hunt-events-[\d-]+\.jpg)["']/g)) {
+    referencedImages.add('assets/cards/' + match[1]);
   }
 });
 
