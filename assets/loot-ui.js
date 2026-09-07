@@ -152,18 +152,32 @@
   }
   async function init(){
     try{
-      // Try multiple paths for Android compatibility
+      // Try multiple paths for Android/Web compatibility
       let response;
-      const paths=['data/loot.json','./data/loot.json','/data/loot.json'];
-      let lastError='';
+      const origin=window.location.origin;
+      const pathname=window.location.pathname;
+      const base=pathname.substring(0,pathname.lastIndexOf('/')+1);
+      const paths=[
+        'data/loot.json',
+        './data/loot.json',
+        base+'data/loot.json',
+        '/data/loot.json',
+        origin+'/data/loot.json'
+      ];
+      let lastError='',triedPaths=[];
       for(const path of paths){
+        triedPaths.push(path);
         try{
           response=await fetch(path);
-          if(response.ok){data=await response.json();break;}
+          if(response.ok){data=await response.json();console.log('[Loot] Loaded from:',path);break;}
           lastError=`HTTP ${response.status}`;
         }catch(e){lastError=e.message;continue;}
       }
-      if(!data)throw new Error(`牌库文件载入失败 (${lastError})`);
+      if(!data){
+        console.error('[Loot] Failed to load. Tried:',triedPaths);
+        console.error('[Loot] origin:',origin,'pathname:',pathname,'base:',base);
+        throw new Error(`牌库文件载入失败 (${lastError})`);
+      }
       const raw=localStorage.getItem(key);
       if(raw){
         const saved=JSON.parse(raw);if(saved.schemaVersion!==1||!saved.sessions)throw new Error('战利品存档格式无法识别');
