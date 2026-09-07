@@ -152,7 +152,18 @@
   }
   async function init(){
     try{
-      const response=await fetch('data/loot.json');if(!response.ok)throw new Error('牌库文件载入失败');data=await response.json();
+      // Try multiple paths for Android compatibility
+      let response;
+      const paths=['data/loot.json','./data/loot.json','/data/loot.json'];
+      let lastError='';
+      for(const path of paths){
+        try{
+          response=await fetch(path);
+          if(response.ok){data=await response.json();break;}
+          lastError=`HTTP ${response.status}`;
+        }catch(e){lastError=e.message;continue;}
+      }
+      if(!data)throw new Error(`牌库文件载入失败 (${lastError})`);
       const raw=localStorage.getItem(key);
       if(raw){
         const saved=JSON.parse(raw);if(saved.schemaVersion!==1||!saved.sessions)throw new Error('战利品存档格式无法识别');
