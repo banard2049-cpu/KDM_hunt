@@ -15,7 +15,7 @@
   function create(data, bossId, levelId, id, source='manual', options={}) {
     const boss=data.bosses.find(b=>b.id===bossId), level=boss?.levels.find(l=>l.id===levelId);
     if(!level) throw new Error('找不到这个 Boss 或等级。');
-    return {schemaVersion:1,id,bossId,levelId,source,includeLumpOfAtnas:options.includeLumpOfAtnas===true,createdAt:Date.now(),piles:{},held:[],discarded:[],claimed:false,pending:null,rolls:[],notes:[],history:[]};
+    return {schemaVersion:1,id,bossId,levelId,source,ccgVerminVersion:1,includeLumpOfAtnas:options.includeLumpOfAtnas===true,includeFanVermin:options.includeFanVermin===true,includePromoVermin:options.includePromoVermin===true,createdAt:Date.now(),piles:{},held:[],discarded:[],claimed:false,pending:null,rolls:[],notes:[],history:[]};
   }
   function context(data,s) {
     const boss=data.bosses.find(b=>b.id===s.bossId),level=boss?.levels.find(l=>l.id===s.levelId);
@@ -37,10 +37,21 @@
     if(!data.decks[resolved])throw new Error('该 Boss 没有对应牌库。');
     return resolved;
   }
+  const coreVermin='kingdom-death-monster-archive--core-vermin';
+  const baseVermin=new Set(['Crab Spider','Cyclops Fly','Hissing Cockroach','Lonely Ant','Nightmare Tick','Sword Beetle']);
+  function cardEnabled(data,s,cid) {
+    const card=data.cards[cid];
+    if(s.includeLumpOfAtnas===false&&card.name==='Lump of Atnas')return false;
+    if(card.deck!==coreVermin||baseVermin.has(card.name))return true;
+    // These switches configure the core draw pool; source archives stay separate.
+    return card.name==='Gibbering Haremite'?s.includePromoVermin!==false:s.includeFanVermin!==false;
+  }
   function deckCards(data,s,id) {
     id=deckId(data,s,id);
     // Missing option means a legacy battle: preserve its original full deck.
-    return data.decks[id].cards.filter(cid=>s.includeLumpOfAtnas!==false||data.cards[cid].name!=='Lump of Atnas');
+    const deck=data.decks[id];
+    const cards=s.ccgVerminVersion===undefined&&deck.legacyCards?deck.legacyCards:deck.cards;
+    return cards.filter(cid=>cardEnabled(data,s,cid));
   }
   function pile(data,s,id,random) {
     id=deckId(data,s,id);
@@ -139,14 +150,15 @@
   function available(data,s,id) {id=deckId(data,s,id);return (s.piles[id] || deckCards(data,s,id)).slice();}
   function validate(data,s) {
     context(data,s);
-    if(s.includeLumpOfAtnas!==undefined&&typeof s.includeLumpOfAtnas!=='boolean')throw new Error('战斗的可选资源设置无效。');
+    if(s.ccgVerminVersion!==undefined&&s.ccgVerminVersion!==1)throw new Error('战斗的 CCG 寄生虫牌库版本无效。');
+    for(const key of ['includeLumpOfAtnas','includeFanVermin','includePromoVermin'])if(s[key]!==undefined&&typeof s[key]!=='boolean')throw new Error('战斗的可选资源设置无效。');
     const seen=new Set();
     for(const [id,remaining] of Object.entries(s.piles)){
       if(!data.decks[id])throw new Error('存档包含未知牌库。');
-      for(const cid of remaining){if(data.cards[cid]?.deck!==id||seen.has(cid))throw new Error('存档牌库无效。');seen.add(cid);}
+      for(const cid of remaining){if(data.cards[cid]?.deck!==id||!deckCards(data,s,id).includes(cid)||seen.has(cid))throw new Error('存档牌库无效。');seen.add(cid);}
     }
     for(const cid of [...s.held,...s.discarded]){if(!data.cards[cid]||seen.has(cid)||!s.piles[data.cards[cid].deck])throw new Error('存档卡牌重复或不存在。');seen.add(cid);}
-    for(const cid of seen)if(s.includeLumpOfAtnas===false&&data.cards[cid].name==='Lump of Atnas')throw new Error('存档包含未启用的可选资源。');
+    for(const cid of seen)if(!deckCards(data,s,data.cards[cid].deck).includes(cid))throw new Error('存档包含未启用的可选资源。');
     for(const id of Object.keys(s.piles))for(const cid of deckCards(data,s,id))if(!seen.has(cid))throw new Error('存档丢失卡牌。');
     return true;
   }

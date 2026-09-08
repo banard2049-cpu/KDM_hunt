@@ -198,6 +198,7 @@ function inspect(steps,b,l){for(const s of steps||[]){
 }}
 for(const b of bosses)for(const l of b.levels)inspect(l.reward.steps,b,l);
 const result={schemaVersion:1,bosses,decks,cards,sheets,warnings:[...new Set(warnings)]};
+require('./normalize-loot-vermin.cjs')(result);
 if(pdfRequests.length){
   fs.mkdirSync(path.join(root,'.research-scratch'),{recursive:true});
   fs.writeFileSync(path.join(root,'.research-scratch','loot-pdf-jobs.json'),JSON.stringify({root,requests:pdfRequests}));

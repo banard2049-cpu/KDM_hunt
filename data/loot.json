@@ -9044,13 +9044,23 @@
         "ccg-homebrew-archive--ccg-vermin:4",
         "ccg-homebrew-archive--ccg-vermin:5",
         "ccg-homebrew-archive--ccg-vermin:6",
-        "ccg-homebrew-archive--ccg-vermin:7"
+        "ccg-homebrew-archive--ccg-vermin:centileech"
       ],
       "source": {
         "file": "(Don)KDM_GCE.json",
         "path": "CCG Homebrew Archive/CCG Homebrew",
         "guid": "ff691b"
-      }
+      },
+      "legacyCards": [
+        "ccg-homebrew-archive--ccg-vermin:0",
+        "ccg-homebrew-archive--ccg-vermin:1",
+        "ccg-homebrew-archive--ccg-vermin:2",
+        "ccg-homebrew-archive--ccg-vermin:3",
+        "ccg-homebrew-archive--ccg-vermin:4",
+        "ccg-homebrew-archive--ccg-vermin:5",
+        "ccg-homebrew-archive--ccg-vermin:6",
+        "ccg-homebrew-archive--ccg-vermin:7"
+      ]
     },
     "forsaker-sisters-archive--forsaker-sisters-strange-resources": {
       "id": "forsaker-sisters-archive--forsaker-sisters-strange-resources",
@@ -20474,6 +20484,15 @@
       "row": 1,
       "sourceCardId": 1164212,
       "template": "kingdom-death-monster-archive--core-rare-gear:41"
+    },
+    "ccg-homebrew-archive--ccg-vermin:centileech": {
+      "id": "ccg-homebrew-archive--ccg-vermin:centileech",
+      "name": "Centileech",
+      "deck": "ccg-homebrew-archive--ccg-vermin",
+      "sheet": "assets/loot/a08a3c61f1d015aff827.png",
+      "col": 0,
+      "row": 0,
+      "sourceCardId": 936200
     }
   },
   "sheets": {
