@@ -39,8 +39,8 @@ jobs:
       - name: Download game assets
         run: node scripts/download-assets.cjs
         env:
-          # Use the assets-v1 release by default
-          ASSETS_RELEASE_TAG: assets-v1
+          # Use the assets-v2 release by default
+          ASSETS_RELEASE_TAG: assets-v2
           # Pass GitHub token for API authentication (higher rate limits)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Optional: use custom URL if needed

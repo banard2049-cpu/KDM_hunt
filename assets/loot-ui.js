@@ -43,8 +43,15 @@
   function ruleImageMarkup(file,alt,lazy=false){
     return `<span class="loot-rule-frame"><img ${lazy?'loading="lazy" ':''}src="${esc(file)}" alt="${esc(alt)}" onload="const wide=this.naturalWidth/this.naturalHeight>1.8;this.classList.toggle('wide-img',wide);this.parentElement.style.setProperty('--rule-aspect',this.naturalWidth/this.naturalHeight/(wide?2:1))"></span>`;
   }
-  function cardsMarkup(ids,discarded=false){return ids.map(cid=>{
-    const c=data.cards[cid];return `<article class="loot-card"><button class="loot-card-image" data-loot-zoom="${esc(cid)}" aria-label="放大 ${esc(c.name)}">${imageMarkup(cid)}</button><div class="loot-card-caption"><b>${esc(c.name)}</b><small>${esc(data.decks[c.deck].name)}</small>${discarded?'<span class="loot-discard-label">已弃置 · 本场不可再抽</span>':`<button data-loot-discard="${esc(cid)}">弃置</button>`}</div></article>`;
+  function groupCards(ids){
+    const groups=new Map();
+    for(const cid of ids){const name=data.cards[cid].name;if(!groups.has(name))groups.set(name,[]);groups.get(name).push(cid);}
+    return [...groups.values()];
+  }
+  function cardsMarkup(ids,discarded=false){return groupCards(ids).map(copies=>{
+    const cid=copies[0],c=data.cards[cid],label=window.LootCardNames?.label(c.name)||c.name;
+    const sources=[...new Set(copies.map(id=>data.decks[data.cards[id].deck].name))].join(" / ");
+    return `<article class="loot-card"><button class="loot-card-image" data-loot-zoom="${esc(cid)}" aria-label="放大 ${esc(label)}">${imageMarkup(cid)}</button><div class="loot-card-caption"><b>${esc(label)}</b><span class="loot-stack-count">数量 × ${copies.length}</span><small>${esc(sources)}</small>${discarded?'<span class="loot-discard-label">已弃置 · 本场不可再抽</span>':`<button data-loot-discard="${esc(cid)}" aria-label="弃置一张 ${esc(label)}">弃置一张</button>`}</div></article>`;
   }).join('');}
   function stepsText(steps){return (steps||[]).map(s=>s.op==='draw'?`${typeof s.count==='object'?'指定数量':s.count} 张${s.deck==='basic'?'基础资源':s.deck==='monster'?'怪物资源':data.decks[s.deck]?.name||s.deck}`:s.op==='take'?`${typeof s.count==='object'?'指定数量':s.count||1} 张 ${s.name}`:s.op==='roll'?`掷 d${s.sides||10}${s.bonus==='level'?' + Boss 等级':''} 查奖励表`:s.op==='if'?`按所选条件结算`:s.op==='note'?s.text:'').join('；');}
   function choiceOptions(input,s){
@@ -55,6 +62,17 @@
     $('lootConditions').innerHTML=(rule.inputs||[]).map(i=>i.type==='boolean'?`<label class="loot-input">${esc(i.label)}<select data-loot-input="${esc(i.key)}"><option value="">请选择</option><option value="yes">是</option><option value="no">否</option></select></label>`:i.type==='card'?`<label class="loot-input">${esc(i.label)}<select data-loot-input="${esc(i.key)}"><option value="">请选择</option>${choiceOptions(i,s)}</select></label>`:i.type==='deck'?`<label class="loot-input">${esc(i.label)}<select data-loot-input="${esc(i.key)}"><option value="">请选择</option>${Object.values(data.decks).filter(d=>d.kind==='monster').map(d=>`<option value="${esc(d.id)}">${esc(d.name)} · ${esc(d.source.path)}</option>`).join('')}</select></label>`:`<label class="loot-input">${esc(i.label)}<input data-loot-input="${esc(i.key)}" type="number" min="${i.min??0}" max="${i.max??99}" step="1" placeholder="请输入"></label>`).join('');
     $('lootConditions').querySelectorAll('input,select').forEach(n=>{n.disabled=!!(s.pending||s.claimed);const value=(s.pending?.inputs||s.rewardInputs||s.draftInputs||{})[n.dataset.lootInput];if(value!==undefined)n.value=typeof value==='boolean'?(value?'yes':'no'):value;});
   }
+  function renderDeckGallery(){
+    const panel=$('lootDeckGallery'),grid=$('lootDeckCards'),s=current();
+    if(!panel.open||!s){grid.innerHTML='';return;}
+    const remaining=E.available(data,s,selectedDeck),query=$('lootCardSearch').value.trim().toLowerCase(),names=window.LootCardNames;
+    const visible=remaining.filter(cid=>!query||(names?names.matches(data.cards[cid].name,query):data.cards[cid].name.toLowerCase().includes(query)));
+    grid.innerHTML=groupCards(visible).map(copies=>{
+      const cid=copies[0];
+      const c=data.cards[cid],label=names?names.label(c.name):c.name;
+      return `<article class="loot-card"><button class="loot-card-image" data-loot-zoom="${esc(cid)}" aria-label="放大 ${esc(label)}">${imageMarkup(cid)}</button><div class="loot-card-caption"><b>${esc(label)}</b><span class="loot-stack-count">剩余 × ${copies.length}</span><button class="primary" data-loot-add="${esc(cid)}" aria-label="加入一张 ${esc(label)}">加入一张</button></div></article>`;
+    }).join('')||`<p class="muted">${remaining.length?'没有匹配的卡牌，请修改搜索词。':'当前牌库已无剩余卡牌。'}</p>`;
+  }
   function renderDeck(){
     const s=current();if(!s)return;
     const {boss}=E.context(data,s),defaults=boss.defaultDecks;
@@ -63,12 +81,16 @@
     $('lootDeck').innerHTML=list.map(id=>`<option value="${esc(id)}">${defaults.includes(id)?'★ ':''}${esc(data.decks[id].name)} · ${E.available(data,s,id).length} 张 · ${esc(data.decks[id].source.path.split('/')[0])}</option>`).join('');$('lootDeck').value=selectedDeck;
     const remaining=E.available(data,s,selectedDeck),query=$('lootCardSearch').value.trim().toLowerCase();
     const byName=new Map();for(const cid of remaining){const name=data.cards[cid].name;if(!byName.has(name))byName.set(name,[]);byName.get(name).push(cid);}
-    $('lootCard').innerHTML=[...byName].filter(([name])=>!query||name.toLowerCase().includes(query)).map(([name,ids])=>`<option value="${esc(ids[0])}">${esc(name)} × ${ids.length}</option>`).join('');
+    const names=window.LootCardNames;
+    $('lootCard').innerHTML=[...byName].filter(([name])=>!query||(names?names.matches(name,query):name.toLowerCase().includes(query))).map(([name,ids])=>`<option value="${esc(ids[0])}">${esc(names?names.label(name):name)} × ${ids.length}</option>`).join('');
     $('lootTake').disabled=!$('lootCard').value;$('lootDraw').disabled=!remaining.length;
-    $('lootRemaining').textContent=`当前牌库剩余 ${remaining.length} / ${data.decks[selectedDeck].cards.length} 张。补抽和指定拿牌都消耗本场牌库。`;
+    $('lootRemaining').textContent=`当前牌库剩余 ${remaining.length} / ${E.deckCards(data,s,selectedDeck).length} 张。补抽和指定拿牌都消耗本场牌库。`;
+    $('lootDeckGalleryCount').textContent=remaining.length;
+    renderDeckGallery();
   }
   function render(){
     if(!data)return;
+    $('lootIncludeLumpOfAtnas').checked=store.includeLumpOfAtnas===true;
     $('lootQuality').value=localStorage.getItem('kdm-rulebook-version')==='hd'?'hd':'standard';
     selectors();
     const sessions=Object.values(store.sessions).sort((a,b)=>b.createdAt-a.createdAt);
@@ -94,7 +116,7 @@
     const preview=$('lootPreStartRules');if(preview)preview.hidden=true;
     const {boss,level}=E.context(data,s),r=level.reward;
     $('lootTitle').textContent=bossName(boss)+' · '+levelName(level);
-    $('lootSource').textContent=s.source==='hunt'?'来自狩猎 · 战斗结果由你判断':'手动战斗';
+    $('lootSource').textContent=(s.source==='hunt'?'来自狩猎 · 战斗结果由你判断':'手动战斗')+' · 甥啖肉块：'+(s.includeLumpOfAtnas!==false?'已加入':'未加入');
     $('lootRewardDescription').textContent=r.description||r.note||stepsText(r.steps);
     $('lootClaim').disabled=s.claimed||r.type==='manual';$('lootClaim').textContent=s.claimed?'战后奖励已领取':s.pending?'继续领取已生成的奖励':'抽取战后奖励';
     $('lootUndo').disabled=!s.history.length;$('lootUndo').textContent=s.history.length?'撤销：'+s.history.at(-1).label:'撤销上次操作';
@@ -122,7 +144,7 @@
   }
   function startManual(){
     if(!selectedBoss)return;
-    const s=E.create(data,selectedBoss,selectedLevel,uid());selectedDeck='';update(s,'已开始新战斗，牌库已准备好。');
+    const s=E.create(data,selectedBoss,selectedLevel,uid(),'manual',{includeLumpOfAtnas:store.includeLumpOfAtnas===true});selectedDeck='';update(s,'已开始新战斗，牌库已准备好。');
   }
   function claim(){
     const s=current();if(!s)return;
@@ -147,7 +169,7 @@
     const id=hunt.battleId;
     if(!store.sessions[id]){
       if(hunt.lootBattle?.id===id){try{E.validate(data,hunt.lootBattle);store.sessions[id]=hunt.lootBattle;}catch(_){notice('关联战利品存档损坏，已保留原存档，请导出检查。',true);return;}}
-      else store.sessions[id]=E.create(data,boss.id,level.id,id,'hunt');
+      else store.sessions[id]=E.create(data,boss.id,level.id,id,'hunt',{includeLumpOfAtnas:store.includeLumpOfAtnas===true});
     }
     store.active=id;selectedBoss=boss.id;selectedLevel=level.id;selectedGroup='全部';$('lootGroup').value='全部';$('lootSearch').value='';selectedDeck='';
     try{localStorage.setItem('kdm-current',JSON.stringify(hunt));}catch(_){}
@@ -206,15 +228,19 @@
       if(localStorage.getItem('kdm-page')==='loot')show('loot');
     }catch(e){loadError='战利品载入失败：'+e.message+'。原存档未修改。';data=null;notice(loadError,true);$('lootNew').disabled=true;}
   }
+  $('lootIncludeLumpOfAtnas').onchange=e=>{store.includeLumpOfAtnas=e.target.checked;if(save())notice('新战斗将'+(e.target.checked?'加入':'不加入')+'甥啖肉块；已有战斗保持原设置。');};
   $('goLoot').onclick=()=>show('loot');$('goHunt').onclick=()=>show('hunt');$('lootNew').onclick=startManual;
   $('lootGroup').onchange=e=>{selectedGroup=e.target.value;render();};$('lootSearch').oninput=render;
   $('lootBoss').onchange=e=>{selectedBoss=e.target.value;selectedLevel='';render();};$('lootLevel').onchange=e=>{selectedLevel=e.target.value;render();};
   $('lootSessions').onchange=e=>{if(!e.target.value)return;store.active=e.target.value;const s=current();selectedBoss=s.bossId;selectedLevel=s.levelId;selectedGroup='全部';$('lootGroup').value='全部';$('lootSearch').value='';selectedDeck='';render();save();notice('已恢复这场战斗。');};
   $('lootClaim').onclick=claim;$('lootUndo').onclick=()=>run(()=>E.undo(current()),'已撤销上次操作。');
   $('lootDeck').onchange=e=>{selectedDeck=e.target.value;renderDeck();};$('lootCardSearch').oninput=renderDeck;
+  $('lootDeckGallery').ontoggle=renderDeckGallery;
   $('lootDraw').onclick=()=>run(()=>E.draw(data,current(),selectedDeck,Number($('lootCount').value)),'已补抽卡牌。');
   $('lootTake').onclick=()=>run(()=>E.take(data,current(),$('lootCard').value),'已获得指定卡牌。');$('lootExport').onclick=exportAll;
   $('lootPage').addEventListener('click',e=>{
+    const add=e.target.closest('[data-loot-add]');
+    if(add){run(()=>E.take(data,current(),add.dataset.lootAdd),'已加入这张卡牌。');return;}
     const discard=e.target.closest('[data-loot-discard]'),zoom=e.target.closest('[data-loot-zoom]'),rule=e.target.closest('[data-loot-rule]');
     if(discard)run(()=>E.discard(data,current(),discard.dataset.lootDiscard),'已弃置。本场不会再抽到这张卡，可撤销误操作。');
     if(zoom)modal(imageMarkup(zoom.dataset.lootZoom,true),data.cards[zoom.dataset.lootZoom].name);

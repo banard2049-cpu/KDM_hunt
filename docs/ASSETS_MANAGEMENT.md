@@ -54,12 +54,12 @@ node scripts/pack-assets.cjs
 
 ### 2. 上传到 GitHub Release
 
-**重要：** `assets-v1` 标签已被配置为不触发 CI 构建，专门用于存储资源。
+**重要：** `assets-v2` 标签已被配置为不触发 CI 构建，专门用于存储资源。
 
 **方式 A：使用 gh CLI（推荐）**
 
 ```bash
-gh release create assets-v1 \
+gh release create assets-v2 \
   --title "Game Assets" \
   --notes "游戏资源包（不含HD资源）- 用于CI自动构建" \
   kdm-hunt-assets.tar.gz
@@ -68,13 +68,13 @@ gh release create assets-v1 \
 更新已有 Release：
 
 ```bash
-gh release upload assets-v1 kdm-hunt-assets.tar.gz --clobber
+gh release upload assets-v2 kdm-hunt-assets.tar.gz --clobber
 ```
 
 **方式 B：通过网页上传**
 
 1. 访问 https://github.com/banard2049-cpu/KDM_hunt/releases/new
-2. 在 "Choose a tag" 下拉框中输入：`assets-v1`（选择 "Create new tag: assets-v1 on publish"）
+2. 在 "Choose a tag" 下拉框中输入：`assets-v2`（选择 "Create new tag: assets-v2 on publish"）
 3. 在 "Release title" 填写：`Game Assets`
 4. 在描述填写：`游戏资源包（不含HD资源）- 用于CI自动构建`
 5. 拖拽 `kdm-hunt-assets.tar.gz` 文件到上传区域
@@ -98,7 +98,7 @@ ls -lh assets/*/
 GitHub Actions 会在构建 APK 前自动执行：
 
 1. 检查 `assets/` 目录是否完整
-2. 如果不完整，从 Release `assets-v1` 下载 `kdm-hunt-assets.tar.gz`
+2. 如果不完整，从 Release `assets-v2` 下载 `kdm-hunt-assets.tar.gz`
 3. 解压到项目根目录
 4. 验证所有必需的子目录都存在
 5. 继续构建流程
@@ -162,7 +162,7 @@ const EXCLUDE_PATTERNS = [
 
 ### 下载失败
 
-1. 确认 Release `assets-v1` 存在
+1. 确认 Release `assets-v2` 存在
 2. 确认其中包含 `kdm-hunt-assets.tar.gz` 文件
 3. 检查网络连接和 GitHub API 访问
 

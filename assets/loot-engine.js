@@ -12,10 +12,10 @@
   function shuffle(a, random=Math.random) {
     a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;
   }
-  function create(data, bossId, levelId, id, source='manual') {
+  function create(data, bossId, levelId, id, source='manual', options={}) {
     const boss=data.bosses.find(b=>b.id===bossId), level=boss?.levels.find(l=>l.id===levelId);
     if(!level) throw new Error('找不到这个 Boss 或等级。');
-    return {schemaVersion:1,id,bossId,levelId,source,createdAt:Date.now(),piles:{},held:[],discarded:[],claimed:false,pending:null,rolls:[],notes:[],history:[]};
+    return {schemaVersion:1,id,bossId,levelId,source,includeLumpOfAtnas:options.includeLumpOfAtnas===true,createdAt:Date.now(),piles:{},held:[],discarded:[],claimed:false,pending:null,rolls:[],notes:[],history:[]};
   }
   function context(data,s) {
     const boss=data.bosses.find(b=>b.id===s.bossId),level=boss?.levels.find(l=>l.id===s.levelId);
@@ -37,9 +37,14 @@
     if(!data.decks[resolved])throw new Error('该 Boss 没有对应牌库。');
     return resolved;
   }
+  function deckCards(data,s,id) {
+    id=deckId(data,s,id);
+    // Missing option means a legacy battle: preserve its original full deck.
+    return data.decks[id].cards.filter(cid=>s.includeLumpOfAtnas!==false||data.cards[cid].name!=='Lump of Atnas');
+  }
   function pile(data,s,id,random) {
     id=deckId(data,s,id);
-    if(!s.piles[id])s.piles[id]=shuffle(data.decks[id].cards,random);
+    if(!s.piles[id])s.piles[id]=shuffle(deckCards(data,s,id),random);
     return s.piles[id];
   }
   function checkpoint(s) {const state=copy(s);delete state.history;return state;}
@@ -131,17 +136,19 @@
       // Claim is a boundary: undoing a later discard can never unclaim rewards.
       n.history=[];return n;
   }
-  function available(data,s,id) {id=deckId(data,s,id);return (s.piles[id] || data.decks[id].cards).slice();}
+  function available(data,s,id) {id=deckId(data,s,id);return (s.piles[id] || deckCards(data,s,id)).slice();}
   function validate(data,s) {
     context(data,s);
+    if(s.includeLumpOfAtnas!==undefined&&typeof s.includeLumpOfAtnas!=='boolean')throw new Error('战斗的可选资源设置无效。');
     const seen=new Set();
     for(const [id,remaining] of Object.entries(s.piles)){
       if(!data.decks[id])throw new Error('存档包含未知牌库。');
       for(const cid of remaining){if(data.cards[cid]?.deck!==id||seen.has(cid))throw new Error('存档牌库无效。');seen.add(cid);}
     }
     for(const cid of [...s.held,...s.discarded]){if(!data.cards[cid]||seen.has(cid)||!s.piles[data.cards[cid].deck])throw new Error('存档卡牌重复或不存在。');seen.add(cid);}
-    for(const id of Object.keys(s.piles))for(const cid of data.decks[id].cards)if(!seen.has(cid))throw new Error('存档丢失卡牌。');
+    for(const cid of seen)if(s.includeLumpOfAtnas===false&&data.cards[cid].name==='Lump of Atnas')throw new Error('存档包含未启用的可选资源。');
+    for(const id of Object.keys(s.piles))for(const cid of deckCards(data,s,id))if(!seen.has(cid))throw new Error('存档丢失卡牌。');
     return true;
   }
-  return {create,context,huntSelection,draw,take,discard,undo,prepare,claim,available,validate,namedDeck,shuffle};
+  return {create,context,huntSelection,draw,take,discard,undo,prepare,claim,available,deckCards,validate,namedDeck,shuffle};
 });

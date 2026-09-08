@@ -120,7 +120,7 @@ function main() {
   console.log(`  ⚠ HD assets excluded (private files not included)`);
   console.log(`\nNext steps:`);
   console.log(`  1. Upload this file to a GitHub Release as "kdm-hunt-assets.tar.gz"`);
-  console.log(`  2. Run: gh release create assets-v1 --title "Game Assets" --notes "游戏资源包（不含HD资源）" kdm-hunt-assets.tar.gz`);
+  console.log(`  2. Run: gh release create assets-v2 --title "Game Assets" --notes "游戏资源包（不含HD资源）" kdm-hunt-assets.tar.gz`);
   console.log(`  3. The CI build will automatically download it`);
 }
 

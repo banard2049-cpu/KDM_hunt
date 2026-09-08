@@ -10,7 +10,7 @@
  *
  * Environment variables:
  *   ASSETS_URL - URL to download the assets archive (default: from GitHub Release)
- *   ASSETS_RELEASE_TAG - GitHub Release tag to download from (default: assets-v1)
+ *   ASSETS_RELEASE_TAG - GitHub Release tag to download from (default: assets-v2)
  */
 
 const fs = require('node:fs');
@@ -19,7 +19,7 @@ const https = require('node:https');
 const { execSync } = require('node:child_process');
 
 const REPO = 'banard2049-cpu/KDM_hunt';
-const DEFAULT_RELEASE_TAG = 'assets-v1';
+const DEFAULT_RELEASE_TAG = 'assets-v2';
 const ASSET_NAME = 'kdm-hunt-assets.tar.gz';
 const ROOT_DIR = path.resolve(__dirname, '..');
 const ASSETS_DIR = path.join(ROOT_DIR, 'assets');
