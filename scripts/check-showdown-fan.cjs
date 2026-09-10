@@ -218,5 +218,44 @@ const clickCard = (value, checked) => {
   assert.equal(el('sdShareInfo').hidden, true, 'stopping takes the address away again');
   assert.equal(opened[0].closed, true, 'stopping must close the second screen window');
 
+  // Android must start the native host without invoking WebView popup navigation.
+  let starts=0,stops=0,shown=0,scrolled=0,startError=null;
+  const published=[];
+  const panel=el('lootSidebar')._appended[0],status=panel._appended[0];
+  panel.scrollIntoView=()=>scrolled++;
+  window.KDMLoot.show=mode=>{assert.equal(mode,'loot');shown++;};
+  window.open=()=>{throw Error('Android must never open a popup');};
+  // Android injects Plugins directly; registerPlugin is absent without the web bundle.
+  window.Capacitor={isNativePlatform:()=>true,Plugins:{ShowdownHost:{
+      async start(){starts++;await settle();if(startError)throw Error(startError);return {urls:['http://192.168.1.30:43210/d/']};},
+      async publish({snapshot}){published.push(snapshot);},
+      async stop(){stops++;}
+  }}};
+  const opening=el('sdOpenTop').onclick();
+  assert.match(status.textContent,/正在开启/);
+  await el('sdOpenTop').onclick();
+  await opening;await settle();
+  assert.equal(starts,1,'rapid taps must not restart the native server');
+  assert.equal(el('sdShareInfo').hidden,false);
+  assert.equal(el('sdShareUrl').innerHTML,'<code>http://192.168.1.30:43210/d/</code>');
+  assert.ok(shown>0&&scrolled>0,'show the address panel even when opening from the hunt page');
+  assert.equal(published.at(-1).battleId,'b2','publish the current battle to the native host');
+  assert.equal(status.textContent,'');
+  assert.equal(status.hidden,true,'successful sharing only displays the address');
+  await el('sdOpenTop').onclick();
+  assert.equal(starts,1,'opening again retains the existing native address');
+  await el('sdStop').onclick();
+  assert.equal(stops,1);
+  assert.equal(el('sdShareInfo').hidden,true);
+  startError='未找到局域网地址，请连接 Wi-Fi 或开启热点。';
+  await el('sdOpenTop').onclick();
+  assert.equal(status.hidden,false);
+  assert.equal(status.textContent,startError,'native failure is visible beside the address controls');
+  assert.equal(el('sdShareInfo').hidden,true);
+  startError=null;
+  await el('sdOpenTop').onclick();
+  assert.equal(el('sdShareInfo').hidden,false,'a failed start can be retried');
+  await el('sdStop').onclick();
+
   console.log('Passed: random terrain pool defaults to 基础, never leaks fan terrain, is editable one card at a time, and the header button opens the second screen itself.');
 })().catch(e => { console.error(e); process.exit(1); });

@@ -35,6 +35,7 @@
  // deck controls live inside the battle module at the top of the right column.
  const page=document.createElement('section');page.id='showdownControls';page.className='sd-host-controls';page.innerHTML=`<h3>第二屏幕控制</h3><p id="sdBattleLabel">开始战斗后，可在这里控制第二屏幕。</p><p id="sdShareInfo" class="sd-share-address" hidden aria-label="第二屏幕地址"><span id="sdShareUrl"></span></p><div class="sd-controls"><button id="sdStop" hidden>停止第二屏幕</button><fieldset><legend>版图大小</legend><button data-sd-size="boardScale" data-delta="-0.1" aria-label="缩小副屏版图">−</button><output id="sdBoardSize">${pct(DEFAULT_BOARD)}</output><button data-sd-size="boardScale" data-delta="0.1" aria-label="放大副屏版图">＋</button></fieldset><fieldset><legend>卡牌大小</legend><button data-sd-size="cardScale" data-delta="-0.1" aria-label="缩小副屏卡牌">−</button><output id="sdCardSize">${pct(DEFAULT_CARD)}</output><button data-sd-size="cardScale" data-delta="0.1" aria-label="放大副屏卡牌">＋</button></fieldset><button data-sd-size="reset">重置大小</button><div class="sd-view-switches" role="group" aria-label="第二屏幕显示方式"><button id="sdRulebook" type="button" aria-pressed="false" data-icon="board" title="显示决战版图 · 点按换成 Boss 规则书" aria-label="第二屏幕当前显示决战版图，点按切换到Boss 规则书">${ICON.board}</button><button id="sdSwap" type="button" aria-pressed="false" data-icon="swap" title="交换版图与卡牌" aria-label="交换版图与卡牌：把卡牌展示区换到左列">${ICON.swap}</button><button id="sdRotate" type="button" data-angle="0" data-icon="rotate" title="旋转卡牌区" aria-label="旋转卡牌区：把卡牌逆时针转 90°">${ICON.rotate}</button><button id="sdAlign" type="button" data-align="${ALIGN_DEFAULT}" data-icon="align-${ALIGN_DEFAULT}" title="对齐方式 · ${alignLabel()}" aria-label="对齐方式：当前${alignLabel()}，点按切换到${alignLabel(nextAlign())}">${ICON.align[ALIGN_DEFAULT]}</button></div></div>`;
  $('lootSidebar').append(page);
+ const shareStatus=document.createElement('p');shareStatus.className='sd-warning';shareStatus.setAttribute('role','status');shareStatus.hidden=true;page.append(shareStatus);
  const terrain=document.createElement('section');terrain.id='sdTerrainPanel';terrain.className='sd-host-controls sd-terrain-panel';terrain.innerHTML=`<h3>随机地形</h3><div class="sd-controls"><button id="sdStartToggle" type="button" aria-pressed="true">显示初始位置</button><button id="sdTerrain">选择地形</button><button id="sdReroll">重抽地形</button><span id="sdFanHint" class="sd-fan-hint"></span></div><div id="sdTerrainEditor" hidden><p>固定与指定地形按规则保留；选择要替换的随机地形。</p><div id="sdTerrainSlots" class="sd-controls"></div><button id="sdApplyTerrain">应用地形</button><button id="sdCancelTerrain">取消</button></div><details id="sdPoolEditor"><summary>随机地形池 · 已选 <b id="sdPoolCount">0</b> 张<span id="sdExpSummary" class="muted"></span></summary><div class="sd-pool-bar"><input id="sdPoolSearch" placeholder="搜索地形名（英文）"><button id="sdPoolCore" type="button">只留基础</button><button id="sdPoolAll" type="button">全选</button><button id="sdPoolNone" type="button">全不选</button></div><p id="sdPoolHint" class="sd-pool-hint"></p><div id="sdPoolGroups"></div></details><div id="sdNotice" class="sd-warning" role="status"></div>`;
  // Inside the reward module; the column itself is the fallback if that module
  // ever moves or is renamed.
@@ -184,7 +185,14 @@
   const {boss,level}=E.context(data,s);$('sdBattleLabel').textContent=`${boss.displayName||boss.name} · ${level.name} · 随机地形 ${s.random.length} 张`;
   $('sdBoardSize').value=pct(Number(s.display?.boardScale)||DEFAULT_BOARD);$('sdCardSize').value=pct(Number(s.display?.cardScale)||DEFAULT_CARD);
  }
- const native=()=>window.Capacitor?.isNativePlatform?.()?window.Capacitor.registerPlugin('ShowdownHost'):null;
+ const isNative=()=>window.Capacitor?.isNativePlatform?.()===true;
+ function native(){
+  if(!isNative())return null;
+  // This unbundled app uses the plugin proxy injected by Android's bridge.
+  const cap=window.Capacitor,host=cap.Plugins?.ShowdownHost||cap.registerPlugin?.('ShowdownHost');
+  if(!host)throw Error('第二屏幕组件未加载，请重新安装最新版应用。');
+  return host;
+ }
  async function command(action,payload={}){const n=native();if(n)return n[action](payload);const r=await fetch('/api/showdown/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!r.ok)throw Error(r.status===403?'请在电脑本机地址打开主控。':'无法连接电脑服务，请用 start.bat 启动项目。');return r.json();}
  function publish(){if(!share||!current())return;const snapshot=E.snapshot(data,current());publishing=publishing.then(()=>command('publish',{snapshot})).catch(e=>notice('副屏同步失败：'+e.message));}
  function update(s){E.validate(data,s);store.sessions[s.id]=s;store.active=s.id;save();render();publish();}
@@ -234,7 +242,9 @@
  // Opening is the whole story for the window itself — it is aimed at the fixed
  // short link, so there is nothing to paste there — while the panel prints that
  // same link once, at the bottom of the sidebar, for the other devices.
- let popup=null;
+ let popup=null,startingShare=false;
+ function shareNotice(message){shareStatus.textContent=message;shareStatus.hidden=!message;notice(message);}
+ function showShareAddress(){window.KDMLoot.show('loot');page.scrollIntoView?.({behavior:'smooth',block:'start'});}
  const SECOND_NAME='kdm-second-screen';
  // The addresses printed under the sidebar panel: `share.urls` is the host's own
  // `http://<局域网IP>:<端口>/d/` list, which is what another device types in.
@@ -266,24 +276,38 @@
   if(!share.urls?.length){await command('stop');share=null;throw Error('未找到局域网地址，请连接 Wi-Fi 或开启热点。');}
   popup=window_||popup;
   render();
+  publish();
+  // Android hosts the viewer for other devices; its WebView stays on the controls.
+  if(isNative())return;
   const url=screenUrl();
   if(popup&&!popup.closed)popup.location.href=url;
   if(!popup||popup.closed){popup=null;if(!openSecondScreen(url))notice('浏览器拦截了新窗口，请允许本站弹出窗口后重试。');}
   else{try{popup.focus();}catch(_){}}
-  publish();
  }
  $('sdOpenTop').onclick=async()=>{
+  if(startingShare)return;
+  startingShare=true;
   try{
+   if(isNative()){
+    showShareAddress();
+    shareNotice('正在开启第二屏幕…');
+    if(!share)await startShare();
+    render();
+    shareNotice('');
+    showShareAddress();
+    return;
+   }
    if(share){if(!openSecondScreen(screenUrl()))notice('浏览器拦截了新窗口，请允许本站弹出窗口后重试。');else notice('第二屏幕已在新窗口打开。');return;}
    // The popup must be created in the click itself, before any await, or the
    // browser treats it as not user-initiated and blocks it.
    const win=window.open('about:blank',SECOND_NAME);
    await startShare(win);
    notice('第二屏幕已在新窗口打开。');
-  }catch(e){if(popup&&!popup.closed&&!share){popup.close();popup=null;}notice(e.message);}
+  }catch(e){if(popup&&!popup.closed&&!share){popup.close();popup=null;}shareNotice(e.message);}
+  finally{startingShare=false;}
  };
  $('sdStop').onclick=async()=>{
-  try{await publishing;await command('stop');share=null;if(popup&&!popup.closed){popup.close();popup=null;}notice('第二屏幕已停止。');render();}catch(e){notice(e.message);}
+  try{await publishing;await command('stop');share=null;if(popup&&!popup.closed){popup.close();popup=null;}shareNotice('第二屏幕已停止。');render();}catch(e){shareNotice(e.message);}
  };
  const ready=(async()=>{try{const r=await fetch('data/showdown.json');if(!r.ok)throw Error('决战数据载入失败');data=await r.json();const raw=localStorage.getItem(key);if(raw){const saved=JSON.parse(raw);if(saved.schemaVersion!==1||!saved.sessions)throw Error('决战存档格式无法识别');Object.values(saved.sessions).forEach(s=>E.validate(data,s));store=saved;}store.showFan=store.showFan===true;store.showStart=store.showStart!==false;store.swapped=store.swapped===true;store.cardRotation=((Math.round((Number(store.cardRotation)||0)/90)*90)%360+360)%360;store.align=ALIGN_MODES.includes(store.align)?store.align:ALIGN_DEFAULT;store.showRulebook=store.showRulebook===true;store.active=null;
   try{const existing=await command('status');if(existing.active)share=existing;}catch(_){}
