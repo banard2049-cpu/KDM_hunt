@@ -194,22 +194,28 @@ const clickCard = (value, checked) => {
 
   // The header button opens the second screen in its own window by itself.
   assert.equal(el('sdOpenTop').disabled, false, 'the second screen button unlocks once a battle is running');
+  assert.equal(el('sdShareInfo').hidden, true, 'a closed second screen prints no address');
   el('sdOpenTop').onclick();
   await settle(); await settle();
   assert.equal(opened.length, 1, 'clicking must open one new window');
   assert.equal(opened[0].location.href, 'http://127.0.0.1:8799/d/', 'the new window must land on the fixed short link');
   assert.ok(opened[0].location.href.length <= 30, 'the link must stay short: ' + opened[0].location.href);
   assert.equal(el('sdStop').hidden, false, 'the stop control appears in the sidebar panel');
-  // Opening the window is the whole share: the panel itself shows no address to copy
-  // and draws no QR code, so nothing about the link is printed on screen.
+  // The open second screen prints the address other devices type, under the panel
+  // in the left sidebar: the LAN link itself, never the host's loopback window.
   const uiSource = fs.readFileSync(path.join(root, 'assets/showdown-ui.js'), 'utf8');
-  assert.equal(/sdShareInfo|qrcode|sdQR/.test(uiSource), false, 'the sidebar lists no address and draws no QR code');
+  assert.match(uiSource, /<p id="sdBattleLabel">[^<]*<\/p><p id="sdShareInfo" class="sd-share-address" hidden aria-label="第二屏幕地址"><span id="sdShareUrl"><\/span><\/p>/, 'the address row sits directly under the battle line, prints nothing but the link, and starts hidden');
+  assert.match(uiSource, /function shareUrls\(\)\{return \(share\?\.urls\|\|\[\]\)\.filter\(Boolean\);\}/, 'the printed addresses are the LAN links the host handed out');
+  assert.equal(/sdQR|qrcode/.test(uiSource), false, 'the panel prints the address, it still draws no QR code');
+  assert.equal(el('sdShareInfo').hidden, false, 'the address shows once the second screen is open');
+  assert.equal(el('sdShareUrl').innerHTML, '<code>http://192.168.1.20:8799/d/</code>', 'and it is the address another device opens, escaped and laid out one per line');
   el('sdOpenTop').onclick();
   await settle(); await settle();
   assert.equal(opened.length, 1, 'clicking again reuses the existing window');
   el('sdStop').onclick();
   await settle(); await settle();
   assert.equal(el('sdStop').hidden, true);
+  assert.equal(el('sdShareInfo').hidden, true, 'stopping takes the address away again');
   assert.equal(opened[0].closed, true, 'stopping must close the second screen window');
 
   console.log('Passed: random terrain pool defaults to 基础, never leaks fan terrain, is editable one card at a time, and the header button opens the second screen itself.');

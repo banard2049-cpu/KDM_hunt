@@ -33,7 +33,7 @@
  })();
  // Two hosts: the second-screen controls close out the left sidebar, the terrain
  // deck controls live inside the battle module at the top of the right column.
- const page=document.createElement('section');page.id='showdownControls';page.className='sd-host-controls';page.innerHTML=`<h3>第二屏幕控制</h3><p id="sdBattleLabel">开始战斗后，可在这里控制第二屏幕。</p><div class="sd-controls"><button id="sdStop" hidden>停止第二屏幕</button><fieldset><legend>版图大小</legend><button data-sd-size="boardScale" data-delta="-0.1" aria-label="缩小副屏版图">−</button><output id="sdBoardSize">${pct(DEFAULT_BOARD)}</output><button data-sd-size="boardScale" data-delta="0.1" aria-label="放大副屏版图">＋</button></fieldset><fieldset><legend>卡牌大小</legend><button data-sd-size="cardScale" data-delta="-0.1" aria-label="缩小副屏卡牌">−</button><output id="sdCardSize">${pct(DEFAULT_CARD)}</output><button data-sd-size="cardScale" data-delta="0.1" aria-label="放大副屏卡牌">＋</button></fieldset><button data-sd-size="reset">重置大小</button><div class="sd-view-switches" role="group" aria-label="第二屏幕显示方式"><button id="sdRulebook" type="button" aria-pressed="false" data-icon="board" title="显示决战版图 · 点按换成 Boss 规则书" aria-label="第二屏幕当前显示决战版图，点按切换到Boss 规则书">${ICON.board}</button><button id="sdSwap" type="button" aria-pressed="false" data-icon="swap" title="交换版图与卡牌" aria-label="交换版图与卡牌：把卡牌展示区换到左列">${ICON.swap}</button><button id="sdRotate" type="button" data-angle="0" data-icon="rotate" title="旋转卡牌区" aria-label="旋转卡牌区：把卡牌逆时针转 90°">${ICON.rotate}</button><button id="sdAlign" type="button" data-align="${ALIGN_DEFAULT}" data-icon="align-${ALIGN_DEFAULT}" title="对齐方式 · ${alignLabel()}" aria-label="对齐方式：当前${alignLabel()}，点按切换到${alignLabel(nextAlign())}">${ICON.align[ALIGN_DEFAULT]}</button></div></div>`;
+ const page=document.createElement('section');page.id='showdownControls';page.className='sd-host-controls';page.innerHTML=`<h3>第二屏幕控制</h3><p id="sdBattleLabel">开始战斗后，可在这里控制第二屏幕。</p><p id="sdShareInfo" class="sd-share-address" hidden aria-label="第二屏幕地址"><span id="sdShareUrl"></span></p><div class="sd-controls"><button id="sdStop" hidden>停止第二屏幕</button><fieldset><legend>版图大小</legend><button data-sd-size="boardScale" data-delta="-0.1" aria-label="缩小副屏版图">−</button><output id="sdBoardSize">${pct(DEFAULT_BOARD)}</output><button data-sd-size="boardScale" data-delta="0.1" aria-label="放大副屏版图">＋</button></fieldset><fieldset><legend>卡牌大小</legend><button data-sd-size="cardScale" data-delta="-0.1" aria-label="缩小副屏卡牌">−</button><output id="sdCardSize">${pct(DEFAULT_CARD)}</output><button data-sd-size="cardScale" data-delta="0.1" aria-label="放大副屏卡牌">＋</button></fieldset><button data-sd-size="reset">重置大小</button><div class="sd-view-switches" role="group" aria-label="第二屏幕显示方式"><button id="sdRulebook" type="button" aria-pressed="false" data-icon="board" title="显示决战版图 · 点按换成 Boss 规则书" aria-label="第二屏幕当前显示决战版图，点按切换到Boss 规则书">${ICON.board}</button><button id="sdSwap" type="button" aria-pressed="false" data-icon="swap" title="交换版图与卡牌" aria-label="交换版图与卡牌：把卡牌展示区换到左列">${ICON.swap}</button><button id="sdRotate" type="button" data-angle="0" data-icon="rotate" title="旋转卡牌区" aria-label="旋转卡牌区：把卡牌逆时针转 90°">${ICON.rotate}</button><button id="sdAlign" type="button" data-align="${ALIGN_DEFAULT}" data-icon="align-${ALIGN_DEFAULT}" title="对齐方式 · ${alignLabel()}" aria-label="对齐方式：当前${alignLabel()}，点按切换到${alignLabel(nextAlign())}">${ICON.align[ALIGN_DEFAULT]}</button></div></div>`;
  $('lootSidebar').append(page);
  const terrain=document.createElement('section');terrain.id='sdTerrainPanel';terrain.className='sd-host-controls sd-terrain-panel';terrain.innerHTML=`<h3>随机地形</h3><div class="sd-controls"><button id="sdStartToggle" type="button" aria-pressed="true">显示初始位置</button><button id="sdTerrain">选择地形</button><button id="sdReroll">重抽地形</button><span id="sdFanHint" class="sd-fan-hint"></span></div><div id="sdTerrainEditor" hidden><p>固定与指定地形按规则保留；选择要替换的随机地形。</p><div id="sdTerrainSlots" class="sd-controls"></div><button id="sdApplyTerrain">应用地形</button><button id="sdCancelTerrain">取消</button></div><details id="sdPoolEditor"><summary>随机地形池 · 已选 <b id="sdPoolCount">0</b> 张<span id="sdExpSummary" class="muted"></span></summary><div class="sd-pool-bar"><input id="sdPoolSearch" placeholder="搜索地形名（英文）"><button id="sdPoolCore" type="button">只留基础</button><button id="sdPoolAll" type="button">全选</button><button id="sdPoolNone" type="button">全不选</button></div><p id="sdPoolHint" class="sd-pool-hint"></p><div id="sdPoolGroups"></div></details><div id="sdNotice" class="sd-warning" role="status"></div>`;
  // Inside the reward module; the column itself is the fallback if that module
@@ -128,6 +128,15 @@
  }
  function save(){try{localStorage.setItem(key,JSON.stringify(store));return true;}catch(e){notice('保存失败，请释放设备存储空间后重试，当前结果仍保留在内存中。');return false;}}
  function render(){const s=current();for(const root of [page,terrain])root.querySelectorAll('button').forEach(b=>{b.disabled=!s||blocked});$('sdStop').hidden=!share;$('sdOpenTop').disabled=blocked||(!s&&!share);$('sdStop').disabled=blocked;$('sdTerrainEditor').hidden=true;
+  // While the second screen is open its address sits right under the battle line
+  // at the top of the panel — 屠夫 · Butcher · Level 1 · 随机地形 1 张 — so a tablet
+  // or TV can be pointed at the board without digging for it. These are the LAN
+  // links other devices reach, not the host's own loopback shortcut, and they go
+  // away with the share. A machine with several network interfaces (Wi-Fi plus a
+  // virtual adapter) offers each of them.
+  const addresses=shareUrls(),addressRow=$('sdShareInfo');
+  addressRow.hidden=!addresses.length;
+  if(addresses.length)$('sdShareUrl').innerHTML=addresses.map(u=>`<code>${V.esc(u)}</code>`).join('');
   // The start-position button stays usable before a battle too (the loot page
   // shows the same module), so it only follows the data/second-screen state.
   const startButton=$('sdStartToggle');
@@ -222,10 +231,14 @@
  $('sdCancelTerrain').onclick=()=>$('sdTerrainEditor').hidden=true;
  $('sdApplyTerrain').onclick=()=>{try{update(E.choose(data,current(),[...terrain.querySelectorAll('[data-sd-terrain]')].map(n=>n.value)));notice('所选地形已保存并同步。');}catch(e){notice(e.message);}};
  // ---- second screen: the header button opens (and re-opens) a separate window.
- // Opening is the whole story: the first window is aimed at the fixed short link
- // itself, so the panel shows no address, no hint and no QR code to copy.
+ // Opening is the whole story for the window itself — it is aimed at the fixed
+ // short link, so there is nothing to paste there — while the panel prints that
+ // same link once, at the bottom of the sidebar, for the other devices.
  let popup=null;
  const SECOND_NAME='kdm-second-screen';
+ // The addresses printed under the sidebar panel: `share.urls` is the host's own
+ // `http://<局域网IP>:<端口>/d/` list, which is what another device types in.
+ function shareUrls(){return (share?.urls||[]).filter(Boolean);}
  // On the host machine prefer the loopback address: same origin as the app, so
  // the window can be re-pointed later and no LAN round-trip is involved.
  function screenUrl(){

@@ -97,6 +97,13 @@
 .sd-host-controls legend{font-size:12px;color:#d5c8d7}.sd-host-controls output{min-width:44px;text-align:center}
 .sd-host-controls #sdTerrainEditor{padding:12px;border:1px solid #55465f;border-radius:8px;margin:12px 0}
 .sd-host-controls .sd-warning:empty{display:none}
+/* The open second screen prints its own address directly under the battle line
+   (屠夫 · Butcher · Level 1 · 随机地形 1 张): the one line a tablet or TV is pointed
+   at, so it never has to be copied by hand — clicking the address selects the
+   whole line. */
+#lootSidebar .sd-share-address{margin:6px 0 12px;font-size:12px;line-height:1.5;color:#a899ad;overflow-wrap:anywhere}
+#lootSidebar .sd-share-address[hidden]{display:none}
+#lootSidebar .sd-share-address code{display:block;margin-top:4px;padding:6px 8px;background:#241f29;border:1px solid #55465f;border-radius:7px;color:#ffd7bd;font-size:12px;user-select:all}
 /* Fan expansions are opt-in: their checkbox lives with the other optional
    switches in the loot sidebar; this hint explains what the terrain panel keeps
    out while it stays unticked. */
