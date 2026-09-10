@@ -26,7 +26,8 @@ const ASSET_DIRS = [
   'cards',
   'hunt-backs',
   'hunt-sheets',
-  'loot'
+  'loot',
+  'showdown'
 ];
 
 // Patterns to EXCLUDE from the archive (HD assets are private)

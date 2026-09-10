@@ -172,6 +172,21 @@ for (let modSrc of modules) {
   }
 }
 const rewards=require('./loot-rewards.cjs');
+// The GCE Curse rulebook prints a BERSERK KING'S MAN page (PDF document page 35,
+// hashed file <stem>-p34.jpg) that the mod never links: the Curse module only
+// references states 31/32/33 for A Noble Return / Altering Fate / An Unexpected
+// Return. Surface it as a selectable level so its rule page is reachable.
+// Its file is already produced by the An Unexpected Return render job, which
+// requests pages [33, 34] -> files [<stem>-p33.jpg, <stem>-p34.jpg].
+{
+  const curse=bosses.find(b=>b.id==='king-s-man-curse');
+  const ref=curse&&curse.levels.find(l=>l.id==='an-unexpected-return')&&curse.levels.find(l=>l.id==='an-unexpected-return').rule;
+  if(curse&&ref&&ref.file){
+    const stem=path.basename(ref.file).replace(/-p\d+\.[a-z]+$/i,'');
+    const file='assets/loot/'+stem+'-p34.jpg';
+    curse.levels.push({id:'berserk-king-s-man',name:"BERSERK KING'S MAN",level:2,hunt:false,rule:{book:ref.book,state:34,title:ref.title,file,files:[file],source:ref.source}});
+  }
+}
 // Remove non-hunt levels appended from unrelated Lua modules by the previous
 // extractor. Keep actual monster levels, names, and hunt positions unchanged.
 for(const m of hunt){const b=bosses.find(b=>b.huntMonsterId===m.id);if(b)m.levels=m.levels.filter(l=>b.levels.some(x=>x.name===l.name));}

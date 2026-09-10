@@ -1,6 +1,6 @@
 const fs=require('node:fs');
 const path=require('node:path');
-const root=path.resolve(__dirname,'..');
+const root=path.resolve(__dirname,'../../..');
 const {version}=require(path.join(root,'package.json'));
 if(!/^\d+\.\d+\.\d+$/.test(version))throw new Error('Expected a major.minor.patch version');
 if(process.env.GITHUB_REF_TYPE==='tag'&&process.env.GITHUB_REF_NAME!=='v'+version)throw new Error('Release tag and package version differ');

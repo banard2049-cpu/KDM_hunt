@@ -110,6 +110,11 @@ for(const id of ['an-unexpected-return','a-noble-return','altering-fate'])R['kin
  note(id==='a-noble-return'?'结算王之诅咒；奖励怪物资源应尽可能与死去怪物的搜刮资源来自同一牌库。':'结算王之诅咒；Altering Fate 中女孩的孩子免疫该诅咒。'),
  note(id==='a-noble-return'?'若有 Memento Mori，每名回归者掷 d10，8+ 获得处刑者的一项战斗技艺。':'若有 Memento Mori，每名回归者掷 d10，6+ 获得 +3 勇气。')
 ],id==='a-noble-return'?[quarry]:[]);
+// The GCE Curse rulebook prints a BERSERK KING'S MAN page that the mod never
+// models as a level. It is played with the same reward table as An Unexpected
+// Return (confirmed with the project owner), so clone that entry rather than
+// falling through to the generic "manual settlement" placeholder.
+R['king-s-man-curse']['berserk-king-s-man']=JSON.parse(JSON.stringify(R['king-s-man-curse']['an-unexpected-return']));
 R['dung-beetle-knight']['the-old-master']={type:'manual',note:'年老大师的胜利文字在模组图片中被水印遮挡，无法可靠核对奖励。请查实体规则并在下方手动拿牌，不套用普通等级 3 的奖励。'};
 R['white-lion-whitebox']={'young-lion':{type:'manual',note:'模组未提供 Young Lion 的专用胜利规则页。请按实体规则手动拿牌，不套用普通白狮等级 1 的奖励。'}};
 R.butcher['level-3'].inputs=[bool('maskAvailable','本战役是否尚未通过等级 3 的额外判定获得弃者面具？')];

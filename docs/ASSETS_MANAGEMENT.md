@@ -2,7 +2,7 @@
 
 ## 概述
 
-游戏资源（约 483MB）不提交到 Git 仓库，而是通过 GitHub Release 分发，保持仓库轻量。
+游戏资源（约 835MB，压缩后约 750MB）不提交到 Git 仓库，而是通过 GitHub Release 分发，保持仓库轻量。
 
 ## 资源分类
 
@@ -12,6 +12,7 @@
 - `assets/hunt-backs/` - 狩猎背景图 (41MB)
 - `assets/hunt-sheets/` - 狩猎表单 (117MB)
 - `assets/loot/` - 战利品图片 (289MB，不含 HD)
+- `assets/showdown/` - 决战布场地形图片 (345MB)
 
 ### 🔒 私有资源（仅本地保留）
 - `assets/cards/rulebook-hd/` - 高清规则书卡牌
@@ -50,7 +51,7 @@ node scripts/pack-assets.cjs
 这会：
 - ✅ 包含所有公开资源
 - ❌ 自动排除所有 HD 资源
-- 生成 `kdm-hunt-assets.tar.gz`（约 100-150MB 压缩后）
+- 生成 `kdm-hunt-assets.tar.gz`（约 750MB）
 
 ### 2. 上传到 GitHub Release
 
@@ -185,8 +186,9 @@ assets/
 │   └── rulebook-hd/    # 🔒 私有 - 高清规则书（不上传）
 ├── hunt-backs/         # 公开 - 狩猎背景
 ├── hunt-sheets/        # 公开 - 狩猎表单
-└── loot/               # 公开 - 战利品（不含 HD）
-    └── hd/             # 🔒 私有 - 高清战利品（不上传）
+├── loot/               # 公开 - 战利品（不含 HD）
+│   └── hd/             # 🔒 私有 - 高清战利品（不上传）
+└── showdown/           # 公开 - 决战布场地形
 ```
 
 ## 安全提示

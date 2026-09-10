@@ -1,0 +1,205 @@
+.showdown-mode .app>aside{display:none}.showdown-mode .app{display:block}.showdown-mode #huntPage,.showdown-mode #lootPage{display:none!important}
+#showdownPage{padding:12px;max-width:1800px;margin:auto}#showdownPage[hidden]{display:none}
+.sd-controls{display:flex;gap:10px;align-items:end;flex-wrap:wrap;padding:12px;background:#241f29;border:1px solid #55465f;border-radius:12px;margin-bottom:12px}.sd-controls label{display:grid;gap:5px;font-size:13px}.sd-controls select,.sd-controls input{max-width:290px}.sd-expansions{display:flex;gap:12px;flex-wrap:wrap;padding:12px}.sd-expansions label{font-size:13px}.sd-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);gap:18px;align-items:start}.sd-board-wrap{position:sticky;top:10px}.sd-board{width:100%;display:block;background:#342e31;border-radius:10px;border:1px solid #6f6264}.sd-board text{font-family:Arial,sans-serif;pointer-events:none}.sd-legend{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0;color:#d6cbd3;font-size:13px}.sd-legend span:before{content:'●';margin-right:5px;color:var(--color)}.sd-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.sd-heading h2{margin:5px 0}.sd-stats{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.sd-stat{padding:8px 12px;background:#332b39;border-radius:8px}.sd-stat b{display:block;font-size:22px}.sd-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.sd-card{background:#2b252f;border:1px solid #514457;border-radius:9px;padding:8px;min-width:0}.sd-card button{display:block;width:100%;padding:0;overflow:hidden}.sd-face{display:block;aspect-ratio:0.714;background-color:#453b48;background-repeat:no-repeat}.sd-card small{display:block;margin-top:7px;overflow-wrap:anywhere}.sd-missing{padding:15px;color:#eacaa0}.sd-warning{color:#ffc783;white-space:pre-line;margin:8px 0}.sd-rules img{max-width:100%;cursor:zoom-in}.sd-modal{max-width:94vw;max-height:94vh;background:#211c24;color:#eee;border:1px solid #706277;border-radius:12px}.sd-modal::backdrop{background:#000b}.sd-modal .sd-face{width:min(65vh,80vw)}.sd-modal img{max-width:85vw;max-height:80vh}.sd-modal button{float:right}.sd-viewer{margin:0;background:#19161e;color:#eee;font:15px system-ui,sans-serif;padding:12px}.sd-viewer button{background:#403647;color:white;border:1px solid #73657a;border-radius:6px;padding:8px;cursor:pointer}.sd-connection{font-size:13px;color:#cfc0da;padding:6px}.sd-viewer #sdDisplay{max-width:1800px;margin:auto}
+@media(max-width:760px){.sd-layout{grid-template-columns:1fr}.sd-board-wrap{position:static}.sd-controls{align-items:stretch}.sd-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.sd-heading h2{font-size:20px}}
+
+/* Second screen: fitted board and an independently browsable card column. The
+   card column draws no panel of its own: cards and stats sit directly on it. */
+.sd-card-sidebar{min-width:0;padding:12px}
+.sd-card-sidebar h3{font-size:15px;margin:14px 0 8px;color:#e7d3ad}
+.sd-board-stage{min-width:0;min-height:0;display:grid;place-items:center}
+.sd-board-notes{min-height:0}
+.sd-viewer{box-sizing:border-box;height:100vh;height:100dvh;padding:8px;display:flex;flex-direction:column;overflow:hidden}
+.sd-viewer #sdDisplay{width:100%;max-width:none;margin:0;flex:1;min-height:0;display:flex;flex-direction:column}
+/* The battle name sits with the cards, so nothing is stacked above the board. */
+/* The boss line sits under the cards on the second screen, so its spacing is on
+   the top edge (see the card-run block below). */
+.sd-viewer .sd-heading{flex:none;align-items:baseline;padding:10px 0 0}
+.sd-viewer .sd-heading h2{font-size:19px;line-height:1.25;margin:0}
+.sd-viewer .sd-heading span{font-size:12px;color:#a899ad;white-space:nowrap}
+/* The board column is exactly as wide as the board it holds, so the card panel
+   keeps every pixel that is left over (widths come from ShowdownView.layout). */
+.sd-viewer .sd-layout{flex:1;min-height:0;grid-template-columns:var(--sd-grid-columns,var(--sd-board-w,60%) minmax(0,1fr));gap:10px;align-items:stretch}
+.sd-viewer .sd-board-wrap{position:static;min-height:0;display:flex;flex-direction:column;background:radial-gradient(ellipse at center,#332f31,#100e13);border-radius:10px;overflow:hidden}
+.sd-viewer .sd-board-stage{flex:1;min-height:0;display:flex;overflow:auto;overscroll-behavior:contain}
+.sd-viewer .sd-board{width:var(--sd-board-w,100%);height:var(--sd-board-h,100%);min-height:0;margin:auto;flex:none;border:0;background:transparent;filter:drop-shadow(0 8px 16px #0007)}
+.sd-viewer .sd-board-notes{flex:none;max-height:25%;overflow:auto;padding:0 10px 8px}
+.sd-viewer .sd-card-sidebar{overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+/* 交换：the card column and the board trade places. `order` does it, so the
+   stacked portrait layout, which is already single-column, is unaffected. */
+.sd-swapped .sd-card-sidebar{order:-1}
+/* 旋转：the card run is left exactly as it is upright — same tracks, same order,
+   same card width — and only the art inside each card is turned (the turn itself is
+   at the bottom of this sheet, with the rest of the card geometry). */
+.sd-sidebar-content{display:flex;flex-direction:column;min-height:0;min-width:0}
+.sd-viewer .sd-cards{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+.sd-viewer .sd-stat{padding:5px 8px;font-size:12px}
+.sd-viewer .sd-stat b{font-size:18px}
+.sd-viewer .sd-legend{font-size:12px;gap:10px}
+/* 「显示Boss规则书」 only the map is traded. The rule pages take the board panel —
+   same place, same size, same panel background — and the card column beside it is
+   drawn exactly as it is while the board is up. A single-page level fits the whole
+   page in the panel; a level with two pages stacks them and the panel scrolls. */
+.sd-viewer .sd-rulebook{flex:1;min-width:0;min-height:0;display:flex}
+.sd-viewer .sd-rule-pages{flex:1;min-width:0;min-height:0;display:grid;grid-auto-rows:minmax(0,1fr);gap:10px}
+.sd-viewer .sd-rule-page{display:grid;place-items:center;min-width:0;min-height:0;padding:0;border:0;background:none;cursor:zoom-in}
+.sd-viewer .sd-rule-page img{box-sizing:border-box;display:block;width:auto;height:auto;max-width:100%;max-height:100%;border:1px solid #55465f;border-radius:8px;background:#0d0b10;filter:drop-shadow(0 8px 16px #0007)}
+.sd-viewer .sd-rule-note{align-self:center;margin:auto;padding:15px;color:#eacaa0}
+@media(orientation:portrait){
+ /* Stacked, the pages are read down the page like the card run: full width, no
+    nested scroll box, and the panel takes the shape of the page it shows. */
+ .sd-viewer .sd-rule-pages{display:flex;flex-direction:column;gap:10px}
+ .sd-viewer .sd-rule-page img{width:100%;max-height:none}
+}
+@media(orientation:portrait){
+ .sd-viewer{height:auto;min-height:100dvh;overflow:auto}
+ .sd-viewer .sd-layout{display:grid;grid-template-columns:minmax(0,1fr);flex:none}
+ .sd-viewer .sd-board-stage{aspect-ratio:var(--sd-board-ratio,4/3);flex:none}
+ .sd-viewer .sd-board-notes{max-height:none}
+ .sd-viewer .sd-card-sidebar{overflow:visible}
+ .sd-viewer .sd-cards{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+}
+
+/* Two hosts: the second-screen controls close out the narrow left sidebar, the
+   terrain deck controls sit inside the battle module of the right-hand column. */
+.sd-host-controls h3{margin:0 0 8px}.sd-host-controls .sd-controls{border:0;padding:0;background:none}
+#lootSidebar>.sd-host-controls{margin-top:16px;padding-top:14px;border-top:1px solid #493c4d}
+/* Narrow column: stack the rows instead of running off it. */
+#lootSidebar .sd-host-controls>.sd-controls{flex-direction:column;align-items:stretch;gap:8px}
+#lootSidebar .sd-host-controls>.sd-controls>button{width:100%}
+#lootSidebar .sd-host-controls>.sd-controls>fieldset{width:100%;box-sizing:border-box;justify-content:space-between}
+#lootSidebar .sd-host-controls>.sd-controls>fieldset input{min-width:0}
+/* The four view switches — 显示决战版图, 交换版图与卡牌, 旋转卡牌区, 对齐方式 — are icons
+   side by side in one row: four squares fit the narrow second-screen column where
+   four labels did not, and every drawing carries the state it is at. */
+.sd-view-switches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.sd-view-switches>button{box-sizing:border-box;width:100%;aspect-ratio:1;padding:0;display:grid;place-items:center;background:#2b252f;border:1px solid #55465f;border-radius:9px}
+.sd-view-switches>button:hover{border-color:#8a7a90}
+.sd-view-switches>button[aria-pressed="true"]{background:#3a2c26;border-color:#d98760;color:#ffd7bd}
+.sd-view-switches .sd-icon{display:block;width:62%;height:62%;max-width:24px;max-height:24px;transition:transform .2s ease}
+/* 旋转 turns its own arrow with the card run, so a sideways display can be read at a
+   glance: the icon is at the angle the cards are. */
+#sdRotate[data-angle="90"] .sd-icon{transform:rotate(90deg)}
+#sdRotate[data-angle="180"] .sd-icon{transform:rotate(180deg)}
+#sdRotate[data-angle="270"] .sd-icon{transform:rotate(270deg)}
+/* Nested inside the reward module: a divider instead of a second card, and a
+   full-width grid so the terrain cards stay readable. */
+.sd-terrain-panel{margin:16px 0 0;padding-top:14px;border-top:1px solid #493c4d}
+.sd-terrain-panel h3{font-size:15px;color:#d5c08a}
+.sd-terrain-panel>.sd-controls{margin-bottom:12px}
+/* The initial-position highlight is on by default, so its button reads as pressed
+   until the player hides it. */
+.sd-host-controls #sdStartToggle[aria-pressed="true"]{border-color:#d98760;color:#ffd7bd}
+.sd-host-controls #sdStartToggle[aria-pressed="false"]{border-color:#66536b;color:#c6b7c9}
+.sd-terrain-panel .sd-pool-grid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
+.sd-terrain-panel #sdTerrainEditor{margin-top:12px}
+.sd-host-controls fieldset{display:flex;align-items:center;gap:8px;border:1px solid #55465f;border-radius:8px;padding:6px 10px;margin:0}
+.sd-host-controls legend{font-size:12px;color:#d5c8d7}.sd-host-controls output{min-width:44px;text-align:center}
+.sd-host-controls #sdTerrainEditor{padding:12px;border:1px solid #55465f;border-radius:8px;margin:12px 0}
+.sd-host-controls .sd-warning:empty{display:none}
+/* Fan expansions are opt-in: their checkbox lives with the other optional
+   switches in the loot sidebar; this hint explains what the terrain panel keeps
+   out while it stays unticked. */
+.sd-host-controls .sd-fan-hint{flex-basis:100%;font-size:12px;color:#a899ad}
+.sd-expansions .sd-fan-tag{margin-left:5px;padding:1px 6px;border-radius:9px;background:#5a2f22;color:#ffb083;font-size:11px}
+/* Visual random-terrain-pool editor: every terrain card is a tickable thumbnail. */
+.sd-host-controls #sdPoolEditor>summary{cursor:pointer;color:#d5c08a;font-weight:600}
+.sd-host-controls #sdPoolEditor>summary b{color:#ffd7bd;font-size:15px}
+.sd-pool-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 6px}
+.sd-pool-bar input{flex:1 1 180px;min-width:140px}
+.sd-pool-hint{margin:0 0 10px;font-size:12px;color:#a899ad}
+.sd-pool-group{border:1px solid #493c4d;border-radius:9px;margin-bottom:10px;overflow:hidden}
+.sd-pool-group.fan{border-color:#8a4a33}
+.sd-pool-group>header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 10px;background:#241f29;font-size:13px}
+.sd-pool-group>header label{display:flex;align-items:center;gap:7px;cursor:pointer}
+.sd-pool-group>header .tag{font-size:11px;padding:1px 7px;border-radius:9px;background:#302936;color:#c6b7c9}
+.sd-pool-group.fan>header .tag{background:#5a2f22;color:#ffb083}
+.sd-pool-group>header .cnt{font-size:11px;color:#a899ad;margin-left:auto}
+.sd-pool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;padding:10px}
+.sd-pool-card{display:grid;gap:4px;padding:6px;border:1px solid #493c4d;border-radius:8px;background:#221d26;cursor:pointer;font-size:11px}
+.sd-pool-card.on{border-color:#d98760;background:#2c2320}
+.sd-pool-card input{justify-self:start;margin:0}
+.sd-pool-thumb{width:100%;background-repeat:no-repeat;background-color:#0d0b10;border-radius:5px}
+.sd-pool-card small{overflow-wrap:anywhere;line-height:1.25}
+.sd-pool-card .req{font-style:normal;color:#ffd7bd;font-size:10px}
+@media(max-width:760px){.sd-pool-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}}
+
+/* One flat sequence: each card is bare art (no frame, no caption) on identical
+   tracks, sparse rows never stretch their cards, and the stat chips lose the
+   rounded box that made the column look like a panel of cards. */
+.sd-viewer .sd-cards{grid-template-columns:repeat(auto-fill,minmax(0,var(--sd-card-width,220px)));justify-content:start;align-items:start}
+/* The right column reads upwards from the bottom: the card run is pinned to the
+   bottom of the panel (margin-top:auto) and grows upwards as more cards arrive,
+   and the boss text — the name/level line and the stat chips — closes the column
+   underneath the cards. The colour legend keeps the top, beside the board it
+   explains. `order` carries the reading order, so the markup stays the same and
+   the in-app preview is untouched; in portrait, where the column is not height
+   bound, this simply stacks legend → cards → text. */
+.sd-viewer .sd-card-sidebar{display:flex;flex-direction:column}
+.sd-viewer .sd-sidebar-content>.sd-legend{order:1}
+.sd-viewer .sd-sidebar-content>.sd-cards{order:2;margin-top:auto}
+.sd-viewer .sd-sidebar-content>.sd-heading{order:3}
+.sd-viewer .sd-sidebar-content>.sd-stats{order:4}
+/* A turned run keeps the reading order and the gaps of the upright run; what a turn
+   changes is the shape of the cards themselves, which is the 旋转 block below. */
+.sd-viewer .sd-card{box-sizing:border-box;width:var(--sd-card-width,220px);padding:0;background:none;border:0;border-radius:0}
+.sd-viewer .sd-stat{background:none;border-radius:0}
+.sd-viewer .sd-card button{box-sizing:border-box;width:100%;aspect-ratio:.714;padding:0}
+.sd-viewer .sd-card .sd-face{width:100%;height:100%;aspect-ratio:auto}
+.sd-viewer .sd-card .sd-missing{box-sizing:border-box;height:100%;overflow:auto;font-size:11px;padding:6px}
+
+/* 旋转卡牌区 turns each card a quarter turn at a time and keeps the card the size it
+   has upright — the same card, lying on its side, not a smaller one. The host's angle
+   arrives as --sd-card-angle and is applied to the image, never to the panel or to
+   the column: the reading order, the gaps and the 「卡牌大小」 readout stay the
+   upright ones. A quarter turn lays the art on its side, so the card box takes the
+   shape of the turned art — as wide as the upright card is tall (the card width
+   divided by its 0.714 ratio) and as tall as it is wide — and the card's own track
+   widens with it. That is the whole trick: the turned card neither shrinks to fit the
+   upright width nor stretches, so its area is exactly the area it had upright, and
+   the art inside is the upright art (0.714 of the box, which is the upright card
+   width) turned about the centre, filling the box exactly. A half turn only flips the
+   art, which needs no reshaping, so that case keeps the box the art already had. A
+   card with no art is a note, not an image, so it is left upright in whatever box the
+   card gets. */
+.sd-card-rotated .sd-card button{position:relative}
+.sd-card-rotated .sd-card .sd-face{display:block;transform:rotate(var(--sd-card-angle,90deg));transform-origin:center}
+/* A quarter turn: the track and the card take the turned shape together, so the card
+   keeps its area and its art keeps its size, and every card in the run is turned the
+   same way. */
+.sd-card-sideways .sd-cards{grid-template-columns:repeat(auto-fill,minmax(0,calc(var(--sd-card-width,220px) / .714)))}
+.sd-card-sideways .sd-card{width:calc(var(--sd-card-width,220px) / .714)}
+.sd-card-sideways .sd-card button{aspect-ratio:calc(1 / .714)}
+.sd-card-sideways .sd-card .sd-face{position:absolute;left:50%;top:50%;width:calc(100% * .714);height:auto;aspect-ratio:.714;transform:translate(-50%,-50%) rotate(var(--sd-card-angle,90deg))}
+
+/* 对齐方式 居中／靠上／靠下: one cycling button in 第二屏幕控制, three ways to line the
+   two halves of the display up. Both move together — the board inside its stage and
+   the whole card column (legend, run, boss line, stats) inside its panel — and the
+   class comes from the snapshot's `display.align`, so the switch reaches the second
+   screen exactly like 交换 and 旋转. Nothing here is measured in JavaScript: the
+   board keeps the width ShowdownView.layout gave it and only changes where it sits.
+
+   Every mode is written with auto margins rather than justify-content, because auto
+   margins only ever take *positive* free space: a card column taller than its panel
+   (or a board taller than its stage) still starts at its own top and stays fully
+   scrollable, where justify-content would centre it out of the scroll range.
+
+   靠下 is the resting state — what an untouched display and a battle saved before
+   this switch existed keep. The content box fills the panel so the run can be pushed
+   to the bottom and grow upwards from there, with the boss line closing the column
+   underneath it and the legend keeping the top beside the board it explains. */
+.sd-viewer .sd-sidebar-content{flex:1 1 auto}
+.sd-viewer .sd-align-center .sd-board{margin:auto}
+.sd-viewer .sd-align-top .sd-board{margin:0 auto}
+.sd-viewer .sd-align-bottom .sd-board{margin:auto auto 0}
+/* 居中: the whole reading order is centred, so the free space is split above the
+   legend and below the stat chips — and the run carries none of its own. */
+.sd-viewer .sd-align-center .sd-sidebar-content>.sd-legend{margin-top:auto}
+.sd-viewer .sd-align-center .sd-sidebar-content>.sd-stats{margin-bottom:auto}
+.sd-viewer .sd-align-center .sd-sidebar-content>.sd-cards{margin-top:0}
+/* 靠上: both halves pack against the top of their panel, in the reading order they
+   already have. */
+.sd-viewer .sd-align-top .sd-sidebar-content>.sd-cards{margin-top:0}
+/* 靠下: the run is pushed to the bottom of the column and the boss line follows it,
+   which is the arrangement the column is read in by default. */
+.sd-viewer .sd-align-bottom .sd-sidebar-content>.sd-cards{margin-top:auto}

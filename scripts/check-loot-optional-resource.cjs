@@ -1,4 +1,6 @@
 const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
 const E=require('../assets/loot-engine.js');
 const data=require('../data/loot.json');
 for(const deck of Object.values(data.decks).filter(d=>d.kind==='basic')){
@@ -80,3 +82,17 @@ const normalized=JSON.parse(JSON.stringify(data));
 require('./normalize-loot-vermin.cjs')(normalized);
 assert.deepEqual(normalized,data);
 console.log('Passed: corrected CCG deck, repeatable import correction, new draws and unchanged legacy card identities.');
+
+// ---- where the optional switches live: all in the left loot sidebar, below the
+// export row, with the fan-terrain checkbox keeping company with the resources.
+const html = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf8');
+const sidebar = html.slice(html.indexOf('<aside id="lootSidebar"'), html.indexOf('</aside>', html.indexOf('<aside id="lootSidebar"')));
+assert.match(sidebar, /<div class="loot-session-row">[\s\S]*<\/div>\s*<div class="loot-optional-switches">/, 'the switches block must follow the session/export row');
+const switches = sidebar.slice(sidebar.indexOf('<div class="loot-optional-switches">'));
+for (const id of ['lootIncludeLumpOfAtnas', 'lootIncludeFanVermin', 'lootIncludePromoVermin', 'sdFanToggle'])
+  assert.ok(switches.includes('id="' + id + '"'), id + ' must be an optional switch in the sidebar block');
+for (const id of ['lootIncludeLumpOfAtnas', 'lootIncludeFanVermin', 'lootIncludePromoVermin', 'sdFanToggle'])
+  assert.ok(sidebar.indexOf('id="' + id + '"') > sidebar.indexOf('id="lootSessions"'), id + ' must sit below the export row');
+assert.ok(switches.includes('显示粉丝扩地形'), 'the fan terrain checkbox keeps its label');
+assert.equal(sidebar.slice(0, sidebar.indexOf('<div class="loot-optional-switches">')).includes('loot-optional-resource'), false, 'no optional switch may stay above the export row');
+console.log('Passed: optional switches sit together in the loot sidebar, below the export row.');

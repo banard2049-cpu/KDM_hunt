@@ -25,7 +25,7 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const ASSETS_DIR = path.join(ROOT_DIR, 'assets');
 
 // Expected asset directories
-const REQUIRED_DIRS = ['board', 'cards', 'hunt-backs', 'hunt-sheets', 'loot'];
+const REQUIRED_DIRS = ['board', 'cards', 'hunt-backs', 'hunt-sheets', 'loot', 'showdown'];
 
 /**
  * Download file from URL to target path with progress

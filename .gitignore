@@ -37,7 +37,7 @@ assets/**/hd/
 kdm-hunt-assets.tar.gz
 
 # --- Android / Capacitor (generated at build time by CI, not committed) ---
-android/
+/android/
 www/
 node_modules/
 
@@ -60,3 +60,6 @@ Desktop.ini
 *.swp
 *.tmp
 *~
+
+# Imported showdown images follow the existing local asset workflow.
+assets/showdown/

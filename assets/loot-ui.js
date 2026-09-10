@@ -8,14 +8,16 @@
   const bossName=b=>labels[b.id]?labels[b.id]+' · '+b.name:b.name;
   function levelName(l){return /^Level \d+$/.test(l.name)?l.name.replace('Level ','等级 '):l.name==='Prologue'?'序章':l.name;}
   const current=()=>store.sessions[store.active];
-  function notice(text,error=false){$('lootNotice').textContent=text;$('lootNotice').classList.toggle('error',error);}
+  function notice(text,error=false){$('lootNotice').textContent=text??'';$('lootNotice').classList.toggle('error',error);}
   function save(){
     try{localStorage.setItem(key,JSON.stringify(store));return true;}
     catch(e){notice('保存失败，当前结果仍在页面中。请立即导出战利品记录，避免关闭后丢失。',true);return false;}
   }
-  function update(s,message){store.sessions[s.id]=s;store.active=s.id;render();if(save())notice(message);}
+  function update(s,message){window.KDMShowdown?.battle(s);store.sessions[s.id]=s;store.active=s.id;render();if(save())notice(message);}
   function run(fn,message){try{update(fn(),message);}catch(e){render();notice(e.message,true);}}
   function show(page){
+    if(page==='showdown')page='loot';
+    document.body.classList.remove('showdown-mode');if(document.getElementById('showdownPage'))document.getElementById('showdownPage').hidden=true;
     document.body.classList.toggle('loot-mode',page==='loot');$('huntPage').hidden=page==='loot';$('lootPage').hidden=page!=='loot';
     $('goHunt').classList.toggle('primary',page==='hunt');$('goLoot').classList.toggle('primary',page==='loot');
     try{localStorage.setItem('kdm-page',page);}catch(_){}
@@ -32,7 +34,7 @@
     $('lootLevel').innerHTML=(boss?.levels||[]).map(l=>`<option value="${esc(l.id)}">${esc(levelName(l))}</option>`).join('');$('lootLevel').value=selectedLevel;
     $('lootNew').disabled=!boss;
     const l=boss?.levels.find(l=>l.id===selectedLevel);
-    $('lootSelectionHint').textContent=l?`待开始：${bossName(boss)} · ${levelName(l)}。点击“开始新战斗”后载入独立牌库，已有战斗记录会保留。`:'没有匹配的 Boss。';
+    const hint=$('lootSelectionHint');if(hint){hint.textContent=l?'':'没有匹配的 Boss。';hint.hidden=!!l;}
   }
   function imageMarkup(cid,large=false){
     const c=data.cards[cid],sh=data.sheets[c.sheet];
@@ -96,11 +98,12 @@
     $('lootIncludeLumpOfAtnas').checked=store.includeLumpOfAtnas===true;
     $('lootIncludeFanVermin').checked=store.includeFanVermin===true;
     $('lootIncludePromoVermin').checked=store.includePromoVermin===true;
+    if($('sdFanToggle'))$('sdFanToggle').disabled=!store.active;
     $('lootQuality').value=localStorage.getItem('kdm-rulebook-version')==='hd'?'hd':'standard';
     selectors();
     const sessions=Object.values(store.sessions).sort((a,b)=>b.createdAt-a.createdAt);
     $('lootSessions').innerHTML='<option value="">选择已有战斗记录</option>'+sessions.map(s=>{const {boss,level}=E.context(data,s);return `<option value="${esc(s.id)}">${s.source==='hunt'?'狩猎':'手动'} · ${esc(bossName(boss))} ${esc(levelName(level))} · ${new Date(s.createdAt).toLocaleString()} · 持有 ${s.held.length} 张</option>`;}).join('');$('lootSessions').value=store.active||'';
-    const s=current();$('lootBattle').hidden=!s;$('lootEmpty').hidden=!!s;$('lootExport').disabled=!sessions.length;
+    const s=current();window.KDMShowdown?.battle(s);$('lootBattle').hidden=!s;$('lootEmpty').hidden=!!s;$('lootExport').disabled=!sessions.length;
     if(!s){
       const b=data.bosses.find(x=>x.id===selectedBoss),l=b?.levels.find(x=>x.id===selectedLevel);
       const hd=localStorage.getItem('kdm-rulebook-version')==='hd';
@@ -159,7 +162,7 @@
       // Persist dice before trying to deal, so insufficient cards and reloads
       // cannot silently reroll an already generated reward.
       const prepared=E.prepare(data,s,inputs);store.sessions[s.id]=prepared;if(!save())return;
-      const claimed=E.claim(data,prepared);update(claimed,'战后奖励已领取。卡牌可放大查看或弃置。');
+      const claimed=E.claim(data,prepared);update(claimed);
     }catch(e){render();notice(e.message,true);}
   }
   function modal(content,title){$('lootModalTitle').textContent=title;$('lootModalContent').innerHTML=content;$('lootModal').showModal();}
@@ -176,6 +179,7 @@
       if(hunt.lootBattle?.id===id){try{E.validate(data,hunt.lootBattle);store.sessions[id]=hunt.lootBattle;}catch(_){notice('关联战利品存档损坏，已保留原存档，请导出检查。',true);return;}}
       else store.sessions[id]=E.create(data,boss.id,level.id,id,'hunt',battleOptions());
     }
+    window.KDMShowdown?.encounter(hunt);
     store.active=id;selectedBoss=boss.id;selectedLevel=level.id;selectedGroup='全部';$('lootGroup').value='全部';$('lootSearch').value='';selectedDeck='';
     try{localStorage.setItem('kdm-current',JSON.stringify(hunt));}catch(_){}
     show('loot');if(save())notice('已按狩猎预选 Boss 和等级。战斗中可补抽，获胜后再领取战后奖励。');
@@ -234,11 +238,14 @@
     }catch(e){loadError='战利品载入失败：'+e.message+'。原存档未修改。';data=null;notice(loadError,true);$('lootNew').disabled=true;}
   }
   for(const [id,key,label] of [['lootIncludeFanVermin','includeFanVermin','粉丝扩寄生虫'],['lootIncludePromoVermin','includePromoVermin','Promo寄生虫']])$(id).onchange=e=>{store[key]=e.target.checked;if(save())notice('新战斗将'+(e.target.checked?'加入':'不加入')+label+'；已有战斗保持原设置。');};
+  // The fan terrain switch lives here too, but its state and effect belong to the
+  // random-terrain module, so hand the change over to it.
+  $('sdFanToggle').onchange=e=>window.KDMShowdown?.terrain?.(e.target.checked);
   $('lootIncludeLumpOfAtnas').onchange=e=>{store.includeLumpOfAtnas=e.target.checked;if(save())notice('新战斗将'+(e.target.checked?'加入':'不加入')+'甥啖肉块；已有战斗保持原设置。');};
   $('goLoot').onclick=()=>show('loot');$('goHunt').onclick=()=>show('hunt');$('lootNew').onclick=startManual;
   $('lootGroup').onchange=e=>{selectedGroup=e.target.value;render();};$('lootSearch').oninput=render;
   $('lootBoss').onchange=e=>{selectedBoss=e.target.value;selectedLevel='';render();};$('lootLevel').onchange=e=>{selectedLevel=e.target.value;render();};
-  $('lootSessions').onchange=e=>{if(!e.target.value)return;store.active=e.target.value;const s=current();selectedBoss=s.bossId;selectedLevel=s.levelId;selectedGroup='全部';$('lootGroup').value='全部';$('lootSearch').value='';selectedDeck='';render();save();notice('已恢复这场战斗。');};
+  $('lootSessions').onchange=e=>{if(!e.target.value)return;store.active=e.target.value;const s=current();selectedBoss=s.bossId;selectedLevel=s.levelId;selectedGroup='全部';$('lootGroup').value='全部';$('lootSearch').value='';selectedDeck='';render();save();window.KDMShowdown?.battle(s);notice('已恢复这场战斗。');};
   $('lootClaim').onclick=claim;$('lootUndo').onclick=()=>run(()=>E.undo(current()),'已撤销上次操作。');
   $('lootDeck').onchange=e=>{selectedDeck=e.target.value;renderDeck();};$('lootCardSearch').oninput=renderDeck;
   $('lootDeckGallery').ontoggle=renderDeckGallery;
@@ -261,7 +268,7 @@
   $('lootModalClose').onclick=()=>$('lootModal').close();$('lootModal').addEventListener('click',e=>{if(e.target===$('lootModal'))$('lootModal').close();});
   $('lootQuality').onchange=e=>{const control=$('rulebookVersion');control.value=e.target.value;control.onchange({target:control});};
   $('lootSidebarToggle').onclick=()=>{const app=document.querySelector('.app'),collapsed=app.classList.toggle('sidebar-collapsed'),btn=$('lootSidebarToggle');btn.setAttribute('aria-expanded',String(!collapsed));btn.textContent=collapsed?'展开侧栏':'收起侧栏';};
-  window.KDMLoot={encounter,show,refresh:render,snapshot(hunt){const s=store.sessions[hunt?.battleId];return s?JSON.parse(JSON.stringify(s)):null;},restore(hunt){if(hunt?.encountered){const page=localStorage.getItem('kdm-page')||'hunt';encounter(hunt).then(()=>show(page));}}};
+  window.KDMLoot={encounter,show,refresh:render,async currentBattle(){await ready;return current();},snapshot(hunt){const s=store.sessions[hunt?.battleId];return s?JSON.parse(JSON.stringify(s)):null;},restore(hunt){if(hunt?.encountered){const page=localStorage.getItem('kdm-page')||'hunt';encounter(hunt).then(()=>show(page));}}};
   ready=init();
 })();
 
