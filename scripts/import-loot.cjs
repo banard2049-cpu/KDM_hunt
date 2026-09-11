@@ -79,7 +79,7 @@ const groups = new Map(hunt.map(m => [m.expansion, m.expansionGroup]));
 const core = new Set(['WhiteLion','ScreamingAntelope','Phoenix','Butcher','KingsMan','Hand','Watcher','GoldSmokeKnight']);
 const gamble = new Set(['CrimsonCrocodile','SmogSingers','King','Atnas','Gambler','Godhand']);
 const official12 = new Set(['Gorm','Spidicules','FlowerKnight','DungBeetleKnight','LionGod','LionKnight','Manhunter','Slenderman','DragonKing','Sunstalker','LonelyTree','Tyrant']);
-function group(mod) { return groups.get(mod) || (core.has(mod)||mod==='TheHand' ? '基础' : gamble.has(mod)||mod==='BoneEaters' ? '赌博' : official12.has(mod)||mod==='TheTyrant' ? '12扩' : ['KilleniumButcher','WhiteGigalion','YoungLion','WhiteBox','BlackKnight'].includes(mod) ? '其他官方扩' : '粉丝扩'); }
+function group(mod) { return groups.get(mod) || (core.has(mod)||mod==='TheHand' ? '基础' : gamble.has(mod)||['BoneEater','BoneEaters'].includes(mod) ? '赌博' : official12.has(mod)||mod==='TheTyrant' ? '12扩' : ['KilleniumButcher','WhiteGigalion','YoungLion','WhiteBox','BlackKnight'].includes(mod) ? '其他官方扩' : '粉丝扩'); }
 const decks = {}, cards = {}, sheets = {}, bosses = [];
 function pick(name, expansion, source) {
   return objects.filter(x => x.o.Nickname === name).sort((a,b) => score(b)-score(a))[0];
