@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.html",
   "scripts": {
-    "test": "node scripts/check-forest-gate.cjs && node scripts/check-flower-start.cjs && node scripts/check-fan-decks.cjs && node scripts/check-loot-optional-resource.cjs && echo 'All hunt feature checks passed' && node scripts/check-showdown.cjs && node scripts/check-showdown-fan.cjs && node scripts/check-showdown-start-toggle.cjs && node scripts/check-showdown-layout.cjs && node scripts/check-showdown-align.cjs && node scripts/check-showdown-rule-toggle.cjs && python scripts/check-showdown-host.py",
+    "test": "node scripts/check-bone-eaters.cjs && node scripts/check-forest-gate.cjs && node scripts/check-flower-start.cjs && node scripts/check-fan-decks.cjs && node scripts/check-loot-optional-resource.cjs && echo 'All hunt feature checks passed' && node scripts/check-showdown.cjs && node scripts/check-showdown-fan.cjs && node scripts/check-showdown-start-toggle.cjs && node scripts/check-showdown-layout.cjs && node scripts/check-showdown-align.cjs && node scripts/check-showdown-rule-toggle.cjs && python scripts/check-showdown-host.py",
     "android:version": "node tools/android/scripts/android-version.cjs",
     "web:stage": "node scripts/stage-web.cjs",
     "android:sync": "npm run web:stage && capacitor sync android && node tools/android/scripts/install-showdown-android.cjs"
