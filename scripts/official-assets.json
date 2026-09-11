@@ -1,0 +1,2667 @@
+[
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc1843675665486888462e235919cf19224589879d369c1a835551d735362.jpg",
+    "w": 4,
+    "h": 3,
+    "cells": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/6edb1a3aaa4fdc87351b.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc18436756654868917542a681c4518218473ab554641529fe7a8b43666e4.jpg",
+    "w": 4,
+    "h": 3,
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/e597fb362e1edce020f0.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc18436756654868919623f387d53fcfce09b3e603c6ec259dd42eea6eb10.jpg",
+    "w": 4,
+    "h": 3,
+    "cells": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/e19eae85f20d7d8f1a7c.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc1843675665486894388cea905ba2cf7d94d319bc04cfe8449c5d70b7826.jpg",
+    "w": 4,
+    "h": 2,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/b0c755ae80bb16919c1b.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc184367566548689250708d580c4fd6265d80bead04935e90c1b0312b653.jpg",
+    "w": 4,
+    "h": 3,
+    "cells": [
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/a0bd6253a1c5b7bdedca.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc1054351998762601355dc284eef55b293bd50d20bc2d914cac7fdab8101.jpg",
+    "w": 3,
+    "h": 3,
+    "cells": [
+      [
+        2,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/a2f13db773422d4f20f1.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc10543519987626060822a9cdf975001bc6246902aedbd10575230cda590.jpg",
+    "w": 4,
+    "h": 2,
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/9afcf3e077ac3812711f.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc1827899663020744727f5020a8d9c275d44aa198b8a1a776b8ffe99de44.jpg",
+    "w": 4,
+    "h": 2,
+    "cells": [
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/bdddfad9d6f38992da47.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc10543519987626109033cbe13f5b998a09abb212a1788ad779df96030e5.jpg",
+    "w": 4,
+    "h": 2,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/2aa30b81f370f1bb0ee1.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpsiimgurcomfdke9f4jpg.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        6,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        5,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/d8246ba33d8e6458abc8.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpsiimgurcompmkl4amjpg.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        8,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/2337d6f78b6444aaed82.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpsiimgurcomz0zah4vjpg.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        9,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        6,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/92eddf64ff25a887d32a.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc1054351998762612467774c899c83261e92127b06ecd500dd5e151289dc.jpg",
+    "w": 4,
+    "h": 2,
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/06f34590d7d5be0a86b7.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc18278996630207454951327c470aaeca4bdb17993c9c3dacc58fa9a48bf.jpg",
+    "w": 5,
+    "h": 3,
+    "cells": [
+      [
+        3,
+        1
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/223f7b8a4be3db43057d.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpcloud3steamusercontentcomugc1829023556321190997a7218fd616ee7bdd26dd111338b1e1e60ea9ad56.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        6,
+        5
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/e49cda8c7e28bf84c098.png"
+  },
+  {
+    "source": "assets/hunt-backs/httpcloud3steamusercontentcomugc1829023556321266878baddbd78bdd1dc438d989041648c216168e9522d.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/hunt-backs/official/fccd6c9eee228a06a6d5.png"
+  },
+  {
+    "source": "assets/hunt-sheets/httpsiimgurcomft8kegljpg.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        5,
+        0
+      ]
+    ],
+    "target": "assets/hunt-sheets/official/f87e90e81fb1d56c9d4e.png"
+  },
+  {
+    "source": "assets/loot/49d815468e14afe5fd88.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        4,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        8,
+        5
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        9,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        7,
+        6
+      ],
+      [
+        9,
+        6
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        9,
+        3
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "target": "assets/loot/official/5c78f5b441f101c10e86.png"
+  },
+  {
+    "source": "assets/loot/d9f528e4478287b54ed0.png",
+    "w": 6,
+    "h": 2,
+    "cells": [
+      [
+        1,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "target": "assets/loot/official/3ace9ddb76b311900fcf.png"
+  },
+  {
+    "source": "assets/loot/44a3e9d2d6985fbeea52.jpg",
+    "w": 9,
+    "h": 5,
+    "cells": [
+      [
+        7,
+        4
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        5,
+        1
+      ]
+    ],
+    "target": "assets/loot/official/9237549fdf651ffa53e7.png"
+  },
+  {
+    "source": "assets/loot/b1a6c0d3a339cf09a475.jpg",
+    "w": 5,
+    "h": 4,
+    "cells": [
+      [
+        3,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/ce741fafc234c4857e89.png"
+  },
+  {
+    "source": "assets/loot/f27a51deb3162c114d62.png",
+    "w": 10,
+    "h": 4,
+    "cells": [
+      [
+        8,
+        3
+      ]
+    ],
+    "target": "assets/loot/official/867e3d5fd515bbf4edc5.png"
+  },
+  {
+    "source": "assets/loot/6f5b0133205c3862c438.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        8,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        9,
+        4
+      ]
+    ],
+    "target": "assets/loot/official/5867e67ba56771a23479.png"
+  },
+  {
+    "source": "assets/loot/9392632c3fb69e60a921.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        2,
+        1
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        9,
+        2
+      ]
+    ],
+    "target": "assets/loot/official/8b59cfa3c1a33adb3379.png"
+  },
+  {
+    "source": "assets/loot/49e048d07eeebd7ab807.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/7ab9b5cc79b7c313f8cf.png"
+  },
+  {
+    "source": "assets/loot/9023726e8603b254c5f3.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        9,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/43bc320683caa342e106.png"
+  },
+  {
+    "source": "assets/loot/bfcc973cc60a2965ed12.jpg",
+    "w": 4,
+    "h": 2,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "target": "assets/loot/official/68930f04d86f131f7879.png"
+  },
+  {
+    "source": "assets/loot/b8a7c5c17a1e23ea5cdd.jpg",
+    "w": 3,
+    "h": 2,
+    "cells": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/e91cc9235320ad80832c.png"
+  },
+  {
+    "source": "assets/loot/3e8338b84433e1a75f89.png",
+    "w": 10,
+    "h": 3,
+    "cells": [
+      [
+        9,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "target": "assets/loot/official/7beaa723c7d68a6e6dc0.png"
+  },
+  {
+    "source": "assets/loot/4c65c864803d3417eb1b.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        9,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        9,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/80617048f977db9dea09.png"
+  },
+  {
+    "source": "assets/loot/3c5222d5497d3138ec89.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        5,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        7,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/db96e9a625700460b307.png"
+  },
+  {
+    "source": "assets/loot/4a0d5e550ea1861eaa7c.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        0,
+        2
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/def6881c101501d950ac.png"
+  },
+  {
+    "source": "assets/loot/775e5ad132e9574d117b.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        2,
+        1
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/loot/official/ba77e29811471718e184.png"
+  },
+  {
+    "source": "assets/loot/57234aed40816781a3a6.png",
+    "w": 4,
+    "h": 3,
+    "cells": [
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/bcb2ac78f7691029b9ab.png"
+  },
+  {
+    "source": "assets/loot/e62f2146cc630ad25ec3.png",
+    "w": 5,
+    "h": 4,
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ]
+    ],
+    "target": "assets/loot/official/5916fa5233e9abc34b3c.png"
+  },
+  {
+    "source": "assets/showdown/088c876b4645256f4509.jpg",
+    "w": 6,
+    "h": 4,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "target": "assets/showdown/official/4aa70dced5d9dada8dcf.png"
+  },
+  {
+    "source": "assets/showdown/a773ffeb1b1dce5ac495.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        3,
+        2
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        7,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/6cb65b22f515eb08d489.png"
+  },
+  {
+    "source": "assets/showdown/d86665002086627dfcfe.jpg",
+    "w": 3,
+    "h": 3,
+    "cells": [
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/264ed80cd8c4af451d6c.png"
+  },
+  {
+    "source": "assets/showdown/88b5870f3eaea312e4ea.png",
+    "w": 9,
+    "h": 5,
+    "cells": [
+      [
+        4,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "target": "assets/showdown/official/116a93ec301803eccc6a.png"
+  },
+  {
+    "source": "assets/showdown/3693f20228965b7d08b1.png",
+    "w": 5,
+    "h": 6,
+    "cells": [
+      [
+        4,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "target": "assets/showdown/official/07c5c8cd316cc003c9c4.png"
+  },
+  {
+    "source": "assets/showdown/ecc75d4a6fa1facd9f81.png",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/697fcaaa068c4ffb0a72.png"
+  },
+  {
+    "source": "assets/showdown/1880dec72a86fbf6131a.jpg",
+    "w": 5,
+    "h": 5,
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "target": "assets/showdown/official/98f228f4c1bec22c5135.png"
+  },
+  {
+    "source": "assets/showdown/9b26fc80894fa1f0d7ab.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        2,
+        2
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        5,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/bd42b994c4b0a4349489.png"
+  },
+  {
+    "source": "assets/showdown/621cfac1dccabe2750bd.jpg",
+    "w": 6,
+    "h": 4,
+    "cells": [
+      [
+        4,
+        1
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "target": "assets/showdown/official/e03835da89a8db5f0c39.png"
+  },
+  {
+    "source": "assets/showdown/53b6e3842c9054caaf62.jpg",
+    "w": 5,
+    "h": 5,
+    "cells": [
+      [
+        4,
+        4
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/943ce75bc144f5047f0d.png"
+  },
+  {
+    "source": "assets/showdown/cfebf5e169562be13eca.jpg",
+    "w": 10,
+    "h": 3,
+    "cells": [
+      [
+        2,
+        0
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        6,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/74722fe3fcf70a4b6253.png"
+  },
+  {
+    "source": "assets/showdown/b2261365010815ded89b.jpg",
+    "w": 6,
+    "h": 5,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/bd98d1b62409f6260dd5.png"
+  },
+  {
+    "source": "assets/showdown/807d58fe651a59431ce7.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        3,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/c5266160b6e586c83ff6.png"
+  },
+  {
+    "source": "assets/showdown/f9fba608cff11b4ebcea.png",
+    "w": 10,
+    "h": 2,
+    "cells": [
+      [
+        3,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/277a6b821c30edc22d21.png"
+  },
+  {
+    "source": "assets/showdown/0d80f1ff733cad4f8f13.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        8,
+        0
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/ed267869bf6aded60c1f.png"
+  },
+  {
+    "source": "assets/showdown/0d54b181032dfe7a26b6.jpg",
+    "w": 6,
+    "h": 4,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/0fa6d0b0cd9a24999940.png"
+  },
+  {
+    "source": "assets/showdown/75d95a36407d1d5a07ab.jpg",
+    "w": 9,
+    "h": 3,
+    "cells": [
+      [
+        6,
+        0
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/bdbf019f4cbd84d96dae.png"
+  },
+  {
+    "source": "assets/showdown/aa086161a729b2b9c0eb.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        7,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/b73b86bab2b9f759ee1d.png"
+  },
+  {
+    "source": "assets/showdown/94543748c05e754b1af1.jpg",
+    "w": 9,
+    "h": 3,
+    "cells": [
+      [
+        7,
+        2
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/bc4fc41c0ecbc493dc28.png"
+  },
+  {
+    "source": "assets/showdown/e71890c99a680f3f4b50.jpg",
+    "w": 5,
+    "h": 5,
+    "cells": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/3050950730b9dbec0d3a.png"
+  },
+  {
+    "source": "assets/showdown/52cbbde377f061106917.jpg",
+    "w": 2,
+    "h": 2,
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/1494a84e996306189bb1.png"
+  },
+  {
+    "source": "assets/showdown/cd0cfe7497624a9444ce.jpg",
+    "w": 7,
+    "h": 4,
+    "cells": [
+      [
+        5,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/50463d97c41d9791e4b2.png"
+  },
+  {
+    "source": "assets/showdown/c3428b663b3f538d3b49.jpg",
+    "w": 8,
+    "h": 3,
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/bdb71b2fb6f85a72b5de.png"
+  },
+  {
+    "source": "assets/showdown/4471ab27c8346bda6462.jpg",
+    "w": 5,
+    "h": 5,
+    "cells": [
+      [
+        4,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/91e5f30719f408fba2fb.png"
+  },
+  {
+    "source": "assets/showdown/b8192ce6d4ae117ea014.jpg",
+    "w": 7,
+    "h": 4,
+    "cells": [
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "target": "assets/showdown/official/f76ea79cd715e7043194.png"
+  },
+  {
+    "source": "assets/showdown/41b45551bd74fe4ac936.jpg",
+    "w": 10,
+    "h": 5,
+    "cells": [
+      [
+        9,
+        4
+      ]
+    ],
+    "target": "assets/showdown/official/4bcac7a850eb60076cb8.png"
+  },
+  {
+    "source": "assets/showdown/ddaa1990331a4cdfbf4b.jpg",
+    "w": 7,
+    "h": 4,
+    "cells": [
+      [
+        4,
+        1
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/cd3c387ac698116f5011.png"
+  },
+  {
+    "source": "assets/showdown/46681dddcb6cabfc6670.jpg",
+    "w": 9,
+    "h": 3,
+    "cells": [
+      [
+        5,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/598997b69418d6d9d492.png"
+  },
+  {
+    "source": "assets/showdown/93ed637e986aa461de2a.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/f439b0ad8716db13d17f.png"
+  },
+  {
+    "source": "assets/showdown/3553f254186886aeff89.jpg",
+    "w": 10,
+    "h": 7,
+    "cells": [
+      [
+        5,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/b64ae45ca8f8c0225319.png"
+  },
+  {
+    "source": "assets/showdown/e49ea36c1cd4c990e12c.jpg",
+    "w": 8,
+    "h": 4,
+    "cells": [
+      [
+        6,
+        1
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "target": "assets/showdown/official/198cc4170e5d58b4ed18.png"
+  },
+  {
+    "source": "assets/showdown/477d6bea72d223736681.jpg",
+    "w": 6,
+    "h": 5,
+    "cells": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/f375ad3e1a73627d6667.png"
+  },
+  {
+    "source": "assets/showdown/c132ecad9209bc2070a9.jpg",
+    "w": 5,
+    "h": 3,
+    "cells": [
+      [
+        3,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "target": "assets/showdown/official/fd625ab9e1dd516db5b1.png"
+  },
+  {
+    "source": "assets/showdown/d6f810d36b5cf89e996c.jpg",
+    "w": 7,
+    "h": 4,
+    "cells": [
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        6,
+        1
+      ]
+    ],
+    "target": "assets/showdown/official/40e8441f4534474db85d.png"
+  },
+  {
+    "source": "assets/showdown/7b5cc998e6ed21dfacd1.jpg",
+    "w": 5,
+    "h": 4,
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "target": "assets/showdown/official/8291213411235bbc08dc.png"
+  },
+  {
+    "source": "assets/loot/hd/173.jpg",
+    "target": "assets/loot/kings-man-core.jpg",
+    "copy": true
+  }
+]

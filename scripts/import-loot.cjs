@@ -79,7 +79,7 @@ const groups = new Map(hunt.map(m => [m.expansion, m.expansionGroup]));
 const core = new Set(['WhiteLion','ScreamingAntelope','Phoenix','Butcher','KingsMan','Hand','Watcher','GoldSmokeKnight']);
 const gamble = new Set(['CrimsonCrocodile','SmogSingers','King','Atnas','Gambler','Godhand']);
 const official12 = new Set(['Gorm','Spidicules','FlowerKnight','DungBeetleKnight','LionGod','LionKnight','Manhunter','Slenderman','DragonKing','Sunstalker','LonelyTree','Tyrant']);
-function group(mod) { return groups.get(mod) || (core.has(mod)||mod==='TheHand' ? '基础' : gamble.has(mod)||mod==='BoneEaters' ? '赌博' : official12.has(mod)||mod==='TheTyrant' ? '12扩' : ['KilleniumButcher','WhiteGigalion','YoungLion','WhiteBox','BlackKnight'].includes(mod) ? '其他官方扩' : '粉丝扩'); }
+function group(mod) { return groups.get(mod) || (core.has(mod)||mod==='TheHand' ? '基础' : gamble.has(mod)||['BoneEater','BoneEaters'].includes(mod) ? '赌博' : official12.has(mod)||mod==='TheTyrant' ? '12扩' : ['KilleniumButcher','WhiteGigalion','YoungLion','WhiteBox','BlackKnight'].includes(mod) ? '其他官方扩' : '粉丝扩'); }
 const decks = {}, cards = {}, sheets = {}, bosses = [];
 function pick(name, expansion, source) {
   return objects.filter(x => x.o.Nickname === name).sort((a,b) => score(b)-score(a))[0];
@@ -213,7 +213,8 @@ function inspect(steps,b,l){for(const s of steps||[]){
 }}
 for(const b of bosses)for(const l of b.levels)inspect(l.reward.steps,b,l);
 const result={schemaVersion:1,bosses,decks,cards,sheets,warnings:[...new Set(warnings)]};
-require('./normalize-loot-vermin.cjs')(result);
+require('./official-content.cjs').loot(result);
+Object.assign(result,require('./official-content.cjs').assets(result));
 if(pdfRequests.length){
   fs.mkdirSync(path.join(root,'.research-scratch'),{recursive:true});
   fs.writeFileSync(path.join(root,'.research-scratch','loot-pdf-jobs.json'),JSON.stringify({root,requests:pdfRequests}));

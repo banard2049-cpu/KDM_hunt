@@ -119,7 +119,7 @@ const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resol
   const alignButton = el('sdAlign');
   await window.KDMShowdown.battle({ id: 'sb1', bossId: 'white-lion', levelId: 'level-2' });
   await settle();
-  const saved = () => JSON.parse(memory.get('kdm-showdown-v1'));
+  const saved = () => JSON.parse(memory.get('kdm-showdown-official-v1'));
   const snap = () => window.KDMShowdown.snapshot({ battleId: 'sb1' });
   assert.equal(alignButton.disabled, false, '对齐方式 unlocks with a battle');
   assert.equal(alignButton.getAttribute('title'), '对齐方式 · 靠下', 'the button opens on the resting alignment');

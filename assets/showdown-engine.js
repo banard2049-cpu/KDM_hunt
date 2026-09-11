@@ -15,14 +15,9 @@
  // `s.expansions` is kept in sync for readability and for battles saved before
  // the pool existed; `draw` still understands it.
  //
- // Fan-made terrain is opt-in. What counts as fan is pinned in the data itself
- // (`expansions[].fan`), read off the printed expansion emblem in the top-left
- // corner of each terrain card. See scripts/refile-terrain.cjs.
  function context(data,s){const boss=data.bosses.find(b=>b.id===s.bossId),level=boss?.levels.find(l=>l.id===s.levelId);if(!level)throw Error('未知 Boss 或等级');return {boss,level};}
  function expansionOf(data,id){return (data.expansions||[]).find(e=>e.id===id)||null;}
  function cardsOf(data,id){return expansionOf(data,id)?.cards||[];}
- function isFanExpansion(data,id){return expansionOf(data,id)?.fan===true;}
- function fanExpansions(data){return (data.expansions||[]).filter(e=>e.fan===true).map(e=>e.id);}
  function bossExpansion(data,bossId){return (data.bosses||[]).find(b=>b.id===bossId)?.expansion;}
  function cardIndex(data){const m=new Map();for(const e of data.expansions||[])for(const c of e.cards)m.set(c.id,{...c,expansion:e.id});return m;}
  function ownerOf(data,cardId){return cardIndex(data).get(cardId)?.expansion||null;}
@@ -59,18 +54,8 @@
  }
  function poolCards(data,s){const index=cardIndex(data);return poolIds(data,s).map(id=>index.get(id)).filter(Boolean);}
  function groupsOf(data,ids){return [...new Set((ids||[]).map(id=>ownerOf(data,id)).filter(Boolean))];}
- // Fan packs stay out of the deck unless the player opts in, unless the current
- // level's rules need that terrain — otherwise fan levels could not be set up.
- function keepExpansion(data,s,id,includeFan){
-  if(includeFan)return true;
-  const expansion=expansionOf(data,id);
-  if(!expansion||expansion.fan!==true)return true;
-  const boss=(data.bosses||[]).find(b=>b.id===s?.bossId);
-  if(!boss)return false;
-  return id===boss.expansion||suppliesRequired(data,expansion,boss.levels.find(l=>l.id===s?.levelId));
- }
- function visibleExpansions(data,s,includeFan){return (data.expansions||[]).filter(e=>keepExpansion(data,s,e.id,includeFan));}
- function poolExpansions(data,s,includeFan){return groupsOf(data,poolIds(data,s)).filter(id=>keepExpansion(data,s,id,includeFan));}
+ function visibleExpansions(data){return data.expansions||[];}
+ function poolExpansions(data,s){return groupsOf(data,poolIds(data,s));}
  function draw(data,s,rng=Math.random){
   const {level}=context(data,s),index=cardIndex(data),pool=poolIds(data,s).map(id=>index.get(id)).filter(Boolean).map(copy),required=[...level.fixed,...level.unfixed];
   const warnings=[],taken=[];
@@ -124,5 +109,5 @@
   // own rulebook pages.
   return {schemaVersion:1,dataVersion:data.dataVersion,battleId:s.id,revision:s.revision,display:{boardScale:DEFAULT_BOARD_SCALE,cardScale:DEFAULT_CARD_SCALE,showStart:true,swapped:false,cardRotation:0,align:'bottom',showRulebook:false,...s.display},boss:{id:boss.id,name:boss.displayName||boss.name},level:copy(level),random,terrainInfo:Object.fromEntries(terrainCards.map(c=>[c.name,{...data.terrain[c.name],count:data.terrain[c.name]?.count==='*'?level.level:data.terrain[c.name]?.count}])),terrainStart,drawWarnings:s.drawWarnings||[],grid:data.grid};
  }
- return {context,cardIndex,ownerOf,cardsOf,isFanExpansion,fanExpansions,bossExpansion,requiredCounts,suppliesRequired,resolvePool,defaultPool,poolIds,poolCards,groupsOf,keepExpansion,visibleExpansions,poolExpansions,create,draw,choose,resize,validate,snapshot,defaultBoardScale:DEFAULT_BOARD_SCALE,defaultCardScale:DEFAULT_CARD_SCALE};
+ return {context,cardIndex,ownerOf,cardsOf,bossExpansion,requiredCounts,suppliesRequired,resolvePool,defaultPool,poolIds,poolCards,groupsOf,visibleExpansions,poolExpansions,create,draw,choose,resize,validate,snapshot,defaultBoardScale:DEFAULT_BOARD_SCALE,defaultCardScale:DEFAULT_CARD_SCALE};
 });

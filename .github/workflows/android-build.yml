@@ -46,6 +46,11 @@ jobs:
           # Optional: use custom URL if needed
           # ASSETS_URL: https://example.com/kdm-hunt-assets.tar.gz
 
+      - name: Prepare official assets
+        run: |
+          python -m pip install Pillow
+          npm run assets:clean
+
       - name: Check hunt features
         run: npm test
 

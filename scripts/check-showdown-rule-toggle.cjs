@@ -85,9 +85,10 @@ assert.ok(draw(bare, snapshot, { showRulebook: true }).innerHTML.includes(`src="
 assert.ok(draw(standard, snapshot, { showRulebook: 'yes' }).innerHTML.includes('class="sd-board"'), 'only a real true leaves the board, so an odd flag cannot blank the panel');
 
 // Multi-page levels stack every page, in order.
-const multi = (() => { for (const b of data.bosses) for (const l of b.levels) if ((l.rule?.files || []).length > 1) return { boss: b, level: l }; })();
-assert.ok(multi, 'the data still has a level with more than one rule page');
-const multiSnap = E.snapshot(data, E.create(data, multi.boss.id, multi.level.id, 'rule-b'));
+const multiSnap = JSON.parse(JSON.stringify(snapshot));
+const files = [...new Set(data.bosses.flatMap(b=>b.levels.map(l=>l.rule?.file)).filter(Boolean))].slice(0,2);
+multiSnap.level.rule.files=files;
+const multi={level:{rule:{files}}};
 const stacked = draw(standard, multiSnap, { showRulebook: true });
 let at = -1;
 for (const file of multi.level.rule.files) {
@@ -147,7 +148,7 @@ const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resol
   await settle();
   const button = el('sdRulebook');
   const snap = () => window.KDMShowdown.snapshot({ battleId: 'sb1' });
-  const saved = () => JSON.parse(memory.get('kdm-showdown-v1'));
+  const saved = () => JSON.parse(memory.get('kdm-showdown-official-v1'));
 
   await window.KDMShowdown.battle({ id: 'sb1', bossId: 'white-lion', levelId: 'level-2' });
   await settle();

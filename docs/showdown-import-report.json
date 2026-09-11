@@ -1,70 +1,9 @@
 {
-  "bosses": 45,
-  "levels": 137,
+  "bosses": 31,
+  "levels": 92,
   "warnings": [],
   "review": [
     {
-      "boss": "allison",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Allison)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "allison",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Allison)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "allison",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Allison)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "allison",
-      "level": "level-4",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Allison)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "allison-watcher",
-      "level": "level-1",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
       "boss": "atnas",
       "level": "level-1",
       "zones": [
@@ -96,58 +35,6 @@
       "zones": [
         {
           "name": "Survivor Start Zone (Atnas)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "black-lion",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (BlackLion)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "black-lion",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (BlackLion)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "black-lion",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (BlackLion)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "black-lion",
-      "level": "level-4",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (BlackLion)",
           "cells": 28,
           "status": "extracted"
         }
@@ -256,47 +143,6 @@
       ],
       "warnings": [],
       "missingCards": []
-    },
-    {
-      "boss": "charrogg",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Charrogg)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "charrogg",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Charrogg)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "charrogg",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Charrogg)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": [
-        "Living Volcano"
-      ]
     },
     {
       "boss": "crimson-crocodile",
@@ -344,58 +190,6 @@
         {
           "name": "Survivor Start Zone (Crimson)",
           "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-curse",
-      "level": "an-unexpected-return",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (King's Man)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-curse",
-      "level": "a-noble-return",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (King's Man)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-curse",
-      "level": "altering-fate",
-      "zones": [
-        {
-          "name": "Surivor Start Zone (Altering Fate)",
-          "cells": 24,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-curse",
-      "level": "berserk-king-s-man",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (King's Man)",
-          "cells": 22,
           "status": "extracted"
         }
       ],
@@ -452,33 +246,6 @@
         }
       ],
       "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "drifter-knight",
-      "level": "level-1",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
-      "boss": "drifter-knight",
-      "level": "level-2",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
-      "boss": "drifter-knight",
-      "level": "level-3",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
       "missingCards": []
     },
     {
@@ -573,45 +340,6 @@
       "missingCards": []
     },
     {
-      "boss": "forsaker-sisters",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Forsaker)",
-          "cells": 16,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "forsaker-sisters",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Forsaker)",
-          "cells": 16,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "forsaker-sisters",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Forsaker)",
-          "cells": 16,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
       "boss": "gambler",
       "level": "level-4",
       "zones": [
@@ -623,50 +351,6 @@
       ],
       "warnings": [],
       "missingCards": []
-    },
-    {
-      "boss": "gnasher",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Gnasher)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "gnasher",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Gnasher)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": [
-        "Rage Tail"
-      ]
-    },
-    {
-      "boss": "gnasher",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Gnasher)",
-          "cells": 28,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": [
-        "Crippling Wound",
-        "Rage Tail"
-      ]
     },
     {
       "boss": "godhand",
@@ -731,111 +415,6 @@
         }
       ],
       "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Harvester Worm)",
-          "cells": 5,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Harvester Worm 1)",
-          "cells": 6,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Harvester Worm 2)",
-          "cells": 5,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "blood-worm",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Harvester Worm 1)",
-          "cells": 6,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "dung-worm",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Harvester Worm 1)",
-          "cells": 6,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "regal-worm",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
-      "boss": "harvester-worm",
-      "level": "homecoming",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Harvester Worm 1)",
-          "cells": 6,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "gardener-worm",
-      "level": "level-2",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
-      "boss": "gardener-worm",
-      "level": "level-3",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
       "missingCards": []
     },
     {
@@ -916,33 +495,6 @@
         }
       ],
       "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-kc",
-      "level": "level-1",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-kc",
-      "level": "level-2",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
-      "missingCards": []
-    },
-    {
-      "boss": "king-s-man-kc",
-      "level": "level-3",
-      "zones": [],
-      "warnings": [
-        "蓝色起始区域资料缺失或不完整，请核对布场规则原图。"
-      ],
       "missingCards": []
     },
     {
@@ -1193,63 +745,6 @@
       "missingCards": []
     },
     {
-      "boss": "scourgelord",
-      "level": "prologue",
-      "zones": [
-        {
-          "name": "Nominated Survivor Start Zone",
-          "cells": 4,
-          "status": "extracted"
-        },
-        {
-          "name": "Survivor Start Zone",
-          "cells": 12,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "scourgelord",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone 1",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "scourgelord",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone 1",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "scourgelord",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone 1",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
       "boss": "screaming-antelope",
       "level": "level-1",
       "zones": [
@@ -1420,58 +915,6 @@
       "zones": [
         {
           "name": "Survivor Start Zone (Spidicules)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "storm-knight",
-      "level": "level-1",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Storm Knight)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "storm-knight",
-      "level": "level-2",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Storm Knight)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "storm-knight",
-      "level": "level-3",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Storm Knight)",
-          "cells": 22,
-          "status": "extracted"
-        }
-      ],
-      "warnings": [],
-      "missingCards": []
-    },
-    {
-      "boss": "storm-dancer",
-      "level": "level-4",
-      "zones": [
-        {
-          "name": "Survivor Start Zone (Storm Dancer)",
           "cells": 22,
           "status": "extracted"
         }

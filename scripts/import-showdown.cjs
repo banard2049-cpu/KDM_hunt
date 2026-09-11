@@ -106,6 +106,8 @@ const bosses=loot.bosses.map(b=>{
 // The modder filed several terrain cards from other content under the Core
 // deck; the printed emblems say otherwise. Re-file them before writing.
 require('./refile-terrain.cjs')(result);
+require('./official-content.cjs').showdown(result);
+Object.assign(result,require('./official-content.cjs').assets(result));
 fs.writeFileSync(path.join(root,'data/showdown.json'),JSON.stringify(result,null,2));
 require('./build-showdown-terrain.cjs')(root,result);
 fs.mkdirSync(path.join(root,'docs'),{recursive:true});

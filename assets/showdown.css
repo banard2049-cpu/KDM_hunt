@@ -104,11 +104,8 @@
 #lootSidebar .sd-share-address{margin:6px 0 12px;font-size:12px;line-height:1.5;color:#a899ad;overflow-wrap:anywhere}
 #lootSidebar .sd-share-address[hidden]{display:none}
 #lootSidebar .sd-share-address code{display:block;margin-top:4px;padding:6px 8px;background:#241f29;border:1px solid #55465f;border-radius:7px;color:#ffd7bd;font-size:12px;user-select:all}
-/* Fan expansions are opt-in: their checkbox lives with the other optional
-   switches in the loot sidebar; this hint explains what the terrain panel keeps
-   out while it stays unticked. */
-.sd-host-controls .sd-fan-hint{flex-basis:100%;font-size:12px;color:#a899ad}
-.sd-expansions .sd-fan-tag{margin-left:5px;padding:1px 6px;border-radius:9px;background:#5a2f22;color:#ffb083;font-size:11px}
+/* Terrain controls share the existing optional-resource layout. */
+.sd-host-controls .sd-terrain-hint{flex-basis:100%;font-size:12px;color:#a899ad}
 /* Visual random-terrain-pool editor: every terrain card is a tickable thumbnail. */
 .sd-host-controls #sdPoolEditor>summary{cursor:pointer;color:#d5c08a;font-weight:600}
 .sd-host-controls #sdPoolEditor>summary b{color:#ffd7bd;font-size:15px}
@@ -116,11 +113,9 @@
 .sd-pool-bar input{flex:1 1 180px;min-width:140px}
 .sd-pool-hint{margin:0 0 10px;font-size:12px;color:#a899ad}
 .sd-pool-group{border:1px solid #493c4d;border-radius:9px;margin-bottom:10px;overflow:hidden}
-.sd-pool-group.fan{border-color:#8a4a33}
 .sd-pool-group>header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 10px;background:#241f29;font-size:13px}
 .sd-pool-group>header label{display:flex;align-items:center;gap:7px;cursor:pointer}
 .sd-pool-group>header .tag{font-size:11px;padding:1px 7px;border-radius:9px;background:#302936;color:#c6b7c9}
-.sd-pool-group.fan>header .tag{background:#5a2f22;color:#ffb083}
 .sd-pool-group>header .cnt{font-size:11px;color:#a899ad;margin-left:auto}
 .sd-pool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;padding:10px}
 .sd-pool-card{display:grid;gap:4px;padding:6px;border:1px solid #493c4d;border-radius:8px;background:#221d26;cursor:pointer;font-size:11px}

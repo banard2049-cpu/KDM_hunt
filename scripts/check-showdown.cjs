@@ -23,11 +23,8 @@ const before=JSON.stringify(lion);assert.throws(()=>E.draw(data,{...lion,pool:[]
 assert.deepEqual(lion.expansions,['Core']);assert.ok(lion.pool.every(id=>E.ownerOf(data,id)==='Core'));
 const solitaire=E.create(data,'white-lion','level-2','pool-a');assert.deepEqual(solitaire.expansions,['Core']);
 // A level whose rules need terrain from elsewhere gets exactly those copies.
-const charrogg=E.create(data,'charrogg','level-1','pool-b');
-const poolNames=charrogg.pool.map(id=>E.cardIndex(data).get(id).name);
-assert.ok(poolNames.includes('Lava Pool'),'required terrain must be added to the default pool');
-assert.ok(charrogg.pool.filter(id=>E.ownerOf(data,id)!=='Core').length<3,'only the required copies come along');
-assert.deepEqual(charrogg.drawWarnings,[]);
+const king=E.create(data,'king','level-1','pool-b');
+assert.deepEqual(king.drawWarnings,[]);
 // Single cards can be added to the pool without pulling in their whole pack.
 const single=E.create(data,'white-lion','level-2','pool-c');
 const lily=data.expansions.find(e=>e.id==='WhiteLion').cards[0].id;

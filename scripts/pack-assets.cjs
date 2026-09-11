@@ -45,6 +45,7 @@ function formatSize(bytes) {
 }
 
 function main() {
+  execSync('python scripts/clean-assets.py', {cwd:ROOT_DIR, stdio:'inherit'});
   // Check if assets directory exists
   if (!fs.existsSync(ASSETS_DIR)) {
     console.error(`Error: Assets directory not found at ${ASSETS_DIR}`);

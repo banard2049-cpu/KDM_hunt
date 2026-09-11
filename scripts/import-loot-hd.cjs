@@ -18,7 +18,6 @@ for(const b of data.bosses){
   if(['beast-of-sorrow','great-golden-cat','mad-steed','golden-eyed-king-of-1000-years'].includes(l.id))l.rule.hdFiles.push(copy(143));
   l.rule.hdSource='用户提供的高清基础规则书';
   const difference={
-   'king-s-man':'GCE 的这页采用王之硬币变体：1–3 为 2 张王之硬币＋怪物器官，4–8 为 d5 王之硬币，9+ 为 5 张王之硬币＋钢剑；高清基础书为 1–4 破损提灯 2＋怪物器官、5–8 战斗技艺、9+ 钢剑＋基础资源 1。',
    'screaming-antelope':'模组等级 2 为基础 6＋怪物 7；等级 3 为基础 6＋怪物 8＋虫资源 2＋黑色地衣。高清基础书分别为 4＋6、5＋7＋黑色地衣。传奇疯狂战马沿用对应版本的等级 3 奖励。',
    'butcher':'模组等级 3 的额外面具判定为原始 d10 点数 2+；高清基础书为 4+。其他文字与能力也可能有版本调整。'
   }[b.id];

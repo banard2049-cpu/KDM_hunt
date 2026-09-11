@@ -24,7 +24,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px}he
 @media(min-width:761px){.loot-reward{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 24px;align-items:start}.loot-reward>.loot-heading,.loot-reward>#lootRewardDescription,.loot-reward>#lootRuleSource,.loot-reward>#lootConditions,.loot-reward>.row,.loot-reward>#lootRolls,.loot-reward>#lootNotes{grid-column:1}.loot-reward>details{grid-column:2;grid-row:1 / span 7;display:block}.loot-reward>details>summary{display:none}.loot-reward .loot-rule-grid{display:flex;flex-direction:column;align-items:stretch;margin:0}.loot-reward .loot-rule-preview{width:100%;border:0;background:none;padding:0;overflow:hidden}.loot-reward .loot-rule-frame{max-width:none;cursor:zoom-in}.loot-reward .loot-rule-preview>span:not(.loot-rule-frame){display:none}}
 
 .loot-optional-resource{display:flex;align-items:flex-start;gap:6px;line-height:1.5}.loot-optional-resource input{flex:none;margin-top:4px}
-/* Optional switches (resources and fan terrain) sit under the export row, as one
+/* Optional switches (resources) sit under the export row, as one
    left-aligned column of checkboxes. */
 .loot-optional-switches{display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #493c4d}
 

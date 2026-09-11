@@ -1,92 +1,5 @@
 [
   {
-    "id": "black-lion",
-    "name": "Black Lion",
-    "aliases": [
-      "Black Lion"
-    ],
-    "expansion": "BlackLion",
-    "huntTrack": [
-      "M",
-      "H",
-      "M",
-      "H",
-      "M",
-      "O",
-      "H",
-      "H",
-      "M",
-      "H",
-      "H"
-    ],
-    "levels": [
-      {
-        "name": "Level 1",
-        "level": 1,
-        "monsterHuntPosition": 4
-      },
-      {
-        "name": "Level 2",
-        "level": 2,
-        "monsterHuntPosition": 7
-      },
-      {
-        "name": "Level 3",
-        "level": 3,
-        "monsterHuntPosition": 10
-      },
-      {
-        "name": "Level 4",
-        "level": 4,
-        "monsterHuntPosition": 10
-      }
-    ],
-    "huntEventsDeck": "Black Lion Hunt Events",
-    "resourcesDeck": "Black Lion Resources",
-    "expansionGroup": "粉丝扩"
-  },
-  {
-    "id": "charrogg",
-    "name": "Charrogg",
-    "aliases": [
-      "Charrogg"
-    ],
-    "expansion": "Charrogg",
-    "huntTrack": [
-      "H",
-      "M",
-      "H",
-      "M",
-      "M",
-      "O",
-      "H",
-      "M",
-      "M",
-      "M",
-      "H"
-    ],
-    "levels": [
-      {
-        "name": "Level 1",
-        "level": 1,
-        "monsterHuntPosition": 4
-      },
-      {
-        "name": "Level 2",
-        "level": 2,
-        "monsterHuntPosition": 7
-      },
-      {
-        "name": "Level 3",
-        "level": 3,
-        "monsterHuntPosition": 11
-      }
-    ],
-    "huntEventsDeck": "Charrogg Hunt Events",
-    "resourcesDeck": "Charrogg Resources",
-    "expansionGroup": "粉丝扩"
-  },
-  {
     "id": "crimson-crocodile",
     "name": "Crimson Crocodile",
     "aliases": [
@@ -178,47 +91,6 @@
     "expansionGroup": "12扩"
   },
   {
-    "id": "drifter-knight",
-    "name": "Drifter Knight",
-    "aliases": [
-      "Drifter Knight"
-    ],
-    "expansion": "DrifterKnight",
-    "huntTrack": [
-      "H",
-      "M",
-      "H",
-      "H",
-      "M",
-      "O",
-      "M",
-      "H",
-      "M",
-      "H",
-      "H"
-    ],
-    "levels": [
-      {
-        "name": "Level 1",
-        "level": 1,
-        "monsterHuntPosition": 5
-      },
-      {
-        "name": "Level 2",
-        "level": 2,
-        "monsterHuntPosition": 8
-      },
-      {
-        "name": "Level 3",
-        "level": 3,
-        "monsterHuntPosition": 10
-      }
-    ],
-    "huntEventsDeck": "Drifter Knight Hunt Events",
-    "resourcesDeck": "Drifter Knight Resources",
-    "expansionGroup": "粉丝扩"
-  },
-  {
     "id": "dung-beetle-knight",
     "name": "Dung Beetle Knight",
     "aliases": [
@@ -308,47 +180,6 @@
     "expansionGroup": "12扩"
   },
   {
-    "id": "gnasher",
-    "name": "Gnasher",
-    "aliases": [
-      "Gnasher"
-    ],
-    "expansion": "Gnasher",
-    "huntTrack": [
-      "H",
-      "M",
-      "H",
-      "M",
-      "H",
-      "O",
-      "H",
-      "M",
-      "M",
-      "H",
-      "M"
-    ],
-    "levels": [
-      {
-        "name": "Level 1",
-        "level": 1,
-        "monsterHuntPosition": 4
-      },
-      {
-        "name": "Level 2",
-        "level": 2,
-        "monsterHuntPosition": 7
-      },
-      {
-        "name": "Level 3",
-        "level": 3,
-        "monsterHuntPosition": 10
-      }
-    ],
-    "huntEventsDeck": "Gnasher Hunt Events",
-    "resourcesDeck": "Gnasher Resources",
-    "expansionGroup": "粉丝扩"
-  },
-  {
     "id": "gorm",
     "name": "Gorm",
     "aliases": [
@@ -388,61 +219,6 @@
     "huntEventsDeck": "Gorm Hunt Events",
     "resourcesDeck": "Gorm Resources",
     "expansionGroup": "12扩"
-  },
-  {
-    "id": "harvester-worm",
-    "name": "Harvester Worm",
-    "aliases": [
-      "Harvester Worm"
-    ],
-    "expansion": "HarvesterWorm",
-    "huntTrack": [
-      "H",
-      "H",
-      "H",
-      "H",
-      "H",
-      "O",
-      "L",
-      "M",
-      "M",
-      "M",
-      "H"
-    ],
-    "levels": [
-      {
-        "name": "Level 1",
-        "level": 1
-      },
-      {
-        "name": "Level 2",
-        "level": 2
-      },
-      {
-        "name": "Dung Worm",
-        "level": 2
-      },
-      {
-        "name": "Homecoming",
-        "level": 2
-      },
-      {
-        "name": "Level 3",
-        "level": 3,
-        "monsterHuntPosition": 11
-      },
-      {
-        "name": "Blood Worm",
-        "level": 3
-      },
-      {
-        "name": "Regal Worm",
-        "level": 5
-      }
-    ],
-    "huntEventsDeck": "Harvester Worm Hunt Events",
-    "resourcesDeck": "Harvester Worm Resources",
-    "expansionGroup": "粉丝扩"
   },
   {
     "id": "king",

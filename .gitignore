@@ -20,7 +20,8 @@ assets/board/
 assets/cards/
 assets/hunt-backs/
 assets/hunt-sheets/
-assets/loot/
+assets/loot/*
+!assets/loot/kings-man-core.jpg
 
 # --- Private HD assets (not uploaded anywhere) ---
 # High-resolution (HD) images are private and kept locally only.

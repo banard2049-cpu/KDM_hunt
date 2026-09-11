@@ -29,14 +29,13 @@ const deckCards = e => {
   for (const c of e.cards) count.set(c.name, (count.get(c.name) || 0) + 1);
   return [...count].map(([n, k]) => k > 1 ? `${n} ×${k}` : n).join('、');
 };
-const tag = e => e.fan ? '**粉丝扩（默认隐藏）**' : e.group ? `官方·${e.group}波` : '官方';
+const tag = e => e.group ? `官方·${e.group}波` : '官方';
 
 const out = [];
 out.push('# 决战地形分类表', '');
 out.push(`由 \`node scripts/terrain-table.cjs\` 依据 \`data/showdown.json\` 生成。`, '');
 out.push(`- 地形牌库 **${data.expansions.length}** 个｜地形牌 **${data.expansions.reduce((n, e) => n + e.cards.length, 0)}** 张｜去重后 **${owner.size}** 种地形｜等级 **${data.bosses.reduce((n, b) => n + b.levels.length, 0)}** 个`);
 out.push('- 归属判定依据是**卡面左上角印的扩展纹章**，不是 TTS 素材档案路径（见 `scripts/refile-terrain.cjs`）');
-out.push('- `粉丝扩（默认隐藏）`：左侧栏「导出战利品记录」下方的「显示粉丝扩地形」复选框默认不勾，不列出也不进随机地形牌库');
 out.push('- `官方·X波`：该波（`group`）的 Boss 会自带这一包地形');
 out.push('');
 out.push('## 一、地形牌库（扩展）', '');
@@ -65,7 +64,7 @@ const sized = Object.keys(data.sizes).filter(t => !Object.keys(data.terrain).som
 out.push('', '## 六、只有图块尺寸、没有地形规则卡（App 里用不到）', '');
 for (const t of sized) out.push(`- ${t} — ${data.sizes[t].x}×${data.sizes[t].y}`);
 
-fs.writeFileSync(path.join(root, 'docs/terrain-classification.md'), out.join('\n') + '\n');
+fs.writeFileSync(path.join(root, 'docs/terrain-classification.md'), out.join('\n').trimEnd() + '\n');
 console.log('wrote docs/terrain-classification.md');
 
 // ---------------------------------------------------------------- HTML 版（带卡图）
@@ -96,8 +95,8 @@ function thumb(card) {
   return { style: `background-image:url('../${card.file}');background-size:${w * 100}% ${h * 100}%;background-position:${bx}% ${by}%`, ratio: `${cw} / ${ch}` };
 }
 
-const kindOf = e => e.fan ? 'fan' : e.group ? 'chest' : 'official';
-const labelOf = e => e.fan ? '粉丝扩 · 默认隐藏' : e.group ? `官方 · ${e.group}波` : '官方';
+const kindOf = e => e.group ? 'chest' : 'official';
+const labelOf = e => e.group ? `官方 · ${e.group}波` : '官方';
 const order = [...data.expansions].sort((a, b) => ({ fan: 0, chest: 1, official: 2 })[kindOf(a)] - ({ fan: 0, chest: 1, official: 2 })[kindOf(b)]);
 
 const sections = order.map(e => {
@@ -130,11 +129,9 @@ code{background:#302936;border-radius:4px;padding:1px 5px;font-size:12px;color:#
 .lead{background:#211c24;border:1px solid #493c4d;border-radius:8px;padding:14px 16px;margin:12px 0 18px}
 .lead b{color:#ffb083}
 .badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#264a2e;color:#a5f7b8;white-space:nowrap}
-.pack.fan .badge{background:#5a2f22;color:#ffb083}
 .pack.chest .badge{background:#3a2f52;color:#cbb2ff}
 h2{font-size:17px;margin:30px 0 10px;border-top:1px solid #493c4d;padding-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 h2 .cnt{font-size:12px;color:#a899ad;font-weight:400}
-section.pack.fan{border-left:3px solid #d98760;padding-left:14px;margin-left:-17px}
 section.pack.chest{border-left:3px solid #8b6cd9;padding-left:14px;margin-left:-17px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
 figure.card{margin:0;background:#2b252f;border:1px solid #514457;border-radius:10px;padding:8px;display:flex;flex-direction:column}
@@ -149,7 +146,6 @@ figcaption .src{color:#6f6474}
 table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0 4px}
 th,td{border:1px solid #493c4d;padding:6px 9px;text-align:left;vertical-align:top}
 th{background:#241f29;color:#c6b7c9}
-tr.fan td{background:#2a1e1a}
 tr.chest td{background:#241f2e}
 .tip{color:#a899ad;font-size:12px;margin:10px 0 0}
 details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
@@ -161,10 +157,9 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
 依据 <code>data/showdown.json</code> 生成，卡图就是 App 里实际用的那张（按 TTS 图集裁切）。<br>
 <b>归属判据 = 卡面左上角印的扩展纹章</b>，不是素材档案路径。<br>
 共 ${data.expansions.length} 个地形牌库、${data.expansions.reduce((n, e) => n + e.cards.length, 0)} 张地形牌、去重 ${owner.size} 种地形、${data.bosses.reduce((n, b) => n + b.levels.length, 0)} 个等级。<br>
-<b>粉丝扩（橙色左边框）默认隐藏</b>：左侧栏「导出战利品记录」下方的「显示粉丝扩地形」复选框不勾时，不列出也不进随机地形牌库。
 </div>
 <table><thead><tr><th>#</th><th>牌库</th><th>标记</th><th>张数</th><th>地形牌</th></tr></thead><tbody>${summary}</tbody></table>
-<p class="tip">下面按「粉丝扩 → 赌博扩 → 官方」排列，每张牌下面写了图块名、尺寸、需要块数、有没有被布场规则写死。</p>
+<p class="tip">下面按「赌博扩 → 官方」排列，每张牌下面写了图块名、尺寸、需要块数、有没有被布场规则写死。</p>
 ${sections}
 <details open><summary>只有图块尺寸、没有地形规则卡（App 里用不到，${sized.length} 个）</summary>
 <div class="chips">${sized.map(t => `<span class="chip">${esc(t)} ${data.sizes[t].x}×${data.sizes[t].y}</span>`).join('')}</div>

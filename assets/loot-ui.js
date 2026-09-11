@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  const E=window.LootEngine,$=id=>document.getElementById(id),key='kdm-loot-v1';
+  const E=window.LootEngine,$=id=>document.getElementById(id),key='kdm-loot-official-v1';
   const esc=s=>String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const uid=()=>window.crypto?.randomUUID?.() || 'battle-'+Date.now()+'-'+Math.random().toString(36).slice(2);
   let data,store={schemaVersion:1,active:null,sessions:{}},ready,loadError='',selectedDeck='',selectedGroup='全部',selectedBoss='',selectedLevel='';
-  const labels={'white-lion':'白狮','screaming-antelope':'尖叫羚羊','phoenix':'凤凰','butcher':'屠夫','king-s-man':'王之禁卫','the-hand':'掌控者','watcher':'守望者','gold-smoke-knight':'金烟骑士','crimson-crocodile':'猩红鳄鱼','smog-singers':'烟雾歌者','king':'王','atnas':'甥啖老人','gambler':'赌徒','godhand':'神之手','killenium-butcher':'千宰屠夫','gorm':'格姆','flower-knight':'花骑士','dung-beetle-knight':'蜣螂骑士','spidicules':'针突蜘蛛','sunstalker':'逐日者','dragon-king':'龙王','lion-god':'狮之神','lion-knight':'狮骑士','manhunter':'猎人者','slenderman':'瘦长人','lonely-tree':'孤独之树','white-gigalion':'白色巨狮','black-lion':'黑狮','black-knight':'黑骑士','drifter-knight':'漂流骑士','harvester-worm':'收割蠕虫','bone-eaters':'食骨者'};
+  const labels={'white-lion':'白狮','screaming-antelope':'尖叫羚羊','phoenix':'凤凰','butcher':'屠夫','king-s-man':'王之禁卫','the-hand':'掌控者','watcher':'守望者','gold-smoke-knight':'金烟骑士','crimson-crocodile':'猩红鳄鱼','smog-singers':'烟雾歌者','king':'王','atnas':'甥啖老人','gambler':'赌徒','godhand':'神之手','killenium-butcher':'千宰屠夫','gorm':'格姆','flower-knight':'花骑士','dung-beetle-knight':'蜣螂骑士','spidicules':'针突蜘蛛','sunstalker':'逐日者','dragon-king':'龙王','lion-god':'狮之神','lion-knight':'狮骑士','manhunter':'猎人者','slenderman':'瘦长人','lonely-tree':'孤独之树','white-gigalion':'白色巨狮','black-knight':'黑骑士','bone-eaters':'食骨者'};
   const bossName=b=>labels[b.id]?labels[b.id]+' · '+b.name:b.name;
   function levelName(l){return /^Level \d+$/.test(l.name)?l.name.replace('Level ','等级 '):l.name==='Prologue'?'序章':l.name;}
   const current=()=>store.sessions[store.active];
@@ -23,7 +23,7 @@
     try{localStorage.setItem('kdm-page',page);}catch(_){}
     if(page==='loot'){if(data)render();else notice(loadError||'正在载入战利品牌库…',!!loadError);}
   }
-  function battleOptions(){return {includeLumpOfAtnas:store.includeLumpOfAtnas===true,includeFanVermin:store.includeFanVermin===true,includePromoVermin:store.includePromoVermin===true};}
+  function battleOptions(){return {includeLumpOfAtnas:store.includeLumpOfAtnas===true,includePromoVermin:store.includePromoVermin===true};}
   function selectors(){
     const query=$('lootSearch').value.trim().toLowerCase();
     const bosses=data.bosses.filter(b=>(selectedGroup==='全部'||b.group===selectedGroup)&&(!query||(bossName(b)+' '+b.aliases.join(' ')).toLowerCase().includes(query)));
@@ -96,9 +96,7 @@
   function render(){
     if(!data)return;
     $('lootIncludeLumpOfAtnas').checked=store.includeLumpOfAtnas===true;
-    $('lootIncludeFanVermin').checked=store.includeFanVermin===true;
     $('lootIncludePromoVermin').checked=store.includePromoVermin===true;
-    if($('sdFanToggle'))$('sdFanToggle').disabled=!store.active;
     $('lootQuality').value=localStorage.getItem('kdm-rulebook-version')==='hd'?'hd':'standard';
     selectors();
     const sessions=Object.values(store.sessions).sort((a,b)=>b.createdAt-a.createdAt);
@@ -124,7 +122,7 @@
     const preview=$('lootPreStartRules');if(preview)preview.hidden=true;
     const {boss,level}=E.context(data,s),r=level.reward;
     $('lootTitle').textContent=bossName(boss)+' · '+levelName(level);
-    $('lootSource').textContent=(s.source==='hunt'?'来自狩猎 · 战斗结果由你判断':'手动战斗')+' · 甥啖肉块：'+(s.includeLumpOfAtnas!==false?'已加入':'未加入')+' · 粉丝扩寄生虫：'+(s.includeFanVermin!==false?'已加入':'未加入')+' · Promo寄生虫：'+(s.includePromoVermin!==false?'已加入':'未加入');
+    $('lootSource').textContent=(s.source==='hunt'?'来自狩猎 · 战斗结果由你判断':'手动战斗')+' · 甥啖肉块：'+(s.includeLumpOfAtnas!==false?'已加入':'未加入')+' · Promo寄生虫：'+(s.includePromoVermin!==false?'已加入':'未加入');
     $('lootRewardDescription').textContent=r.description||r.note||stepsText(r.steps);
     $('lootClaim').disabled=s.claimed||r.type==='manual';$('lootClaim').textContent=s.claimed?'战后奖励已领取':s.pending?'继续领取已生成的奖励':'抽取战后奖励';
     $('lootUndo').disabled=!s.history.length;$('lootUndo').textContent=s.history.length?'撤销：'+s.history.at(-1).label:'撤销上次操作';
@@ -230,17 +228,15 @@
         const saved=JSON.parse(raw);if(saved.schemaVersion!==1||!saved.sessions)throw new Error('战利品存档格式无法识别');
         const validSessions={};let skipped=0; for(const s of Object.values(saved.sessions)){try{E.validate(data,s);validSessions[s.id]=s;}catch(_){skipped++;}} saved.sessions=validSessions; if(saved.active&&!validSessions[saved.active])saved.active=null; store=saved; if(skipped)loadError='已跳过 '+skipped+' 场使用旧版牌库的战斗记录；可重新开始战斗。';
       }
-      $('lootGroup').innerHTML=['全部','基础','赌博','12扩','其他官方扩','粉丝扩'].map(g=>`<option>${g}</option>`).join('');
+      $('lootGroup').innerHTML=['全部','基础','赌博','12扩','其他官方扩'].map(g=>`<option>${g}</option>`).join('');
       selectedBoss=current()?.bossId||'white-lion';selectedLevel=current()?.levelId||'level-1';
       render();
       notice(loadError||'牌库已准备好。选择 Boss 和等级开始，或恢复已有战斗。');
       if(localStorage.getItem('kdm-page')==='loot')show('loot');
     }catch(e){loadError='战利品载入失败：'+e.message+'。原存档未修改。';data=null;notice(loadError,true);$('lootNew').disabled=true;}
   }
-  for(const [id,key,label] of [['lootIncludeFanVermin','includeFanVermin','粉丝扩寄生虫'],['lootIncludePromoVermin','includePromoVermin','Promo寄生虫']])$(id).onchange=e=>{store[key]=e.target.checked;if(save())notice('新战斗将'+(e.target.checked?'加入':'不加入')+label+'；已有战斗保持原设置。');};
-  // The fan terrain switch lives here too, but its state and effect belong to the
+  for(const [id,key,label] of [['lootIncludePromoVermin','includePromoVermin','Promo寄生虫']])$(id).onchange=e=>{store[key]=e.target.checked;if(save())notice('新战斗将'+(e.target.checked?'加入':'不加入')+label+'；已有战斗保持原设置。');};
   // random-terrain module, so hand the change over to it.
-  $('sdFanToggle').onchange=e=>window.KDMShowdown?.terrain?.(e.target.checked);
   $('lootIncludeLumpOfAtnas').onchange=e=>{store.includeLumpOfAtnas=e.target.checked;if(save())notice('新战斗将'+(e.target.checked?'加入':'不加入')+'甥啖肉块；已有战斗保持原设置。');};
   $('goLoot').onclick=()=>show('loot');$('goHunt').onclick=()=>show('hunt');$('lootNew').onclick=startManual;
   $('lootGroup').onchange=e=>{selectedGroup=e.target.value;render();};$('lootSearch').oninput=render;

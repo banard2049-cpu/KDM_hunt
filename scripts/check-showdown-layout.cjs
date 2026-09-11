@@ -135,7 +135,7 @@ const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resol
   const swapButton = el('sdSwap'), rotateButton = el('sdRotate');
   await window.KDMShowdown.battle({ id: 'sb1', bossId: 'white-lion', levelId: 'level-2' });
   await settle();
-  const saved = () => JSON.parse(memory.get('kdm-showdown-v1'));
+  const saved = () => JSON.parse(memory.get('kdm-showdown-official-v1'));
   const snap = () => window.KDMShowdown.snapshot({ battleId: 'sb1' });
   assert.equal(swapButton.disabled, false, '交换 unlocks with a battle');
   assert.equal(rotateButton.disabled, false, '旋转 unlocks with a battle');

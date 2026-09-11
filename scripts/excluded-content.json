@@ -1,0 +1,107 @@
+{
+  "bosses": [
+    "allison",
+    "allison-watcher",
+    "black-lion",
+    "charrogg",
+    "king-s-man-curse",
+    "drifter-knight",
+    "forsaker-sisters",
+    "gnasher",
+    "harvester-worm",
+    "gardener-worm",
+    "king-s-man-kc",
+    "scourgelord",
+    "storm-knight",
+    "storm-dancer"
+  ],
+  "expansions": [
+    "AllisonTheTwilightKnight",
+    "BlackLion",
+    "Charrogg",
+    "Curse",
+    "DrifterKnight",
+    "ForsakerSisters",
+    "Gnasher",
+    "HarvesterWorm",
+    "KingsCoin",
+    "Scourgelord",
+    "StormKnight"
+  ],
+  "huntCards": {
+    "White Lion Hunt Events": [
+      "white lion cub",
+      "dying lion",
+      "the well",
+      "cave painting",
+      "watering hole",
+      "soda pop surprise"
+    ],
+    "Phoenix Hunt Events": [
+      "private meeting",
+      "lowly beetle",
+      "paradox"
+    ],
+    "Screaming Antelope Hunt Events": [
+      "greedy cache",
+      "teething",
+      "banshees",
+      "luminescent trail"
+    ],
+    "Gorm Hunt Events": [
+      "gorm storm",
+      "mud wallow",
+      "lost light",
+      "eat or be eaten",
+      "finger painting"
+    ],
+    "Sunstalker Hunt Events": [
+      "ink pot",
+      "color out of darkness",
+      "shaoling",
+      "sun fall"
+    ],
+    "Dragon King Hunt Events": [
+      "squire-errant",
+      "weeping man",
+      "meteor shower",
+      "radiating wind"
+    ],
+    "Flower Knight Hunt Events": [
+      "crawling forest",
+      "fey world",
+      "warblind field"
+    ],
+    "Dung Beetle Knight Hunt Events": [
+      "never forget",
+      "stink trail",
+      "bamboo training",
+      "wild artichokes",
+      "vermin swarm"
+    ],
+    "Spidicules Hunt Events": [
+      "story by the lantern light",
+      "base jumping",
+      "vengeful threads",
+      "hidden egg clutch"
+    ],
+    "Lion God Hunt Events": [
+      "quicksand",
+      "silver shaft",
+      "lost boy",
+      "ruined temple"
+    ]
+  },
+  "terrain": [
+    "Diseased Corpse",
+    "Crystal Corpse",
+    "Stone Stair",
+    "Boulders",
+    "Lantern Pedestals",
+    "Hovel",
+    "2 Cowering Survivors",
+    "Vomit Pools",
+    "Glowing Corpse",
+    "Lava Pool"
+  ]
+}

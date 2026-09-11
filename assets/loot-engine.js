@@ -15,7 +15,7 @@
   function create(data, bossId, levelId, id, source='manual', options={}) {
     const boss=data.bosses.find(b=>b.id===bossId), level=boss?.levels.find(l=>l.id===levelId);
     if(!level) throw new Error('找不到这个 Boss 或等级。');
-    return {schemaVersion:1,id,bossId,levelId,source,ccgVerminVersion:1,includeLumpOfAtnas:options.includeLumpOfAtnas===true,includeFanVermin:options.includeFanVermin===true,includePromoVermin:options.includePromoVermin===true,createdAt:Date.now(),piles:{},held:[],discarded:[],claimed:false,pending:null,rolls:[],notes:[],history:[]};
+    return {schemaVersion:1,id,bossId,levelId,source,includeLumpOfAtnas:options.includeLumpOfAtnas===true,includePromoVermin:options.includePromoVermin===true,createdAt:Date.now(),piles:{},held:[],discarded:[],claimed:false,pending:null,rolls:[],notes:[],history:[]};
   }
   function context(data,s) {
     const boss=data.bosses.find(b=>b.id===s.bossId),level=boss?.levels.find(l=>l.id===s.levelId);
@@ -26,7 +26,7 @@
     let boss=data.bosses.find(b=>b.huntMonsterId===hunt.monster?.id);
     let level=boss?.levels.find(l=>l.name===hunt.levelName);
     // Older extracted hunt data accidentally appended other modules' scenarios.
-    const legacy={king:{'Killenium Butcher 2':'killenium-butcher','Killenium Butcher 3':'killenium-butcher'},'crimson-crocodile':{'An Unexpected Return':'king-s-man-curse','A Noble Return':'king-s-man-curse','Altering Fate':'king-s-man-curse'},sunstalker:{'Young Lion':'white-lion-whitebox'}};
+    const legacy={king:{'Killenium Butcher 2':'killenium-butcher','Killenium Butcher 3':'killenium-butcher'},sunstalker:{'Young Lion':'white-lion-whitebox'}};
     if(!level&&legacy[hunt.monster?.id]?.[hunt.levelName]){boss=data.bosses.find(b=>b.id===legacy[hunt.monster.id][hunt.levelName]);level=boss?.levels.find(l=>l.name===hunt.levelName);}
     if(!hunt.levelName)level=boss?.levels.find(l=>l.level===hunt.level&&l.hunt);
     return level?{boss,level}:null;
@@ -44,13 +44,13 @@
     if(s.includeLumpOfAtnas===false&&card.name==='Lump of Atnas')return false;
     if(card.deck!==coreVermin||baseVermin.has(card.name))return true;
     // These switches configure the core draw pool; source archives stay separate.
-    return card.name==='Gibbering Haremite'?s.includePromoVermin!==false:s.includeFanVermin!==false;
+    return card.name!=='Gibbering Haremite'||s.includePromoVermin!==false;
   }
   function deckCards(data,s,id) {
     id=deckId(data,s,id);
     // Missing option means a legacy battle: preserve its original full deck.
     const deck=data.decks[id];
-    const cards=s.ccgVerminVersion===undefined&&deck.legacyCards?deck.legacyCards:deck.cards;
+    const cards=deck.cards;
     return cards.filter(cid=>cardEnabled(data,s,cid));
   }
   function pile(data,s,id,random) {
@@ -150,8 +150,7 @@
   function available(data,s,id) {id=deckId(data,s,id);return (s.piles[id] || deckCards(data,s,id)).slice();}
   function validate(data,s) {
     context(data,s);
-    if(s.ccgVerminVersion!==undefined&&s.ccgVerminVersion!==1)throw new Error('战斗的 CCG 寄生虫牌库版本无效。');
-    for(const key of ['includeLumpOfAtnas','includeFanVermin','includePromoVermin'])if(s[key]!==undefined&&typeof s[key]!=='boolean')throw new Error('战斗的可选资源设置无效。');
+    for(const key of ['includeLumpOfAtnas','includePromoVermin'])if(s[key]!==undefined&&typeof s[key]!=='boolean')throw new Error('战斗的可选资源设置无效。');
     const seen=new Set();
     for(const [id,remaining] of Object.entries(s.piles)){
       if(!data.decks[id])throw new Error('存档包含未知牌库。');

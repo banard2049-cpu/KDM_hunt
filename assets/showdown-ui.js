@@ -1,5 +1,5 @@
 (function(){
- 'use strict';const $=id=>document.getElementById(id),E=window.ShowdownEngine,V=window.ShowdownView,key='kdm-showdown-v1';let data,share=null,blocked=false,store={schemaVersion:1,active:null,sessions:{}},publishing=Promise.resolve(),poolSel=new Set();
+ 'use strict';const $=id=>document.getElementById(id),E=window.ShowdownEngine,V=window.ShowdownView,key='kdm-showdown-official-v1';let data,share=null,blocked=false,store={schemaVersion:1,active:null,sessions:{}},publishing=Promise.resolve(),poolSel=new Set();
  // The board opens at 170% of its resting size and the cards at 150%; the readouts,
  // the snapshot base and 「重置大小」 all follow the engine's two numbers.
  const pct=v=>Math.round(v*100)+'%',num=(v,fallback)=>{const n=Number(v);return Number.isFinite(n)&&n>0?Math.max(.5,Math.min(2,n)):fallback;},DEFAULT_BOARD=num(E?.defaultBoardScale,1.7),DEFAULT_CARD=num(E?.defaultCardScale,1.5);
@@ -36,16 +36,15 @@
  const page=document.createElement('section');page.id='showdownControls';page.className='sd-host-controls';page.innerHTML=`<h3>第二屏幕控制</h3><p id="sdBattleLabel">开始战斗后，可在这里控制第二屏幕。</p><p id="sdShareInfo" class="sd-share-address" hidden aria-label="第二屏幕地址"><span id="sdShareUrl"></span></p><div class="sd-controls"><button id="sdStop" hidden>停止第二屏幕</button><fieldset><legend>版图大小</legend><button data-sd-size="boardScale" data-delta="-0.1" aria-label="缩小副屏版图">−</button><output id="sdBoardSize">${pct(DEFAULT_BOARD)}</output><button data-sd-size="boardScale" data-delta="0.1" aria-label="放大副屏版图">＋</button></fieldset><fieldset><legend>卡牌大小</legend><button data-sd-size="cardScale" data-delta="-0.1" aria-label="缩小副屏卡牌">−</button><output id="sdCardSize">${pct(DEFAULT_CARD)}</output><button data-sd-size="cardScale" data-delta="0.1" aria-label="放大副屏卡牌">＋</button></fieldset><button data-sd-size="reset">重置大小</button><div class="sd-view-switches" role="group" aria-label="第二屏幕显示方式"><button id="sdRulebook" type="button" aria-pressed="false" data-icon="board" title="显示决战版图 · 点按换成 Boss 规则书" aria-label="第二屏幕当前显示决战版图，点按切换到Boss 规则书">${ICON.board}</button><button id="sdSwap" type="button" aria-pressed="false" data-icon="swap" title="交换版图与卡牌" aria-label="交换版图与卡牌：把卡牌展示区换到左列">${ICON.swap}</button><button id="sdRotate" type="button" data-angle="0" data-icon="rotate" title="旋转卡牌区" aria-label="旋转卡牌区：把卡牌逆时针转 90°">${ICON.rotate}</button><button id="sdAlign" type="button" data-align="${ALIGN_DEFAULT}" data-icon="align-${ALIGN_DEFAULT}" title="对齐方式 · ${alignLabel()}" aria-label="对齐方式：当前${alignLabel()}，点按切换到${alignLabel(nextAlign())}">${ICON.align[ALIGN_DEFAULT]}</button></div></div>`;
  $('lootSidebar').append(page);
  const shareStatus=document.createElement('p');shareStatus.className='sd-warning';shareStatus.setAttribute('role','status');shareStatus.hidden=true;page.append(shareStatus);
- const terrain=document.createElement('section');terrain.id='sdTerrainPanel';terrain.className='sd-host-controls sd-terrain-panel';terrain.innerHTML=`<h3>随机地形</h3><div class="sd-controls"><button id="sdStartToggle" type="button" aria-pressed="true">显示初始位置</button><button id="sdTerrain">选择地形</button><button id="sdReroll">重抽地形</button><span id="sdFanHint" class="sd-fan-hint"></span></div><div id="sdTerrainEditor" hidden><p>固定与指定地形按规则保留；选择要替换的随机地形。</p><div id="sdTerrainSlots" class="sd-controls"></div><button id="sdApplyTerrain">应用地形</button><button id="sdCancelTerrain">取消</button></div><details id="sdPoolEditor"><summary>随机地形池 · 已选 <b id="sdPoolCount">0</b> 张<span id="sdExpSummary" class="muted"></span></summary><div class="sd-pool-bar"><input id="sdPoolSearch" placeholder="搜索地形名（英文）"><button id="sdPoolCore" type="button">只留基础</button><button id="sdPoolAll" type="button">全选</button><button id="sdPoolNone" type="button">全不选</button></div><p id="sdPoolHint" class="sd-pool-hint"></p><div id="sdPoolGroups"></div></details><div id="sdNotice" class="sd-warning" role="status"></div>`;
+ const terrain=document.createElement('section');terrain.id='sdTerrainPanel';terrain.className='sd-host-controls sd-terrain-panel';terrain.innerHTML=`<h3>随机地形</h3><div class="sd-controls"><button id="sdStartToggle" type="button" aria-pressed="true">显示初始位置</button><button id="sdTerrain">选择地形</button><button id="sdReroll">重抽地形</button><span id="sdTerrainHint" class="sd-terrain-hint"></span></div><div id="sdTerrainEditor" hidden><p>固定与指定地形按规则保留；选择要替换的随机地形。</p><div id="sdTerrainSlots" class="sd-controls"></div><button id="sdApplyTerrain">应用地形</button><button id="sdCancelTerrain">取消</button></div><details id="sdPoolEditor"><summary>随机地形池 · 已选 <b id="sdPoolCount">0</b> 张<span id="sdExpSummary" class="muted"></span></summary><div class="sd-pool-bar"><input id="sdPoolSearch" placeholder="搜索地形名（英文）"><button id="sdPoolCore" type="button">只留基础</button><button id="sdPoolAll" type="button">全选</button><button id="sdPoolNone" type="button">全不选</button></div><p id="sdPoolHint" class="sd-pool-hint"></p><div id="sdPoolGroups"></div></details><div id="sdNotice" class="sd-warning" role="status"></div>`;
  // Inside the reward module; the column itself is the fallback if that module
  // ever moves or is renamed.
  (document.querySelector('#lootBattle .panel.loot-reward')||$('lootPage')).append(terrain);
  const notice=m=>$('sdNotice').textContent=m,current=()=>store.sessions[store.active];
  // Starting positions (blue legal start squares, the monster's footprint and the
  // terrain the setup rules pin down) are shown by default; the button in the
- // terrain row turns the highlight off. Fan packs are the opposite: opt-in. Both
+ // terrain row turns the highlight off. These
  // preferences are remembered across battles.
- const showFan=()=>store.showFan===true;
  const showStart=()=>store.showStart!==false;
  // 交换 keeps the board and the card column apart or trades their places; 旋转
  // turns the card panel a quarter turn at a time (0/90/180/270, counter-clockwise)
@@ -80,14 +79,14 @@
     el.style.backgroundPosition=`${w>1?col*100/(w-1):0}% ${h>1?row*100/(h-1):0}%`;
   }
  }
- const rankOf=e=>e.id==='Core'?0:(e.fan?2:1);
+ const rankOf=e=>e.id==='Core'?0:1;
  const groupOrder=source=>[...source.expansions].sort((a,b)=>rankOf(a)-rankOf(b));
  function requiredNames(){const s=current();if(!s)return new Set();return new Set(E.requiredCounts(E.context(data,s).level).keys());}
  // ---- the pool editor ------------------------------------------------------
  function syncCount(){
   $('sdPoolCount').textContent=String(poolSel.size);
-  $('sdExpSummary').textContent=showFan()?'':' · 粉丝扩已折叠';
-  $('sdPoolHint').textContent=poolSel.size?`重抽时从这 ${poolSel.size} 张里抽；本等级固定／指定地形会自动保留。${showFan()?'':'粉丝扩默认折叠，勾选左侧栏「显示粉丝扩地形」才会出现在下面。'}`:'牌池是空的，勾几张再重抽。';
+  $('sdExpSummary').textContent='';
+  $('sdPoolHint').textContent=poolSel.size?`重抽时从这 ${poolSel.size} 张里抽；本等级固定／指定地形会自动保留。`:'牌池是空的，勾几张再重抽。';
  }
  function groupMarkup(e){
   const need=requiredNames(),q=$('sdPoolSearch').value.trim().toLowerCase();
@@ -98,27 +97,24 @@
     return `<label class="sd-pool-card${checked?' on':''}"><input type="checkbox" data-pool-card="${V.esc(c.id)}" ${checked?'checked':''}><span class="sd-pool-thumb" data-sheet="${V.esc(card.file||'')}" data-w="${card.w||1}" data-h="${card.h||1}" data-col="${card.col||0}" data-row="${card.row||0}"></span><small>${V.esc(c.name)}</small>${need.has(c.name)?'<em class="req">本关需要</em>':''}</label>`;
   }).join('');
   const picked=cards.filter(c=>poolSel.has(c.id)).length;
-  return `<div class="sd-pool-group${e.fan?' fan':''}" data-exp="${V.esc(e.id)}"><header><label><input type="checkbox" data-pool-group="${V.esc(e.id)}" ${picked===cards.length?'checked':''}><b>${V.esc(e.name)}</b></label><span class="tag">${e.fan?'粉丝扩':e.group?'官方·'+V.esc(e.group)+'波':'官方'}</span><span class="cnt">已选 ${picked}/${cards.length}</span></header><div class="sd-pool-grid">${rows}</div></div>`;
+  return `<div class="sd-pool-group" data-exp="${V.esc(e.id)}"><header><label><input type="checkbox" data-pool-group="${V.esc(e.id)}" ${picked===cards.length?'checked':''}><b>${V.esc(e.name)}</b></label><span class="tag">${e.group?'官方·'+V.esc(e.group)+'波':'官方'}</span><span class="cnt">已选 ${picked}/${cards.length}</span></header><div class="sd-pool-grid">${rows}</div></div>`;
  }
  function poolUI(s){
   if(!data)return;
-  // The fan terrain checkbox lives in the loot sidebar's optional-switch list.
-  if($('sdFanToggle'))$('sdFanToggle').checked=showFan();
   if(!s){
    $('sdPoolGroups').innerHTML='<p class="muted">还没有战斗。开始一场战斗后，这里会列出所有地形卡，可以逐张勾选。</p>';
    $('sdPoolCount').textContent='0';$('sdExpSummary').textContent='';$('sdPoolHint').textContent='';
-   $('sdFanHint').textContent='开始战斗后可以逐张挑选随机地形。';
+   $('sdTerrainHint').textContent='开始战斗后可以逐张挑选随机地形。';
    return;
   }
   // Keep the battle's own snapshot flags in step with the persisted preferences.
   if(s.display?.showStart!==showStart()||s.display?.swapped!==swapped()||(Number(s.display?.cardRotation)||0)!==cardRotation()||s.display?.align!==align()||s.display?.showRulebook!==showRulebook()){s.display={boardScale:DEFAULT_BOARD,cardScale:DEFAULT_CARD,...s.display,showStart:showStart(),swapped:swapped(),cardRotation:cardRotation(),align:align(),showRulebook:showRulebook()};s.revision=(s.revision||0)+1;publish();}
   poolSel=new Set(s.pool||E.poolIds(data,s));
-  const list=E.visibleExpansions(data,s,showFan());
+  const list=E.visibleExpansions(data,s);
   $('sdPoolGroups').innerHTML=list.length?groupOrder(data).filter(e=>list.some(v=>v.id===e.id)).map(e=>groupMarkup(e)).join('')||'<p class="muted">没有匹配的地形卡。</p>':'<p class="muted">没有可用的地形卡。</p>';
   paintThumbs($('sdPoolGroups'));
   syncCount();
-  const need=requiredNames(),forced=[...need].filter(n=>list.some(e=>e.cards.some(c=>c.name===n)&&e.fan));
-  $('sdFanHint').textContent=showFan()?`粉丝扩已展开，勾选单张卡即可加入随机地形池。${forced.length?`本关规则需要：${forced.join('、')}。`:''}`:`粉丝扩默认折叠；不需要时也不会进入牌池。勾选左侧栏「显示粉丝扩地形」可逐张加入。${forced.length?`本关规则需要 ${forced.length} 张粉丝扩地形，已自动保留。`:''}`;
+  $('sdTerrainHint').textContent='勾选单张卡即可加入随机地形池。';
  }
  function commitPool(silent){
   const s=current();if(!s||!data)return;
@@ -208,19 +204,6 @@
  // 第二屏幕在「决战版图」和「Boss 规则书」之间来回切换：默认显示决战版图，按一下换成
  // 该等级的规则书原图（含规则书里印的章节页），再按一下回到版图。
  $('sdRulebook').onclick=()=>{setShowRulebook(!showRulebook());notice(showRulebook()?'第二屏幕已切换到 Boss 规则书：显示该等级的规则书原图。':'第二屏幕已切回决战版图。');};
-  // Called by the checkbox in the loot sidebar (see KDMShowdown.terrain) with the
-  // state it just switched to, or by a direct click on the box.
-  function setFan(on){
-   if(on===undefined)on=showFan();
-   store.showFan=on;
-   if(!showFan()&&data){ // drop fan cards the current level does not force onto the board
-    const visible=new Set(E.visibleExpansions(data,current(),false).map(e=>e.id));
-    for(const id of [...poolSel])if(!visible.has(E.ownerOf(data,id)))poolSel.delete(id);
-   }
-   commitPool(true);render();
-   if(save())notice(showFan()?'粉丝扩已展开：可以单独勾选粉丝扩地形卡。':'粉丝扩已折叠：牌池里的粉丝扩地形已移除（本关规则需要的除外）。');
-  }
-  $('sdFanToggle').onchange=()=>setFan($('sdFanToggle').checked===true);
  // Toggles the whole initial-position highlight: the blue start squares, the
  // monster's starting footprint, and the terrain the setup rules place.
  $('sdStartToggle').onclick=()=>{setShowStart(!showStart());notice(showStart()?'已显示初始位置：蓝色起始格、怪物起始占地与固定地形高亮都会显示在第二屏幕。':'已隐藏初始位置：第二屏幕不再高亮起始格、怪物起始占地与固定地形。');};
@@ -309,10 +292,10 @@
  $('sdStop').onclick=async()=>{
   try{await publishing;await command('stop');share=null;if(popup&&!popup.closed){popup.close();popup=null;}shareNotice('第二屏幕已停止。');render();}catch(e){shareNotice(e.message);}
  };
- const ready=(async()=>{try{const r=await fetch('data/showdown.json');if(!r.ok)throw Error('决战数据载入失败');data=await r.json();const raw=localStorage.getItem(key);if(raw){const saved=JSON.parse(raw);if(saved.schemaVersion!==1||!saved.sessions)throw Error('决战存档格式无法识别');Object.values(saved.sessions).forEach(s=>E.validate(data,s));store=saved;}store.showFan=store.showFan===true;store.showStart=store.showStart!==false;store.swapped=store.swapped===true;store.cardRotation=((Math.round((Number(store.cardRotation)||0)/90)*90)%360+360)%360;store.align=ALIGN_MODES.includes(store.align)?store.align:ALIGN_DEFAULT;store.showRulebook=store.showRulebook===true;store.active=null;
+ const ready=(async()=>{try{const r=await fetch('data/showdown.json');if(!r.ok)throw Error('决战数据载入失败');data=await r.json();const raw=localStorage.getItem(key);if(raw){const saved=JSON.parse(raw);if(saved.schemaVersion!==1||!saved.sessions)throw Error('决战存档格式无法识别');Object.values(saved.sessions).forEach(s=>E.validate(data,s));store=saved;}store.showStart=store.showStart!==false;store.swapped=store.swapped===true;store.cardRotation=((Math.round((Number(store.cardRotation)||0)/90)*90)%360+360)%360;store.align=ALIGN_MODES.includes(store.align)?store.align:ALIGN_DEFAULT;store.showRulebook=store.showRulebook===true;store.active=null;
   try{const existing=await command('status');if(existing.active)share=existing;}catch(_){}
  }catch(e){blocked=true;notice(e.message+'，原存档保留。');}render();})();
  async function battle(s){await ready;if(!data||blocked)return;try{if(!s){store.active=null;render();return;}if(store.active===s.id&&current())return;update(store.sessions[s.id]||E.create(data,s.bossId,s.levelId,s.id));notice('副屏跟随当前战斗，布场结果已保存。');}catch(e){notice(e.message);}}
- window.KDMShowdown={battle,async encounter(hunt){await ready;if(!data||blocked)return;const b=data.bosses.find(b=>b.huntMonsterId===hunt.monster.id),l=b?.levels.find(l=>l.name===hunt.levelName);if(b&&l){if(hunt.showdownBattle&&!store.sessions[hunt.battleId]){try{E.validate(data,hunt.showdownBattle);store.sessions[hunt.battleId]=hunt.showdownBattle;}catch(_){}}await battle({id:hunt.battleId,bossId:b.id,levelId:l.id});}},snapshot(hunt){return store.sessions[hunt?.battleId]?JSON.parse(JSON.stringify(store.sessions[hunt.battleId])):null;},async terrain(on){await ready;if(!data||blocked)return;setFan(on);},async startPos(on){await ready;if(!data||blocked)return;setShowStart(on);},async layout(on){await ready;if(!data||blocked)return;if(on&&typeof on==='object'){if(on.swapped!==undefined)setSwapped(on.swapped);if(on.cardRotation!==undefined)setCardRotation(on.cardRotation);if(on.align!==undefined)setAlign(on.align);}else setSwapped(on);},show(){window.KDMLoot.show('loot');}};
+ window.KDMShowdown={battle,async encounter(hunt){await ready;if(!data||blocked)return;const b=data.bosses.find(b=>b.huntMonsterId===hunt.monster.id),l=b?.levels.find(l=>l.name===hunt.levelName);if(b&&l){if(hunt.showdownBattle&&!store.sessions[hunt.battleId]){try{E.validate(data,hunt.showdownBattle);store.sessions[hunt.battleId]=hunt.showdownBattle;}catch(_){}}await battle({id:hunt.battleId,bossId:b.id,levelId:l.id});}},snapshot(hunt){return store.sessions[hunt?.battleId]?JSON.parse(JSON.stringify(store.sessions[hunt.battleId])):null;},async startPos(on){await ready;if(!data||blocked)return;setShowStart(on);},async layout(on){await ready;if(!data||blocked)return;if(on&&typeof on==='object'){if(on.swapped!==undefined)setSwapped(on.swapped);if(on.cardRotation!==undefined)setCardRotation(on.cardRotation);if(on.align!==undefined)setAlign(on.align);}else setSwapped(on);},show(){window.KDMLoot.show('loot');}};
  ready.then(async()=>{await battle(await window.KDMLoot.currentBattle());if(localStorage.getItem('kdm-page')==='showdown')window.KDMLoot.show('loot');});
 })();

@@ -6,11 +6,9 @@ code{background:#302936;border-radius:4px;padding:1px 5px;font-size:12px;color:#
 .lead{background:#211c24;border:1px solid #493c4d;border-radius:8px;padding:14px 16px;margin:12px 0 18px}
 .lead b{color:#ffb083}
 .badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#264a2e;color:#a5f7b8;white-space:nowrap}
-.pack.fan .badge{background:#5a2f22;color:#ffb083}
 .pack.chest .badge{background:#3a2f52;color:#cbb2ff}
 h2{font-size:17px;margin:30px 0 10px;border-top:1px solid #493c4d;padding-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 h2 .cnt{font-size:12px;color:#a899ad;font-weight:400}
-section.pack.fan{border-left:3px solid #d98760;padding-left:14px;margin-left:-17px}
 section.pack.chest{border-left:3px solid #8b6cd9;padding-left:14px;margin-left:-17px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
 figure.card{margin:0;background:#2b252f;border:1px solid #514457;border-radius:10px;padding:8px;display:flex;flex-direction:column}
@@ -25,7 +23,6 @@ figcaption .src{color:#6f6474}
 table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0 4px}
 th,td{border:1px solid #493c4d;padding:6px 9px;text-align:left;vertical-align:top}
 th{background:#241f29;color:#c6b7c9}
-tr.fan td{background:#2a1e1a}
 tr.chest td{background:#241f2e}
 .tip{color:#a899ad;font-size:12px;margin:10px 0 0}
 details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
@@ -36,76 +33,10 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
 <div class="lead">
 依据 <code>data/showdown.json</code> 生成，卡图就是 App 里实际用的那张（按 TTS 图集裁切）。<br>
 <b>归属判据 = 卡面左上角印的扩展纹章</b>，不是素材档案路径。<br>
-共 21 个地形牌库、63 张地形牌、去重 52 种地形、136 个等级。<br>
-<b>粉丝扩（橙色左边框）默认隐藏</b>：左侧栏「导出战利品记录」下方的「显示粉丝扩地形」复选框不勾时，不列出也不进随机地形牌库。
+共 12 个地形牌库、41 张地形牌、去重 31 种地形、92 个等级。<br>
 </div>
-<table><thead><tr><th>#</th><th>牌库</th><th>标记</th><th>张数</th><th>地形牌</th></tr></thead><tbody><tr class="official"><td>1</td><td>Allison</td><td><span class="badge">官方</span></td><td>1</td><td>Mineral Vein</td></tr><tr class="official"><td>2</td><td>Black Knight</td><td><span class="badge">官方</span></td><td>4</td><td>Rubble、Noble Urns、Bell Altar、Elastomer Statue</td></tr><tr class="official"><td>3</td><td>Core</td><td><span class="badge">官方</span></td><td>21</td><td>2 Acanthus Plants ×4、2 Tall Grass ×2、Toppled Pillar ×2、Ore Vein ×2、Giant Stone Face ×2、Debris ×2、Bug Patch、3 Stone Columns ×2、Dead Monster、Survivor Corpse ×2、Nightmare Tree</td></tr><tr class="official"><td>4</td><td>Dragon King</td><td><span class="badge">官方</span></td><td>1</td><td>Obsidian Tower</td></tr><tr class="official"><td>5</td><td>Drifter Knight</td><td><span class="badge">官方</span></td><td>3</td><td>Living Coral、Dead Coral、Tidal Pool</td></tr><tr class="official"><td>6</td><td>Dung Beetle Knight</td><td><span class="badge">官方</span></td><td>1</td><td>Resin Dung Ball</td></tr><tr class="official"><td>7</td><td>Flower Knight</td><td><span class="badge">官方</span></td><td>1</td><td>Flower Patches</td></tr><tr class="official"><td>8</td><td>Harvester Worm</td><td><span class="badge">官方</span></td><td>4</td><td>Stone Statue、Gardener Ball、Gardener Worm (Terrain)、Glowing Corpse</td></tr><tr class="official"><td>9</td><td>King's Coin</td><td><span class="badge">官方</span></td><td>2</td><td>Shiny Somethings、King's Merchant</td></tr><tr class="official"><td>10</td><td>Lion God</td><td><span class="badge">官方</span></td><td>2</td><td>Sinkhole、Lion Statue</td></tr><tr class="official"><td>11</td><td>Lonely Tree</td><td><span class="badge">官方</span></td><td>1</td><td>The Lonely Tree</td></tr><tr class="official"><td>12</td><td>Spidicules</td><td><span class="badge">官方</span></td><td>2</td><td>Silk Nest、Egg Sacs</td></tr><tr class="official"><td>13</td><td>Storm Knight</td><td><span class="badge">官方</span></td><td>3</td><td>Forsaken Fog、2 Lightning Rods ×2</td></tr><tr class="official"><td>14</td><td>Sunstalker</td><td><span class="badge">官方</span></td><td>1</td><td>2 Salt Sculptures</td></tr><tr class="official"><td>15</td><td>White Lion</td><td><span class="badge">官方</span></td><td>1</td><td>Corpse Lily</td></tr><tr class="official"><td>16</td><td>Killenium Butcher</td><td><span class="badge">官方</span></td><td>1</td><td>Timeworn Statue</td></tr><tr class="fan"><td>17</td><td>粉丝扩 · 青色纹章地形</td><td><span class="badge">粉丝扩 · 默认隐藏</span></td><td>5</td><td>Diseased Corpse、Crystal Corpse、Stone Stair、Boulders、Lantern Pedestals</td></tr><tr class="fan"><td>18</td><td>粉丝扩 · 橙色纹章地形</td><td><span class="badge">粉丝扩 · 默认隐藏</span></td><td>2</td><td>Hovel、2 Cowering Survivors</td></tr><tr class="chest"><td>19</td><td>赌博扩 · 纹章地形</td><td><span class="badge">官方 · 赌博波</span></td><td>5</td><td>Beheaded Corpse、Smog Incense、Blood Pool、Fallen Lantern (Terrain)、Glowing Waypoint</td></tr><tr class="fan"><td>20</td><td>粉丝扩 · JD SPECIAL 纹章地形</td><td><span class="badge">粉丝扩 · 默认隐藏</span></td><td>1</td><td>Vomit Pools</td></tr><tr class="official"><td>21</td><td>Charrogg · 专属地形</td><td><span class="badge">官方</span></td><td>1</td><td>Lava Pool</td></tr></tbody></table>
-<p class="tip">下面按「粉丝扩 → 赌博扩 → 官方」排列，每张牌下面写了图块名、尺寸、需要块数、有没有被布场规则写死。</p>
-<section class="pack fan">
-    <h2><span class="badge">粉丝扩 · 默认隐藏</span> 粉丝扩 · 青色纹章地形 <code>FanTerrainTeal</code><span class="cnt">5 张</span></h2>
-    <div class="grid"><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/f30aa7848eeae497ccd8.png');background-size:100% 100%;background-position:0% 0%"></div>
-      <figcaption>
-        <b>Diseased Corpse</b>
-        <span class="spec">图块 Diseased Corpse · 1×1 · 1 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/456eef872c90306c0cfe.png');background-size:100% 100%;background-position:0% 0%"></div>
-      <figcaption>
-        <b>Crystal Corpse</b>
-        <span class="spec">图块 Crystal Corpse · 1×1 · 1 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:750 / 1125.3333333333333;background-image:url('../assets/showdown/2fd2c663a95225330287.jpg');background-size:300% 300%;background-position:0% 50%"></div>
-      <figcaption>
-        <b>Stone Stair</b>
-        <span class="spec">图块 Stairs · 4×2 · 1 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:750 / 1125.3333333333333;background-image:url('../assets/showdown/2fd2c663a95225330287.jpg');background-size:300% 300%;background-position:100% 50%"></div>
-      <figcaption>
-        <b>Boulders</b>
-        <span class="spec">图块 Boulder · 2×2 · 2 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:750 / 1125.3333333333333;background-image:url('../assets/showdown/2fd2c663a95225330287.jpg');background-size:300% 300%;background-position:0% 100%"></div>
-      <figcaption>
-        <b>Lantern Pedestals</b>
-        <span class="spec">图块 Lantern Pedestal · 1×1 · 2 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack fan">
-    <h2><span class="badge">粉丝扩 · 默认隐藏</span> 粉丝扩 · 橙色纹章地形 <code>FanTerrainOrange</code><span class="cnt">2 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:675 / 1048;background-image:url('../assets/showdown/8a64078ebcf956b8b39b.jpg');background-size:600% 200%;background-position:0% 0%"></div>
-      <figcaption>
-        <b>Hovel</b>
-        <span class="spec">图块 Hovel · 2×2 · 2 块</span>
-        <span class="refs">布场用到：Forsaker Sisters·Level 1（固定）；Forsaker Sisters·Level 2（固定） 等 9 处</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:675 / 1048;background-image:url('../assets/showdown/8a64078ebcf956b8b39b.jpg');background-size:600% 200%;background-position:20% 0%"></div>
-      <figcaption>
-        <b>2 Cowering Survivors</b>
-        <span class="spec">图块 Cowering Survivor · 1×1 · 2 块</span>
-        <span class="refs">布场用到：Forsaker Sisters·Level 1（固定）；Forsaker Sisters·Level 2（固定） 等 8 处</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack fan">
-    <h2><span class="badge">粉丝扩 · 默认隐藏</span> 粉丝扩 · JD SPECIAL 纹章地形 <code>FanTerrainJd</code><span class="cnt">1 张</span></h2>
-    <div class="grid"><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:2243 / 3366;background-image:url('../assets/showdown/c6b942ddb54d9857c661.png');background-size:100% 100%;background-position:0% 0%"></div>
-      <figcaption>
-        <b>Vomit Pools</b>
-        <span class="spec">图块 Vomit Pool · 2×2 · 2 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure></div></section>
+<table><thead><tr><th>#</th><th>牌库</th><th>标记</th><th>张数</th><th>地形牌</th></tr></thead><tbody><tr class="official"><td>1</td><td>Black Knight</td><td><span class="badge">官方</span></td><td>4</td><td>Rubble、Noble Urns、Bell Altar、Elastomer Statue</td></tr><tr class="official"><td>2</td><td>Core</td><td><span class="badge">官方</span></td><td>21</td><td>2 Acanthus Plants ×4、2 Tall Grass ×2、Toppled Pillar ×2、Ore Vein ×2、Giant Stone Face ×2、Debris ×2、Bug Patch、3 Stone Columns ×2、Dead Monster、Survivor Corpse ×2、Nightmare Tree</td></tr><tr class="official"><td>3</td><td>Dragon King</td><td><span class="badge">官方</span></td><td>1</td><td>Obsidian Tower</td></tr><tr class="official"><td>4</td><td>Dung Beetle Knight</td><td><span class="badge">官方</span></td><td>1</td><td>Resin Dung Ball</td></tr><tr class="official"><td>5</td><td>Flower Knight</td><td><span class="badge">官方</span></td><td>1</td><td>Flower Patches</td></tr><tr class="official"><td>6</td><td>Lion God</td><td><span class="badge">官方</span></td><td>2</td><td>Sinkhole、Lion Statue</td></tr><tr class="official"><td>7</td><td>Lonely Tree</td><td><span class="badge">官方</span></td><td>1</td><td>The Lonely Tree</td></tr><tr class="official"><td>8</td><td>Spidicules</td><td><span class="badge">官方</span></td><td>2</td><td>Silk Nest、Egg Sacs</td></tr><tr class="official"><td>9</td><td>Sunstalker</td><td><span class="badge">官方</span></td><td>1</td><td>2 Salt Sculptures</td></tr><tr class="official"><td>10</td><td>White Lion</td><td><span class="badge">官方</span></td><td>1</td><td>Corpse Lily</td></tr><tr class="official"><td>11</td><td>Killenium Butcher</td><td><span class="badge">官方</span></td><td>1</td><td>Timeworn Statue</td></tr><tr class="chest"><td>12</td><td>赌博扩 · 纹章地形</td><td><span class="badge">官方 · 赌博波</span></td><td>5</td><td>Beheaded Corpse、Smog Incense、Blood Pool、Fallen Lantern (Terrain)、Glowing Waypoint</td></tr></tbody></table>
+<p class="tip">下面按「赌博扩 → 官方」排列，每张牌下面写了图块名、尺寸、需要块数、有没有被布场规则写死。</p>
 <section class="pack chest">
     <h2><span class="badge">官方 · 赌博波</span> 赌博扩 · 纹章地形 <code>GamblerChest</code><span class="cnt">5 张</span></h2>
     <div class="grid"><figure class="card" data-idle="1">
@@ -133,7 +64,7 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
       <div class="thumb" style="aspect-ratio:653 / 1028;background-image:url('../assets/showdown/3c1c3ff93142842b22d9.png');background-size:100% 100%;background-position:0% 0%"></div>
       <figcaption>
         <b>Fallen Lantern (Terrain)</b>
-        <span class="spec">图块 Fallen Lantern · 1×1 · 1 块</span>
+        <span class="spec">图块 Fallen Lantern (Terrain) · — · — 块</span>
         <span class="refs">只进随机池，没有等级写死它</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
@@ -145,40 +76,30 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure></div></section>
 <section class="pack official">
-    <h2><span class="badge">官方</span> Allison <code>AllisonTheTwilightKnight</code><span class="cnt">1 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:675 / 1048;background-image:url('../assets/showdown/ca88c3974ea7a54703ba.jpg');background-size:300% 200%;background-position:50% 100%"></div>
-      <figcaption>
-        <b>Mineral Vein</b>
-        <span class="spec">图块 Mineral Vein · 1×1 · 1 块</span>
-        <span class="refs">布场用到：Allison·Level 1（固定）；Allison·Level 2（固定） 等 4 处</span>
-        <span class="src">TTS 档案：Allison The Twilight Knight Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack official">
     <h2><span class="badge">官方</span> Black Knight <code>BlackKnight</code><span class="cnt">4 张</span></h2>
     <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/88b5870f3eaea312e4ea.png');background-size:900% 500%;background-position:12.5% 100%"></div>
+      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/official/116a93ec301803eccc6a.png');background-size:900% 500%;background-position:12.5% 100%"></div>
       <figcaption>
         <b>Rubble</b>
         <span class="spec">图块 Rubble · 1×1 · 0 块</span>
         <span class="refs">布场用到：黑骑士 · Black Knight·Level 1（指定）；黑骑士 · Black Knight·Level 2（指定）；黑骑士 · Black Knight·Level 3（指定）</span>
         <span class="src">TTS 档案：Black Knight Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/88b5870f3eaea312e4ea.png');background-size:900% 500%;background-position:25% 100%"></div>
+      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/official/116a93ec301803eccc6a.png');background-size:900% 500%;background-position:25% 100%"></div>
       <figcaption>
         <b>Noble Urns</b>
         <span class="spec">图块 Noble Urns · 1×1 · 0 块</span>
         <span class="refs">布场用到：黑骑士 · Black Knight·Level 1（固定）；黑骑士 · Black Knight·Level 2（固定）；黑骑士 · Black Knight·Level 3（固定）</span>
         <span class="src">TTS 档案：Black Knight Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/88b5870f3eaea312e4ea.png');background-size:900% 500%;background-position:50% 100%"></div>
+      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/official/116a93ec301803eccc6a.png');background-size:900% 500%;background-position:50% 100%"></div>
       <figcaption>
         <b>Bell Altar</b>
         <span class="spec">图块 Bell Altar · 1×1 · 0 块</span>
         <span class="refs">布场用到：黑骑士 · Black Knight·Level 1（固定）；黑骑士 · Black Knight·Level 2（固定）；黑骑士 · Black Knight·Level 3（固定）</span>
         <span class="src">TTS 档案：Black Knight Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/88b5870f3eaea312e4ea.png');background-size:900% 500%;background-position:37.5% 100%"></div>
+      <div class="thumb" style="aspect-ratio:353.1111111111111 / 549.2;background-image:url('../assets/showdown/official/116a93ec301803eccc6a.png');background-size:900% 500%;background-position:37.5% 100%"></div>
       <figcaption>
         <b>Elastomer Statue</b>
         <span class="spec">图块 Elastomer Statue · 2×2 · 0 块</span>
@@ -188,147 +109,147 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
 <section class="pack official">
     <h2><span class="badge">官方</span> Core <code>Core</code><span class="cnt">21 张</span></h2>
     <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 0%"></div>
       <figcaption>
         <b>2 Acanthus Plants</b>
         <span class="spec">图块 Acanthus · 1×1 · 2 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Regal Worm（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 14 处</span>
+        <span class="refs">布场用到：尖叫羚羊 · Screaming Antelope·Level 1（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 12 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 0%"></div>
       <figcaption>
         <b>2 Acanthus Plants <em>副本 2</em></b>
         <span class="spec">图块 Acanthus · 1×1 · 2 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Regal Worm（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 14 处</span>
+        <span class="refs">布场用到：尖叫羚羊 · Screaming Antelope·Level 1（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 12 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 0%"></div>
       <figcaption>
         <b>2 Acanthus Plants <em>副本 3</em></b>
         <span class="spec">图块 Acanthus · 1×1 · 2 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Regal Worm（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 14 处</span>
+        <span class="refs">布场用到：尖叫羚羊 · Screaming Antelope·Level 1（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 12 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:40% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:40% 0%"></div>
       <figcaption>
         <b>2 Tall Grass</b>
         <span class="spec">图块 Tall Grass · 2×2 · 2 块</span>
-        <span class="refs">布场用到：Gnasher·Level 1（固定）；Gnasher·Level 2（固定） 等 17 处</span>
+        <span class="refs">布场用到：格姆 · Gorm·Level 1（固定）；格姆 · Gorm·Level 2（固定） 等 14 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 0%"></div>
       <figcaption>
         <b>2 Acanthus Plants <em>副本 4</em></b>
         <span class="spec">图块 Acanthus · 1×1 · 2 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Regal Worm（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 14 处</span>
+        <span class="refs">布场用到：尖叫羚羊 · Screaming Antelope·Level 1（固定）；尖叫羚羊 · Screaming Antelope·Level 1（固定） 等 12 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:40% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:40% 0%"></div>
       <figcaption>
         <b>2 Tall Grass <em>副本 2</em></b>
         <span class="spec">图块 Tall Grass · 2×2 · 2 块</span>
-        <span class="refs">布场用到：Gnasher·Level 1（固定）；Gnasher·Level 2（固定） 等 17 处</span>
+        <span class="refs">布场用到：格姆 · Gorm·Level 1（固定）；格姆 · Gorm·Level 2（固定） 等 14 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:60% 100%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:60% 100%"></div>
       <figcaption>
         <b>Toppled Pillar</b>
         <span class="spec">图块 Toppled Pillar · 1×4 · 1 块</span>
-        <span class="refs">布场用到：食骨者 · Bone Eaters·Level 3（固定）；King's Man · Curse·Altering Fate（固定） 等 12 处</span>
+        <span class="refs">布场用到：食骨者 · Bone Eaters·Level 3（固定）；龙王 · Dragon King·Level 1（固定） 等 8 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:60% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:60% 66.66666666666667%"></div>
       <figcaption>
         <b>Ore Vein</b>
         <span class="spec">图块 Ore Vein · 1×1 · 1 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Regal Worm（指定）；收割蠕虫 · Harvester Worm·Regal Worm（指定）；凤凰 · Phoenix·Golden Eyed King of 1000 Years（指定）</span>
+        <span class="refs">布场用到：凤凰 · Phoenix·Golden Eyed King of 1000 Years（指定）</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:60% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:60% 66.66666666666667%"></div>
       <figcaption>
         <b>Ore Vein <em>副本 2</em></b>
         <span class="spec">图块 Ore Vein · 1×1 · 1 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Regal Worm（指定）；收割蠕虫 · Harvester Worm·Regal Worm（指定）；凤凰 · Phoenix·Golden Eyed King of 1000 Years（指定）</span>
+        <span class="refs">布场用到：凤凰 · Phoenix·Golden Eyed King of 1000 Years（指定）</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:80% 33.333333333333336%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:80% 33.333333333333336%"></div>
       <figcaption>
         <b>Giant Stone Face</b>
         <span class="spec">图块 Giant Stone Face · 2×3 · 1 块</span>
-        <span class="refs">布场用到：赌徒 · Gambler·Level 4（指定）；收割蠕虫 · Harvester Worm·Regal Worm（指定） 等 8 处</span>
+        <span class="refs">布场用到：赌徒 · Gambler·Level 4（指定）；狮之神 · Lion God·Level 1（固定） 等 7 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:80% 33.333333333333336%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:80% 33.333333333333336%"></div>
       <figcaption>
         <b>Giant Stone Face <em>副本 2</em></b>
         <span class="spec">图块 Giant Stone Face · 2×3 · 1 块</span>
-        <span class="refs">布场用到：赌徒 · Gambler·Level 4（指定）；收割蠕虫 · Harvester Worm·Regal Worm（指定） 等 8 处</span>
+        <span class="refs">布场用到：赌徒 · Gambler·Level 4（指定）；狮之神 · Lion God·Level 1（固定） 等 7 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 33.333333333333336%"></div>
+      </figcaption></figure><figure class="card" data-idle="1">
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 33.333333333333336%"></div>
       <figcaption>
         <b>Debris</b>
         <span class="spec">图块 Debris · 1×1 · 1 块</span>
-        <span class="refs">布场用到：Scourgelord·Prologue（固定）</span>
+        <span class="refs">只进随机池，没有等级写死它</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:80% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:80% 0%"></div>
       <figcaption>
         <b>Bug Patch</b>
         <span class="spec">图块 Bug Patch · 1×1 · 1 块</span>
-        <span class="refs">布场用到：蜣螂骑士 · Dung Beetle Knight·Level 1（固定）；蜣螂骑士 · Dung Beetle Knight·Level 2（固定） 等 14 处</span>
+        <span class="refs">布场用到：蜣螂骑士 · Dung Beetle Knight·Level 1（固定）；蜣螂骑士 · Dung Beetle Knight·Level 2（固定） 等 12 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:60% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:60% 0%"></div>
       <figcaption>
         <b>3 Stone Columns</b>
         <span class="spec">图块 Stone Column · 1×2 · 3 块</span>
-        <span class="refs">布场用到：Allison·Level 1（固定）；Allison·Level 2（固定） 等 73 处</span>
+        <span class="refs">布场用到：甥啖老人 · Atnas·Level 1（固定）；甥啖老人 · Atnas·Level 1（固定） 等 53 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:60% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:60% 0%"></div>
       <figcaption>
         <b>3 Stone Columns <em>副本 2</em></b>
         <span class="spec">图块 Stone Column · 1×2 · 3 块</span>
-        <span class="refs">布场用到：Allison·Level 1（固定）；Allison·Level 2（固定） 等 73 处</span>
+        <span class="refs">布场用到：甥啖老人 · Atnas·Level 1（固定）；甥啖老人 · Atnas·Level 1（固定） 等 53 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 33.333333333333336%"></div>
+      </figcaption></figure><figure class="card" data-idle="1">
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 33.333333333333336%"></div>
       <figcaption>
         <b>Debris <em>副本 2</em></b>
         <span class="spec">图块 Debris · 1×1 · 1 块</span>
-        <span class="refs">布场用到：Scourgelord·Prologue（固定）</span>
+        <span class="refs">只进随机池，没有等级写死它</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:100% 0%"></div>
+      </figcaption></figure><figure class="card" data-idle="1">
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:100% 0%"></div>
       <figcaption>
         <b>Dead Monster</b>
         <span class="spec">图块 Dead Monster · 2×2 · 1 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Level 3（固定）；收割蠕虫 · Harvester Worm·Regal Worm（固定）；Scourgelord·Prologue（固定）</span>
+        <span class="refs">只进随机池，没有等级写死它</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:20% 100%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:20% 100%"></div>
       <figcaption>
         <b>Survivor Corpse</b>
         <span class="spec">图块 Survivor Corpse · 1×1 · 1 块</span>
-        <span class="refs">布场用到：猩红鳄鱼 · Crimson Crocodile·Prologue Crimson Crocodile（指定）；猩红鳄鱼 · Crimson Crocodile·Level 1（指定） 等 7 处</span>
+        <span class="refs">布场用到：猩红鳄鱼 · Crimson Crocodile·Prologue Crimson Crocodile（指定）；猩红鳄鱼 · Crimson Crocodile·Level 1（指定） 等 4 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:20% 100%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:20% 100%"></div>
       <figcaption>
         <b>Survivor Corpse <em>副本 2</em></b>
         <span class="spec">图块 Survivor Corpse · 1×1 · 1 块</span>
-        <span class="refs">布场用到：猩红鳄鱼 · Crimson Crocodile·Prologue Crimson Crocodile（指定）；猩红鳄鱼 · Crimson Crocodile·Level 1（指定） 等 7 处</span>
+        <span class="refs">布场用到：猩红鳄鱼 · Crimson Crocodile·Prologue Crimson Crocodile（指定）；猩红鳄鱼 · Crimson Crocodile·Level 1（指定） 等 4 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:60% 100%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:60% 100%"></div>
       <figcaption>
         <b>Toppled Pillar <em>副本 2</em></b>
         <span class="spec">图块 Toppled Pillar · 1×4 · 1 块</span>
-        <span class="refs">布场用到：食骨者 · Bone Eaters·Level 3（固定）；King's Man · Curse·Altering Fate（固定） 等 12 处</span>
+        <span class="refs">布场用到：食骨者 · Bone Eaters·Level 3（固定）；龙王 · Dragon King·Level 1（固定） 等 8 处</span>
         <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:20% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:20% 66.66666666666667%"></div>
       <figcaption>
         <b>Nightmare Tree</b>
         <span class="spec">图块 Nightmare Tree · 3×3 · 0 块</span>
@@ -338,7 +259,7 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
 <section class="pack official">
     <h2><span class="badge">官方</span> Dragon King <code>DragonKing</code><span class="cnt">1 张</span></h2>
     <div class="grid"><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:40% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:40% 66.66666666666667%"></div>
       <figcaption>
         <b>Obsidian Tower</b>
         <span class="spec">图块 Obsidian Tower · 2×2 · 1 块</span>
@@ -346,33 +267,9 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
         <span class="src">TTS 档案：Dragon King Archive</span>
       </figcaption></figure></div></section>
 <section class="pack official">
-    <h2><span class="badge">官方</span> Drifter Knight <code>DrifterKnight</code><span class="cnt">3 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/0c7f03fcd816e0bd2204.png');background-size:200% 200%;background-position:100% 0%"></div>
-      <figcaption>
-        <b>Living Coral</b>
-        <span class="spec">图块 Living Coral · 1×1 · 3 块</span>
-        <span class="refs">布场用到：漂流骑士 · Drifter Knight·Level 1（固定）；漂流骑士 · Drifter Knight·Level 2（固定）；漂流骑士 · Drifter Knight·Level 3（固定）</span>
-        <span class="src">TTS 档案：Drifter Knight Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/0c7f03fcd816e0bd2204.png');background-size:200% 200%;background-position:0% 0%"></div>
-      <figcaption>
-        <b>Dead Coral</b>
-        <span class="spec">图块 Dead Coral · 1×1 · 3 块</span>
-        <span class="refs">布场用到：漂流骑士 · Drifter Knight·Level 1（指定）；漂流骑士 · Drifter Knight·Level 2（指定）；漂流骑士 · Drifter Knight·Level 3（指定）</span>
-        <span class="src">TTS 档案：Drifter Knight Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/0c7f03fcd816e0bd2204.png');background-size:200% 200%;background-position:0% 100%"></div>
-      <figcaption>
-        <b>Tidal Pool</b>
-        <span class="spec">图块 Tidal Pool · 2×2 · 1 块</span>
-        <span class="refs">布场用到：漂流骑士 · Drifter Knight·Level 1（指定）；漂流骑士 · Drifter Knight·Level 1（特殊） 等 6 处</span>
-        <span class="src">TTS 档案：Drifter Knight Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack official">
     <h2><span class="badge">官方</span> Dung Beetle Knight <code>DungBeetleKnight</code><span class="cnt">1 张</span></h2>
     <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:80% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:80% 66.66666666666667%"></div>
       <figcaption>
         <b>Resin Dung Ball</b>
         <span class="spec">图块 Resin Dung Ball · 2×2 · 1 块</span>
@@ -382,7 +279,7 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
 <section class="pack official">
     <h2><span class="badge">官方</span> Flower Knight <code>FlowerKnight</code><span class="cnt">1 张</span></h2>
     <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:40% 33.333333333333336%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:40% 33.333333333333336%"></div>
       <figcaption>
         <b>Flower Patches</b>
         <span class="spec">图块 Flower Patch · 1×1 · 按等级 块</span>
@@ -390,64 +287,16 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
         <span class="src">TTS 档案：Flower Knight Archive</span>
       </figcaption></figure></div></section>
 <section class="pack official">
-    <h2><span class="badge">官方</span> Harvester Worm <code>HarvesterWorm</code><span class="cnt">4 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:459.2 / 714.2857142857143;background-image:url('../assets/showdown/4961c0a8eafb6bcc56bb.png');background-size:1000% 700%;background-position:88.88888888888889% 33.333333333333336%"></div>
-      <figcaption>
-        <b>Stone Statue</b>
-        <span class="spec">图块 Stone Statue · 1×2 · 1 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Level 3（固定）；收割蠕虫 · Harvester Worm·Regal Worm（固定）；收割蠕虫 · Harvester Worm·Homecoming（指定）</span>
-        <span class="src">TTS 档案：Harvester Worm Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:459.2 / 714.2857142857143;background-image:url('../assets/showdown/4961c0a8eafb6bcc56bb.png');background-size:1000% 700%;background-position:77.77777777777777% 100%"></div>
-      <figcaption>
-        <b>Gardener Ball</b>
-        <span class="spec">图块 Gardener Ball · 2×2 · 1 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Dung Worm（指定）</span>
-        <span class="src">TTS 档案：Harvester Worm Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:459.2 / 714.2857142857143;background-image:url('../assets/showdown/4961c0a8eafb6bcc56bb.png');background-size:1000% 700%;background-position:66.66666666666667% 100%"></div>
-      <figcaption>
-        <b>Gardener Worm (Terrain)</b>
-        <span class="spec">图块 Gardener Worm (Terrain) · 2×2 · 1 块</span>
-        <span class="refs">布场用到：收割蠕虫 · Harvester Worm·Level 3（固定）；收割蠕虫 · Harvester Worm·Regal Worm（固定）；收割蠕虫 · Harvester Worm·Homecoming（固定）</span>
-        <span class="src">TTS 档案：Harvester Worm Archive</span>
-      </figcaption></figure><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:459.2 / 714.2857142857143;background-image:url('../assets/showdown/4961c0a8eafb6bcc56bb.png');background-size:1000% 700%;background-position:88.88888888888889% 100%"></div>
-      <figcaption>
-        <b>Glowing Corpse</b>
-        <span class="spec">图块 Glowing Corpse · 2×2 · 1 块</span>
-        <span class="refs">只进随机池，没有等级写死它</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack official">
-    <h2><span class="badge">官方</span> King's Coin <code>KingsCoin</code><span class="cnt">2 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:675 / 1048;background-image:url('../assets/showdown/6e8b8b4fa1fd1a3b31e7.jpg');background-size:500% 300%;background-position:25% 50%"></div>
-      <figcaption>
-        <b>Shiny Somethings</b>
-        <span class="spec">图块 Shiny Somethings · 1×1 · 1 块</span>
-        <span class="refs">布场用到：King's Man (KC)·Level 1（指定）；King's Man (KC)·Level 2（指定）；King's Man (KC)·Level 3（指定）</span>
-        <span class="src">TTS 档案：King's Coin Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/ab98232ec486e12bc1ac.png');background-size:100% 100%;background-position:0% 0%"></div>
-      <figcaption>
-        <b>King's Merchant</b>
-        <span class="spec">图块 King's Merchant · 3×2 · 1 块</span>
-        <span class="refs">布场用到：King's Man (KC)·Level 1（指定）；King's Man (KC)·Level 2（指定）；King's Man (KC)·Level 3（指定）</span>
-        <span class="src">TTS 档案：King's Coin Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack official">
     <h2><span class="badge">官方</span> Lion God <code>LionGod</code><span class="cnt">2 张</span></h2>
     <div class="grid"><figure class="card" data-idle="1">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 100%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 100%"></div>
       <figcaption>
         <b>Sinkhole</b>
         <span class="spec">图块 Sinkhole · 3×3 · 1 块</span>
         <span class="refs">只进随机池，没有等级写死它</span>
         <span class="src">TTS 档案：Lion God Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:0% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:0% 66.66666666666667%"></div>
       <figcaption>
         <b>Lion Statue</b>
         <span class="spec">图块 Lion Statue · 2×2 · 1 块</span>
@@ -467,14 +316,14 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
 <section class="pack official">
     <h2><span class="badge">官方</span> Spidicules <code>Spidicules</code><span class="cnt">2 张</span></h2>
     <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:100% 66.66666666666667%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:100% 66.66666666666667%"></div>
       <figcaption>
         <b>Silk Nest</b>
         <span class="spec">图块 Silk Nest · 2×2 · 1 块</span>
         <span class="refs">布场用到：针突蜘蛛 · Spidicules·Level 1（固定）；针突蜘蛛 · Spidicules·Level 2（固定）；针突蜘蛛 · Spidicules·Level 3（固定）</span>
         <span class="src">TTS 档案：Spidicules Archive</span>
       </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:20% 33.333333333333336%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:20% 33.333333333333336%"></div>
       <figcaption>
         <b>Egg Sacs</b>
         <span class="spec">图块 Egg Sac · 1×1 · 按等级 块</span>
@@ -482,33 +331,9 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
         <span class="src">TTS 档案：Spidicules Archive</span>
       </figcaption></figure></div></section>
 <section class="pack official">
-    <h2><span class="badge">官方</span> Storm Knight <code>StormKnight</code><span class="cnt">3 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/e7a88c9e2ee2a6a7eca3.jpg');background-size:500% 300%;background-position:50% 0%"></div>
-      <figcaption>
-        <b>Forsaken Fog</b>
-        <span class="spec">图块 Forsaken Fog · 2×2 · 1 块</span>
-        <span class="refs">布场用到：Storm Knight·Level 2（固定）；Storm Knight·Level 3（固定）；Storm Dancer·Level 4（固定）</span>
-        <span class="src">TTS 档案：Storm Knight Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/e7a88c9e2ee2a6a7eca3.jpg');background-size:500% 300%;background-position:75% 0%"></div>
-      <figcaption>
-        <b>2 Lightning Rods</b>
-        <span class="spec">图块 Lightning Rod · 1×1 · 2 块</span>
-        <span class="refs">布场用到：Storm Knight·Level 3（固定）；Storm Knight·Level 3（固定）</span>
-        <span class="src">TTS 档案：Storm Knight Archive</span>
-      </figcaption></figure><figure class="card">
-      <div class="thumb" style="aspect-ratio:747 / 1122;background-image:url('../assets/showdown/e7a88c9e2ee2a6a7eca3.jpg');background-size:500% 300%;background-position:75% 0%"></div>
-      <figcaption>
-        <b>2 Lightning Rods <em>副本 2</em></b>
-        <span class="spec">图块 Lightning Rod · 1×1 · 2 块</span>
-        <span class="refs">布场用到：Storm Knight·Level 3（固定）；Storm Knight·Level 3（固定）</span>
-        <span class="src">TTS 档案：Storm Knight Archive</span>
-      </figcaption></figure></div></section>
-<section class="pack official">
     <h2><span class="badge">官方</span> Sunstalker <code>Sunstalker</code><span class="cnt">1 张</span></h2>
     <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:20% 0%"></div>
+      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/official/4aa70dced5d9dada8dcf.png');background-size:600% 400%;background-position:20% 0%"></div>
       <figcaption>
         <b>2 Salt Sculptures</b>
         <span class="spec">图块 Salt Sculpture · 1×2 · 2 块</span>
@@ -535,19 +360,9 @@ details{margin-top:26px}summary{cursor:pointer;color:#d5c08a;font-weight:600}
         <span class="refs">只进随机池，没有等级写死它</span>
         <span class="src">TTS 档案：Killenium Butcher Archive</span>
       </figcaption></figure></div></section>
-<section class="pack official">
-    <h2><span class="badge">官方</span> Charrogg · 专属地形 <code>CharroggTerrain</code><span class="cnt">1 张</span></h2>
-    <div class="grid"><figure class="card">
-      <div class="thumb" style="aspect-ratio:800 / 1240;background-image:url('../assets/showdown/088c876b4645256f4509.jpg');background-size:600% 400%;background-position:100% 33.333333333333336%"></div>
-      <figcaption>
-        <b>Lava Pool</b>
-        <span class="spec">图块 Lava Pool · 2×2 · 1 块</span>
-        <span class="refs">布场用到：Charrogg·Level 1（固定）；Charrogg·Level 2（固定）；Charrogg·Level 3（固定）</span>
-        <span class="src">TTS 档案：Kingdom Death: Monster Archive</span>
-      </figcaption></figure></div></section>
-<details open><summary>只有图块尺寸、没有地形规则卡（App 里用不到，32 个）</summary>
-<div class="chips"><span class="chip">BK_1 4×4</span><span class="chip">BK_2 4×4</span><span class="chip">BK_3 4×4</span><span class="chip">BK_4 4×4</span><span class="chip">BK_5 4×4</span><span class="chip">BK_6 4×4</span><span class="chip">BK_7 4×4</span><span class="chip">BK_8 4×4</span><span class="chip">BK_9 4×4</span><span class="chip">BK_10 4×4</span><span class="chip">BK_11 4×4</span><span class="chip">BK_12 4×4</span><span class="chip">BK_13 4×4</span><span class="chip">BK_14 4×4</span><span class="chip">Mon Tile 4×4</span><span class="chip">Sur Tile 4×4</span><span class="chip">RFinger 1×4</span><span class="chip">MFinger 1×4</span><span class="chip">LFinger 1×4</span><span class="chip">Finger Tip 1×1</span><span class="chip">FRFinger 1×3</span><span class="chip">FLFinger 1×4</span><span class="chip">Royal Causeway 1×2</span><span class="chip">Gabel Tree 3×3</span><span class="chip">Disarm 1×1</span><span class="chip">Gate 2×2</span><span class="chip">Horn 1×1</span><span class="chip">Throne 1×1</span><span class="chip">Stage 4×4</span><span class="chip">Balcony 1×2</span><span class="chip">Lonely Fruit 1×1</span><span class="chip">Hidden Face 1×1</span></div>
+<details open><summary>只有图块尺寸、没有地形规则卡（App 里用不到，0 个）</summary>
+<div class="chips"></div>
 <p class="tip">这些在 TTS 图集里有尺寸定义，但没有地形介绍卡，也没有任何等级引用。你上次问的 Royal Causeway、Gabel Tree、Hidden Face 都在这里；另有 14 个 BK_*、6 个手指图块等。</p></details>
 <details><summary>牌库卡名与规则表名字不一致（写法差异，仅供检索）</summary>
-<div class="chips"><span class="chip">Stone Stair → Stone Stairs</span><span class="chip">Fallen Lantern (Terrain) → Fallen Lantern</span></div></details>
+<div class="chips"></div></details>
 </body></html>

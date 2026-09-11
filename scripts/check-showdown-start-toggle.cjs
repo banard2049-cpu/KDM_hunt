@@ -93,7 +93,7 @@ assert.match(terrainPanel().innerHTML, /sdStartToggle/, 'the button is part of t
 (async () => {
   await settle();
   const button = el('sdStartToggle');
-  const saved = () => JSON.parse(memory.get('kdm-showdown-v1'));
+  const saved = () => JSON.parse(memory.get('kdm-showdown-official-v1'));
 
   await window.KDMShowdown.battle({ id: 'sb1', bossId: 'white-lion', levelId: 'level-2' });
   await settle();

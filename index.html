@@ -51,7 +51,6 @@ button.primary{background:#a25b3d;border-color:#d98760}
 .card{background:#302936;padding:10px;border-radius:6px}
 .card img{width:100%;height:130px;object-fit:cover;background:#19161c}
 .origin{color:#d5c08a;font-size:12px;margin-top:4px}
-.origin.fan{color:#f0a080}
 .muted{color:#a899ad}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .log{max-height:180px;overflow:auto;white-space:pre-wrap}
@@ -101,7 +100,6 @@ button.primary{background:#a25b3d;border-color:#d98760}
 <label class="field"><span>怪物</span><input id="search" placeholder="搜索怪物"><select id="monster"></select></label>
 <label class="field"><span>等级</span><select id="level"></select></label>
 <div id="startPositionHint" class="muted" style="display:none;margin:8px 0" aria-live="polite"></div>
-<label id="fanToggleWrap" class="muted" style="display:none;margin:8px 0"><input type="checkbox" id="includeFan"> <span id="fanToggleLabel">加入粉丝扩展狩猎牌</span><small id="fanToggleHint" style="display:block"></small></label>
 <label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addArcSurvivor"> 增添弧光幸存者狩猎事件</label>
 <label class="muted" style="display:block;margin:8px 0"><input type="checkbox" id="addScout"> 增添侦察者狩猎事件</label>
 <div class="row"><button class="primary" id="start">开始狩猎</button><button id="clear">清理</button></div>
@@ -111,9 +109,7 @@ button.primary{background:#a25b3d;border-color:#d98760}
 <label class="field loot-quality-side"><span>规则清晰度</span><select id="lootQuality"><option value="standard">低</option><option value="hd">高</option></select></label><p class="muted" id="lootSelectionHint" hidden></p><div class="loot-session-row"><select id="lootSessions" aria-label="已有战斗记录"></select><button id="lootExport" disabled>导出战利品记录</button></div>
 <div class="loot-optional-switches">
 <label class="loot-optional-resource"><input type="checkbox" id="lootIncludeLumpOfAtnas"> 加入甥啖肉块（Lump of Atnas）</label>
-<label class="loot-optional-resource"><input type="checkbox" id="lootIncludeFanVermin"> 加入粉丝扩寄生虫（12张）</label>
 <label class="loot-optional-resource"><input type="checkbox" id="lootIncludePromoVermin"> 加入 Promo 寄生虫（1张）</label>
-<label class="loot-optional-resource"><input type="checkbox" id="sdFanToggle"> 显示粉丝扩地形</label>
 </div></div></aside><main><section id="huntPage">
 <div class="panel">
   <div class="row"><h2 id="title">尚未开始</h2><span id="status" class="muted"></span><div class="row panel-gather-row"><span class="muted">放置采集卡：</span><button class="gather-card herb" data-gather="herb">草药采集</button><button class="gather-card ore" data-gather="ore">矿石采集</button><button class="gather-card sky" data-gather="sky">天空垂钓</button><span id="gatherHint" class="muted"></span></div></div>
@@ -242,7 +238,7 @@ async function load(){
   // exe). Prefer the payload, then fall back to the static file.
   if(D.huntdecks&&D.huntdecks.decks)HD=D.huntdecks;
   else{try{HD=await (await fetch('data/huntdecks.json')).json()}catch(_){HD={sheets:{},backs:{},decks:{},shared:{}}}}
-  let ex=['全部','基础','赌博','12扩','其他官方扩','粉丝扩'];
+  let ex=['全部','基础','赌博','12扩','其他官方扩'];
   $('#exp').innerHTML=ex.map(x=>`<option>${x}</option>`).join('');
   $('#exp').value='基础';
   renderMonsters();
@@ -276,27 +272,7 @@ function backStyle(sym){
   return "background-image:url('/assets/cards/hunt-events.png');filter:brightness(.38) saturate(.7)";
 }
 // Resolve the card reference to draw for a given track symbol.
-// Explicit card lists: do not infer fan content from image URLs or monster origin.
-const FAN_HUNT_NAMES=Object.fromEntries(Object.entries({
-  'White Lion':['White Lion Cub','Dying Lion','the Well','Cave Painting','Watering Hole','Soda Pop surprise'],
-  'Phoenix':['Private Meeting','Lowly Beetle','Paradox'],
-  'Screaming Antelope':['Greedy Cache','Teething','Banshees','Luminescent Trail'],
-  'Gorm':['Gorm Storm','Mud Wallow','Lost Light','Eat or Be Eaten','Finger Painting'],
-  'Sunstalker':['Ink Pot','Color out of Darkness','Shaoling','Sun Fall'],
-  'Dragon King':['Squire-errant','Weeping Man','Meteor Shower','Radiating Wind'],
-  'Flower Knight':['Crawling Forest','Fey World','Warblind Field'],
-  'Dung Beetle Knight':['Never Forget','Stink Trail','Bamboo Training','Wild Artichokes','Vermin Swarm'],
-  'Spidicules':['Story by the Lantern Light','Base Jumping','Vengeful Threads','Hidden Egg Clutch'],
-  'Lion God':['Quicksand','Silver Shaft','Lost Boy','Ruined Temple']
-}).map(([name,cards])=>[name+' Hunt Events',new Set(cards.map(n=>n.toLowerCase()))]));
-function isFanHuntCard(monster,card){return !!FAN_HUNT_NAMES[monster?.huntEventsDeck]?.has(String(card.name||'').toLowerCase())}
-function fanCardCount(monster){return (HD.decks[monster?.huntEventsDeck]||[]).filter(c=>isFanHuntCard(monster,c)).length}
-function deckFor(monster,includeFan,legacy=false){
-  let deck=HD.decks[monster.huntEventsDeck]||[];
-  // Before schema 4 only White Lion was filtered. Keep old saved pile indices valid.
-  if(includeFan||(legacy&&!isWhiteLion(monster)))return deck;
-  return deck.filter(c=>!isFanHuntCard(monster,c));
-}
+function deckFor(monster){return HD.decks[monster.huntEventsDeck]||[]}
 function shuffled(arr){let a=arr.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function randomEventPage(roll){return RANDOM_EVENT_PAGES.find(p=>roll>=p.min&&roll<=p.max)}
 function generateRandomEvent(){let roll=Math.floor(Math.random()*100)+1;return {roll,page:randomEventPage(roll),time:new Date().toISOString()}}
@@ -339,19 +315,10 @@ function renderMonsters(){
   let q=$('#search').value.toLowerCase(),e=$('#exp').value;
   let ms=D.monsters.filter(m=>(e==='全部'||m.expansionGroup===e)&&(!q||(m.name+' '+m.aliases.join(' ')).toLowerCase().includes(q)));
   $('#monster').innerHTML=ms.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
-  updateFanToggle();
   renderLevels();
 }
 function selected(){return D.monsters.find(m=>m.id===$('#monster').value)}
 function isWhiteLion(m){return !!m&&String(m.name).toLowerCase()==='white lion'}
-function updateFanToggle(){
-  let wrap=$('#fanToggleWrap');if(!wrap)return;
-  let count=fanCardCount(selected()),show=count>0;wrap.style.display=show?'block':'none';
-  $('#fanToggleLabel').textContent=`加入粉丝扩展狩猎牌（${count} 张）`;
-  $('#fanToggleHint').textContent=S?'本次狩猎已锁定牌组；修改前请先清理当前进度。':'开始狩猎前可选择，默认不加入。';
-  $('#includeFan').disabled=!!S;
-  if(!show){$('#includeFan').checked=false;$('#includeFan').disabled=false}
-}
 // Only levels with a monsterHuntPosition have a hunt phase in TTS
 // (`if level.monsterHuntPosition then`). Levels like "Prologue" have no hunt and
 // are excluded. Option value is the level's INDEX in m.levels so entries that
@@ -396,8 +363,7 @@ function begin(){
   history=[];
   // Shuffle this monster's hunt-event deck into a draw pile (indices into the
   // deck array) so M spaces reveal actual card faces without repeats.
-  let includeFan=fanCardCount(m)>0&&$('#includeFan').checked;
-  let deck=deckFor(m,includeFan);
+  let deck=deckFor(m);
   let track=m.huntTrack.slice();
   // Optional special scout cards replace ordinary H cards, then are randomly
   // dealt to the ordinary hunt-event spaces on the track.
@@ -405,11 +371,11 @@ function begin(){
   if($('#addArcSurvivor')?.checked)replacements.push('A');
   if($('#addScout')?.checked)replacements.push('S');
   const huntPile=shuffled(Array.from({length:12},(_,i)=>i<replacements.length?replacements[i]:'H'));
-  S={id:'current',schemaVersion:5,battleId:'hunt-'+Date.now()+'-'+Math.random().toString(36).slice(2),mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
+  S={id:'current',schemaVersion:6,battleId:'hunt-'+Date.now()+'-'+Math.random().toString(36).slice(2),mode:'hunt',monster:m,level:lvl,levelName:p.levelName,
      track,partyStart:p.party,partyPos:p.party,monsterPos:p.monster,
      addArcSurvivor:replacements.includes('A'),addScout:replacements.includes('S'),
      drawn:[],note:'',encountered:false,overlays:{},
-     deckName:m.huntEventsDeck,includeFan,pile:shuffled(deck.map((_,i)=>i)),huntPile,ordinaryDeck:huntPile.slice()};
+     deckName:m.huntEventsDeck,pile:shuffled(deck.map((_,i)=>i)),huntPile,ordinaryDeck:huntPile.slice()};
   render();
   log(`开始狩猎：${m.name} ${p.levelName}｜幸存者@${p.party}，怪物@${p.monster}｜牌库 ${deck.length} 张`);
   autosave();
@@ -466,7 +432,7 @@ function advance(){
 // Overwhelming Darkness tile.
 function drawCardFor(sym){
   if(sym==='M'){
-    let deck=deckFor(S.monster,S.includeFan,S.schemaVersion<4);
+    let deck=deckFor(S.monster);
     if(deck.length){ if(!S.pile||!S.pile.length)S.pile=shuffled(deck.map((_,i)=>i));
       let i=S.pile.shift(); return Object.assign({source:'M'},deck[i]); }
     return HD.shared.hunt?Object.assign({source:'M'},HD.shared.hunt):null;
@@ -506,8 +472,6 @@ function cardMarkup(c,big=false){
 
 function render(){
   if(!S){return}
-  updateFanToggle();
-  if(fanCardCount(S.monster)){$('#includeFan').checked=!!S.includeFan||(S.schemaVersion<4&&!isWhiteLion(S.monster));$('#includeFan').disabled=true}
   if($('#addArcSurvivor'))$('#addArcSurvivor').checked=!!S.addArcSurvivor;
   if($('#addScout'))$('#addScout').checked=!!S.addScout;
   let n=S.track.length;
@@ -578,7 +542,7 @@ function renderDeckView(){
     let remaining=(S.huntPile||[]).length;
     ordinary.innerHTML=source.map((sym,i)=>{let spent=i<source.length-remaining,c=sym==='H'?HD.shared.hunt:HD.shared[sym==='A'?'arcSurvivor':'scout'];return `<div class="face${spent?' spent':''}" style="${c?faceStyle(Object.assign({source:sym},c)):backStyle('H')}" title="${sym==='H'?'普通狩猎事件':(EVENT_NAME[sym]||sym)}${spent?'（已抽取）':''}"></div>`}).join('');
   }
-  let deck=deckFor(S.monster,S.includeFan,S.schemaVersion<4);
+  let deck=deckFor(S.monster);
   if(!deck.length){$('#deckView').innerHTML='<span class="muted">该怪物无专属狩猎牌库（使用通用狩猎事件）</span>';$('#deckInfo').textContent=S.deckName||'';return}
   let remaining=(S.pile||[]).length;
   let inPile={};(S.pile||[]).forEach(i=>inPile[i]=1);
@@ -603,32 +567,30 @@ function setPos(which,val){
 
 function autosave(){
   if(S&&typeof window!=='undefined'){const loot=window.KDMLoot?.snapshot(S);if(loot)S.lootBattle=loot;const showdown=window.KDMShowdown?.snapshot(S);if(showdown)S.showdownBattle=showdown;}
-  if(S)localStorage.setItem('kdm-current',JSON.stringify(S));
+  if(S)localStorage.setItem('kdm-current-official-v1',JSON.stringify(S));
   fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)}).catch(()=>{});
 }
 
+$('#monster').onchange=renderLevels;
 $('#exp').onchange=renderMonsters;$('#search').oninput=renderMonsters;
 $('#sidebarToggle').onclick=()=>{let app=$('.app'),collapsed=app.classList.toggle('sidebar-collapsed'),btn=$('#sidebarToggle');btn.setAttribute('aria-expanded',String(!collapsed));btn.textContent=collapsed?'展开侧栏':'收起侧栏';};
 $('#rulebookVersion').value=rulebookVersion;
 $('#rulebookVersion').onchange=e=>{localStorage.setItem(cropStorageKey(),JSON.stringify(randomCrops));rulebookVersion=e.target.value==='hd'?'hd':'standard';localStorage.setItem('kdm-rulebook-version',rulebookVersion);loadRandomCrops();RANDOM_EVENT_PAGES=rulebookVersion==='hd'?RANDOM_EVENT_PAGES_HD:RANDOM_EVENT_PAGES_STANDARD;initCropEditor();$('#cropImage').src=rulebookAsset($('#cropPage').value);renderRandomEvent();window.KDMLoot?.refresh();};
 document.querySelectorAll('.gather-card').forEach(b=>b.onclick=()=>{if(!S){$('#gatherHint').textContent='请先开始狩猎';return}gatherMode=b.dataset.gather;document.querySelectorAll('.gather-card').forEach(x=>x.classList.toggle('primary',x===b));$('#gatherHint').textContent='请选择轨道格';});
-$('#monster').onchange=()=>{updateFanToggle();renderLevels()};
 $('#level').onchange=renderStartPositionHint;
-$('#includeFan').onchange=()=>{if(S)$('#includeFan').checked=!!S.includeFan};
 $('#start').onclick=begin;$('#advance').onclick=advance;
 $('#randomEvent').onclick=rollRandomEvent;$('#randomAgain').onclick=rollRandomEvent;
 $('#partyPos').onchange=e=>setPos('party',e.target.value);
 $('#monsterPos').onchange=e=>setPos('monster',e.target.value);
 document.querySelectorAll('.pos-step').forEach(b=>b.onclick=()=>{if(S)setPos(b.dataset.pos,S[b.dataset.pos+'Pos']+Number(b.dataset.delta))});
 $('#undo').onclick=()=>{if(history.length){S=JSON.parse(history.pop());render();log('已撤销上一步');autosave()}};
-$('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPanel'))$('#ordinaryDeckPanel').open=false;$('#gatherHint').textContent='';document.querySelectorAll('.gather-card').forEach(b=>b.classList.remove('primary'));$('#includeFan').checked=false;$('#includeFan').disabled=false;$('#addArcSurvivor').checked=false;$('#addScout').checked=false;randomEventState=null;localStorage.removeItem('kdm-current');localStorage.removeItem('kdm-random-event');$('#title').textContent='尚未开始';$('#status').textContent='';$('#track').className='track';$('#track').innerHTML='<span class="muted">选择怪物和等级后开始</span>';$('#current').innerHTML='—';$('#drawn').innerHTML='<span class="muted">—</span>';$('#advance').disabled=true;$('#undo').disabled=true;renderDeckView();renderRandomEvent()};
-$('#clear').addEventListener('click',updateFanToggle);
+$('#clear').onclick=()=>{S=null;history=[];gatherMode=null;if($('#ordinaryDeckPanel'))$('#ordinaryDeckPanel').open=false;$('#gatherHint').textContent='';document.querySelectorAll('.gather-card').forEach(b=>b.classList.remove('primary'));$('#addArcSurvivor').checked=false;$('#addScout').checked=false;randomEventState=null;localStorage.removeItem('kdm-current-official-v1');localStorage.removeItem('kdm-random-event');$('#title').textContent='尚未开始';$('#status').textContent='';$('#track').className='track';$('#track').innerHTML='<span class="muted">选择怪物和等级后开始</span>';$('#current').innerHTML='—';$('#drawn').innerHTML='<span class="muted">—</span>';$('#advance').disabled=true;$('#undo').disabled=true;renderDeckView();renderRandomEvent()};
 $('#note').oninput=e=>{if(S){S.note=e.target.value;autosave()}};
 $('#save').onclick=()=>{if(S){S.id=prompt('存档名称',S.id)||S.id;autosave();alert('已保存')}};
 $('#export').onclick=()=>{if(S){autosave();let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));a.download=(S.id||'kdm-hunt')+'.json';a.click()}};
 $('#cropPart1').onclick=()=>switchCropPart(0);$('#cropPart2').onclick=()=>switchCropPart(1);$('#openCropEditor').onclick=()=>{$('#cropEditorPanel').classList.add('open');renderCropReview()};$('#closeCropEditor').onclick=()=>$('#cropEditorPanel').classList.remove('open');$('#cropNumber').onchange=()=>{loadCropEditor();renderCropReview()};
 $('#cropPrev').onclick=()=>{let n=Math.max(1,(+$('#cropNumber').value||1)-1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};$('#cropNext').onclick=()=>{let n=Math.min(100,(+$('#cropNumber').value||1)+1);$('#cropNumber').value=n;loadCropEditor();renderCropReview()};
-load().then(()=>{let x=localStorage.getItem('kdm-current');if(x){try{let saved=JSON.parse(x);if(saved&&saved.schemaVersion>=2&&(saved.mode==='hunt'||saved.mode==null)){S=saved;render();log('已恢复上次狩猎进度');window.KDMLoot?.restore(S)}else{S=null}}catch(_){S=null}}let r=localStorage.getItem('kdm-random-event');if(r){try{randomEventState=JSON.parse(r)}catch(_){randomEventState=null}}renderRandomEvent()});
+load().then(()=>{let x=localStorage.getItem('kdm-current-official-v1');if(x){try{let saved=JSON.parse(x);if(saved&&saved.schemaVersion===6&&D.monsters.some(m=>m.id===saved.monster?.id)&&(saved.mode==='hunt'||saved.mode==null)){S=saved;render();log('已恢复上次狩猎进度');window.KDMLoot?.restore(S)}else{S=null}}catch(_){S=null}}let r=localStorage.getItem('kdm-random-event');if(r){try{randomEventState=JSON.parse(r)}catch(_){randomEventState=null}}renderRandomEvent()});
 (async()=>{await loadBuiltinCrops();loadRandomCrops();initCropEditor();renderCropList();renderRandomEvent()})();
 </script>
 <script src="assets/showdown-engine.js"></script><script src="assets/showdown-view.js"></script><script src="assets/showdown-ui.js"></script></body></html>
